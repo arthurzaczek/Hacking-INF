@@ -1,0 +1,8 @@
+﻿- name:        _C
+  title:       Basic C
+  headline:   Basiskurs C
+  description: Ein Basiskurs in C
+- name:        _CS
+  title:       Basic C#
+  headline:   Basiskurs C#
+  description: Ein Basiskurs in C#
