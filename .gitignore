@@ -1,0 +1,13 @@
+.vs/
+bin/
+obj/
+*.suo
+*.csproj.user
+
+/deploy
+/publish
+
+# Only commit repositories.config. The rest of /packages is only a local cache
+!/packages/repositories.config
+/packages/*
+
