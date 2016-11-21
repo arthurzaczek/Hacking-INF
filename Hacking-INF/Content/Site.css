@@ -1,6 +1,6 @@
 ﻿body {
     padding-top: 50px;
-    padding-bottom: 20px;
+    padding-bottom: 70px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -9,9 +9,55 @@
     padding-right: 15px;
 }
 
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
     max-width: 280px;
+}
+
+footer {
+    background-color: white;
+}
+
+.step-group {
+
+}
+
+.step-hint {
+    position: absolute;
+    margin-top: -20px;
+    margin-left: -75px;
+}
+
+.numberCircle {
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    padding: 8px;
+    background: #fff;
+    border: 2px solid #666;
+    color: #666;
+    text-align: center;
+    font: 32px Arial, sans-serif;
+}
+
+.text-monospace {
+    font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+    white-space: pre-wrap;
+}
+
+.text-multiline{
+    white-space: pre-wrap;
+}
+
+tr.inactive {
+    text-decoration: line-through;
 }
