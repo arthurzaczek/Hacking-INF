@@ -1,1 +1,16 @@
-﻿<p>List of all Courses</p>
+﻿<h1>List of all Courses</h1>
+<div class="row">
+    <div *ngFor="let c of courses" class="col-md-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{c.Title}}</h3>
+            </div>
+            <div class="panel-body">
+                <strong>{{c.HeadLine}}</strong>
+                <p>
+                    {{c.Description}}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
