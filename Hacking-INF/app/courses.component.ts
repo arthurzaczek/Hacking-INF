@@ -15,9 +15,7 @@ export class CoursesComponent implements OnInit {
     getCourses(): void {
         this.hackingService.getCourses().then(data => {
             this.courses = data;
-            console.log("CoursesComponent: got data from service");
         });
-        console.log("CoursesComponent.getCourses");
     }
 
     ngOnInit(): void {
