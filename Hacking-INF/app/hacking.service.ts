@@ -28,4 +28,10 @@ export class HackingService {
             .toPromise()
             .then(response => response.json() as Example[]);
     }
+
+    getExample(course: string, name: string): Promise<Example> {
+        return this.http.get(this.baseUrl + 'Info/GetExample?course=' + course + '&name=' + name)
+            .toPromise()
+            .then(response => response.json() as Example);
+    }
 }

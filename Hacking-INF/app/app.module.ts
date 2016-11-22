@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home.component';
 import { CoursesComponent } from './courses.component';
 import { CourseDetailComponent } from './course-detail.component';
+import { ExampleDetailComponent } from './example-detail.component';
+
 
 @NgModule({
     imports: [
@@ -18,7 +20,8 @@ import { CourseDetailComponent } from './course-detail.component';
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
             { path: 'courses', component: CoursesComponent },
-            { path: 'course-detail/:name', component: CourseDetailComponent }
+            { path: 'course/:name', component: CourseDetailComponent },
+            { path: 'example/:course/:name', component: ExampleDetailComponent },
         ])
     ],
     declarations: [
@@ -26,6 +29,7 @@ import { CourseDetailComponent } from './course-detail.component';
         HomeComponent,
         CoursesComponent,
         CourseDetailComponent,
+        ExampleDetailComponent,
     ],
     bootstrap: [AppComponent]
 })

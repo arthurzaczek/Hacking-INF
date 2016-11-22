@@ -14,6 +14,14 @@ namespace Hacking_INF.Models
         public string Course { get; set; }
         [YamlMember(Alias = "problemtitle")]
         public string Title { get; set; }
+        [YamlMember(Alias = "description")]
+        public string Description { get; set; }
+        [YamlMember(Alias = "category")]
+        public string Category { get; set; }
+        [YamlMember(Alias = "difficulty")]
+        public string Difficulty { get; set; }
+        [YamlMember(Alias = "requires")]
+        public List<string> Requires { get; set; }
     }
 
     public class ExampleViewModel
@@ -21,6 +29,10 @@ namespace Hacking_INF.Models
         public string Name { get; set; }
         public string Course { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
+        public string Category { get; set; }
+        public string Difficulty { get; set; }
+        public List<string> Requires { get; set; }
 
         public ExampleViewModel()
         {
@@ -40,6 +52,10 @@ namespace Hacking_INF.Models
             target.Name = source.Name;
             target.Course = source.Course;
             target.Title = source.Title;
+            target.Description = source.Description;
+            target.Category = source.Category;
+            target.Difficulty = source.Difficulty;
+            target.Requires = source.Requires ?? new List<string>();
         }
     }
 }
