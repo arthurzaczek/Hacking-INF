@@ -45,16 +45,5 @@ namespace Hacking_INF.Models
             target.HeadLine = source.HeadLine;
             target.Description = source.Description;
         }
-
-        public void ApplyChanges(Course obj)
-        {
-            var target = obj;
-            var source = this;
-
-            target.Name = source.Name;
-            target.Title = source.Title;
-            target.HeadLine = source.HeadLine;
-            target.Description = source.Description;
-        }
     }
 }

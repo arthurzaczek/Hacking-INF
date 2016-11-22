@@ -7,6 +7,7 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home.component';
 import { CoursesComponent } from './courses.component';
+import { CourseDetailComponent } from './course-detail.component';
 
 @NgModule({
     imports: [
@@ -16,13 +17,15 @@ import { CoursesComponent } from './courses.component';
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
-            { path: 'courses', component: CoursesComponent }
+            { path: 'courses', component: CoursesComponent },
+            { path: 'course-detail/:name', component: CourseDetailComponent }
         ])
     ],
     declarations: [
         AppComponent,
         HomeComponent,
-        CoursesComponent
+        CoursesComponent,
+        CourseDetailComponent,
     ],
     bootstrap: [AppComponent]
 })

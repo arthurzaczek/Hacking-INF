@@ -25,5 +25,36 @@ namespace Hacking_INF.Controllers
                 return courses.Select(i => new CourseViewModel(i));
             }
         }
+        public CourseViewModel GetCourse(string name)
+        {
+            using (var input = new StreamReader(System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Info.yaml")))
+            {
+                var deserializer = new DeserializerBuilder()
+                    .WithNamingConvention(new CamelCaseNamingConvention())
+                    .Build();
+                var courses = deserializer.Deserialize<IEnumerable<Course>>(input);
+
+                return new CourseViewModel(courses.FirstOrDefault(i => i.Name == name));
+            }
+        }
+
+        public IEnumerable<ExampleViewModel> GetExamples(string course)
+        {
+            return Directory.GetDirectories(System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/" + course))
+                .Select(dir =>
+                {
+                    using (var input = new StreamReader(Path.Combine(dir, "info.yaml")))
+                    {
+                        var deserializer = new DeserializerBuilder()
+                            .WithNamingConvention(new CamelCaseNamingConvention())
+                            .IgnoreUnmatchedProperties()
+                            .Build();
+                        var example = deserializer.Deserialize<Example>(input);
+                        example.Course = course;
+                        example.Name = Path.GetFileName(dir);
+                        return new ExampleViewModel(example);
+                    }
+                });
+        }
     }
 }

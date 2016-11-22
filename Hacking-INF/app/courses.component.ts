@@ -12,13 +12,9 @@ export class CoursesComponent implements OnInit {
 
     courses: Course[];
 
-    getCourses(): void {
+    ngOnInit(): void {
         this.hackingService.getCourses().then(data => {
             this.courses = data;
         });
-    }
-
-    ngOnInit(): void {
-        this.getCourses();
     }
 }
