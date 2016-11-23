@@ -15,27 +15,13 @@ namespace Hacking_INF.Controllers
     {
         public IEnumerable<CourseViewModel> GetCourses()
         {
-            using (var input = new StreamReader(System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Info.yaml")))
-            {
-                var deserializer = new DeserializerBuilder()
-                    .WithNamingConvention(new CamelCaseNamingConvention())
-                    .Build();
-                var courses = deserializer.Deserialize<IEnumerable<Course>>(input);
-
-                return courses.Select(i => new CourseViewModel(i));
-            }
+            var courses = BL.ReadYAML<IEnumerable<Course>>(System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Info.yaml"));
+            return courses.Select(i => new CourseViewModel(i));
         }
         public CourseViewModel GetCourse(string name)
         {
-            using (var input = new StreamReader(System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Info.yaml")))
-            {
-                var deserializer = new DeserializerBuilder()
-                    .WithNamingConvention(new CamelCaseNamingConvention())
-                    .Build();
-                var courses = deserializer.Deserialize<IEnumerable<Course>>(input);
-
-                return new CourseViewModel(courses.FirstOrDefault(i => i.Name == name));
-            }
+            var courses = BL.ReadYAML<IEnumerable<Course>>(System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Info.yaml"));
+            return new CourseViewModel(courses.FirstOrDefault(i => i.Name == name));
         }
 
         public IEnumerable<ExampleViewModel> GetExamples(string course)
@@ -43,18 +29,34 @@ namespace Hacking_INF.Controllers
             return Directory.GetDirectories(System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/" + course))
                 .Select(dir =>
                 {
-                    using (var input = new StreamReader(Path.Combine(dir, "info.yaml")))
-                    {
-                        var deserializer = new DeserializerBuilder()
-                            .WithNamingConvention(new CamelCaseNamingConvention())
-                            .IgnoreUnmatchedProperties()
-                            .Build();
-                        var example = deserializer.Deserialize<Example>(input);
-                        example.Course = course;
-                        example.Name = Path.GetFileName(dir);
-                        return new ExampleViewModel(example);
-                    }
+                    var example = BL.ReadYAML<Example>(Path.Combine(dir, "info.yaml"));
+                    example.Course = course;
+                    example.Name = Path.GetFileName(dir);
+                    return new ExampleViewModel(example);
                 });
+        }
+
+        public ExampleViewModel GetExample(string course, string name)
+        {
+            var dir = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/" + course + "/" + name);
+            var example = BL.ReadYAML<Example>(Path.Combine(dir, "info.yaml"));
+            example.Course = course;
+            example.Name = name;
+            var vmdl = new ExampleViewModel(example);
+
+            var angabe = Directory.GetFiles(Path.Combine(dir, "text"), "*Angabe_full.md").FirstOrDefault();
+            if (angabe != null)
+            {
+                vmdl.Instruction = BL.ReadTextFile(angabe);
+            }
+
+            var use_this_main = Path.Combine(dir, "src", "use_this_main.c");
+            if (File.Exists(use_this_main))
+            {
+                vmdl.SourceCode = BL.ReadTextFile(use_this_main);
+            }
+
+            return vmdl;
         }
     }
 }
