@@ -21,7 +21,7 @@ namespace Hacking_INF.Controllers
         public CourseViewModel GetCourse(string name)
         {
             var courses = BL.ReadYAML<IEnumerable<Course>>(System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Info.yaml"));
-            return new CourseViewModel(courses.FirstOrDefault(i => i.Name == name));
+            return new CourseViewModel(courses.Single(i => i.Name == name));
         }
 
         public IEnumerable<ExampleViewModel> GetExamples(string course)

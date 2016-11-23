@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -9,7 +9,7 @@ import { HomeComponent } from './home.component';
 import { CoursesComponent } from './courses.component';
 import { CourseDetailComponent } from './course-detail.component';
 import { ExampleDetailComponent } from './example-detail.component';
-
+import { MarkdownComponent } from './markdown.component';
 
 @NgModule({
     imports: [
@@ -30,6 +30,7 @@ import { ExampleDetailComponent } from './example-detail.component';
         CoursesComponent,
         CourseDetailComponent,
         ExampleDetailComponent,
+        MarkdownComponent,
     ],
     bootstrap: [AppComponent]
 })

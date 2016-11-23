@@ -9,7 +9,7 @@ import 'rxjs/add/operator/switchMap';
 @Component({
     selector: 'course-detail',
     templateUrl: 'app/example-detail.component.html',
-    providers: [ HackingService ]
+    providers: [HackingService]
 })
 export class ExampleDetailComponent implements OnInit {
     constructor(
@@ -25,7 +25,7 @@ export class ExampleDetailComponent implements OnInit {
             .switchMap((params: Params) => this.hackingService.getExample(params['course'], params['name']))
             .subscribe(data => this.example = data);
         this.route.params
-            .switchMap((params: Params) => this.hackingService.getCourse(params['name']))
+            .switchMap((params: Params) => this.hackingService.getCourse(params['course']))
             .subscribe(data => this.course = data);
     }
 }

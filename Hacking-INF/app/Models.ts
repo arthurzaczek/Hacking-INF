@@ -11,4 +11,6 @@ export class Example {
     Description: string;
     Difficulty: string;
     Requires: string[];
+    SourceCode: string;
+    Instruction: string;
 }
