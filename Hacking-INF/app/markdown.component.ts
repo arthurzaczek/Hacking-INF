@@ -21,7 +21,7 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
                 return '<table class="table table-striped">' + header + body + '</table>';
             };
             renderer.code = function (code, language) {
-                var newCode = code.replace('\\stdin\{', '<span class="stdin">test</span>');
+                var newCode = code.replace('/\\stdin\{(.*)\}/', '<span class="stdin">$1</span>');
                 return '<pre><code>' + newCode + '</code></pre>'; 
             };
             this.convertedData = marked(this.data, {
