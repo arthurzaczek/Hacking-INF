@@ -61,3 +61,12 @@ footer {
 tr.inactive {
     text-decoration: line-through;
 }
+
+span.stdin {
+    color: red;
+}
+
+pre {
+    border: none !important;
+    background: initial;
+}

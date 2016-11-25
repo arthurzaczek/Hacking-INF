@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="favicon.png" />
     <link rel="stylesheet" href="Content/bootstrap.min.css">
     <link rel="stylesheet" href="Content/Site.css">
+    <link rel="stylesheet" href="Content/highlight/zenburn.css">
     <!-- Polyfill(s) for older browsers -->
     <script src="node_modules/core-js/client/shim.min.js"></script>
     <script src="node_modules/zone.js/dist/zone.js"></script>
@@ -17,11 +18,22 @@
 
     <!-- Additional js -->
     <script src="node_modules/marked/marked.min.js"></script>
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script src="Scripts/highlight.pack.js"></script>
     <script>
         System.import('app').catch(function (err) { console.error(err); });
     </script>
 </head>
 <body>
     <my-app>Loading...</my-app>
+    <script type="text/javascript">
+        var jsHelper = {};
+        jsHelper.initHighlightJS = function () {
+            $('pre code').each(function (i, block) {
+                console.log("highlightBlock")
+                hljs.highlightBlock(block);
+            });
+        };
+    </script>
 </body>
 </html>
