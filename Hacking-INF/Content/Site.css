@@ -71,5 +71,5 @@ pre {
 }
 
 #src-editor {
-    height: 100vh;
+    height: calc(100vh - 240px);
 }
