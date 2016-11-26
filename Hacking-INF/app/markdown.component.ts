@@ -1,4 +1,4 @@
-﻿import { Component, Input, OnInit, OnChanges, SimpleChanges, AfterViewInit, ElementRef } from '@angular/core';
+﻿import { Component, Input, OnInit, OnChanges, SimpleChanges, AfterViewChecked, ElementRef } from '@angular/core';
 
 declare var jsHelper: any;
 
@@ -6,9 +6,10 @@ declare var jsHelper: any;
     selector: 'markdown',
     template: `<div [innerHTML]="convertedData"></div>`
 })
-export class MarkdownComponent implements OnChanges, OnInit, AfterViewInit {
+export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
     @Input() data: string = "";
     convertedData: string;
+    initHighlight: boolean = false;
 
     constructor(private element: ElementRef) {
     }  
@@ -29,10 +30,15 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewInit {
             this.convertedData = marked(this.data, {
                 renderer: renderer
             });
+
+            this.initHighlight = true;
         }
     }
 
-    public ngAfterViewInit(): void {
-        jsHelper.initHighlightJS();
+    public ngAfterViewChecked(): void {
+        if (this.initHighlight) {
+            jsHelper.initHighlightJS();
+            this.initHighlight = false;
+        }
     }  
 }
