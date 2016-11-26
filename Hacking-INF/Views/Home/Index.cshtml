@@ -20,6 +20,7 @@
     <script src="node_modules/marked/marked.min.js"></script>
     <script src="Scripts/jquery-1.10.2.min.js"></script>
     <script src="Scripts/highlight.pack.js"></script>
+    <script src="Scripts/ace/ace.js" type="text/javascript" charset="utf-8"></script>
     <script>
         System.import('app').catch(function (err) { console.error(err); });
     </script>
@@ -29,11 +30,20 @@
     <script type="text/javascript">
         var jsHelper = {};
         jsHelper.initHighlightJS = function () {
-            $('pre code').each(function (i, block) {
+            $('pre code.highlight').each(function (i, block) {
                 console.log("highlightBlock")
                 hljs.highlightBlock(block);
             });
         };
+
+        jsHelper.initEditor = function (code) {
+            if (code) {
+                var editor = ace.edit("src-editor");
+                editor.setTheme("ace/theme/monokai");
+                editor.getSession().setMode("ace/mode/c_cpp");
+                editor.setValue(code);
+            }
+        }
     </script>
 </body>
 </html>

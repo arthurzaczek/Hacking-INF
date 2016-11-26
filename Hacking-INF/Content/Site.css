@@ -28,7 +28,6 @@ footer {
 }
 
 .step-group {
-
 }
 
 .step-hint {
@@ -54,7 +53,7 @@ footer {
     white-space: pre-wrap;
 }
 
-.text-multiline{
+.text-multiline {
     white-space: pre-wrap;
 }
 
@@ -69,4 +68,8 @@ span.stdin {
 pre {
     border: none !important;
     background: initial;
+}
+
+#src-editor {
+    height: 100vh;
 }

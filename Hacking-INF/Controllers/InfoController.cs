@@ -55,6 +55,10 @@ namespace Hacking_INF.Controllers
             {
                 vmdl.SourceCode = BL.ReadTextFile(use_this_main);
             }
+            else
+            {
+                vmdl.SourceCode = "int main()\n{\n}";
+            }
 
             return vmdl;
         }
