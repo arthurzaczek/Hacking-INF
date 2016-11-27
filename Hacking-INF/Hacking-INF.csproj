@@ -639,7 +639,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="package.json" />
-    <Content Include="App_Data\Info.yaml" />
+    <Content Include="App_Data\Examples\Info.yaml" />
     <Content Include="app\course-detail.component.html" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\highlight.pack.js" />
@@ -667,7 +667,7 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\BMR-PAD1\" />
+    <Folder Include="App_Data\Examples\BMR-PAD1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
