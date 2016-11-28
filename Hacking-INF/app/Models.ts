@@ -14,6 +14,15 @@ export class Example {
     SourceCode: string;
     SessionID: string;
     Instruction: string;
-    CompilerOut: string;
-    CheckprojectOut: string;
+}
+
+export class Test {
+    Course: string;
+    Example: string;
+    SessionID: string;
+    Code: string;
+    CompileAndTest: boolean;
+
+    CompileOutput: string;
+    TestOutput: string;
 }

@@ -30,6 +30,7 @@
     <my-app>Loading...</my-app>
     <script type="text/javascript">
         var jsHelper = {};
+        var editor = {};
         jsHelper.initHighlightJS = function () {
             $('pre code.highlight').each(function (i, block) {
                 console.log("highlightBlock")
@@ -39,11 +40,15 @@
 
         jsHelper.initEditor = function (code) {
             if (code) {
-                var editor = ace.edit("src-editor");
+                editor = ace.edit("src-editor");
                 editor.setTheme("ace/theme/monokai");
                 editor.getSession().setMode("ace/mode/c_cpp");
                 editor.setValue(code);
             }
+        }
+
+        jsHelper.getCode = function () {
+            return editor.getValue();
         }
     </script>
 </body>

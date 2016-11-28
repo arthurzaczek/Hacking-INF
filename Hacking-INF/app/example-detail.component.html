@@ -11,10 +11,10 @@
                 <markdown [data]="example.Instruction"></markdown>
             </div>            
             <div role="tabpanel" class="tab-pane" id="compiler">
-                <pre>{{example.CompilerOut}}</pre>
+                <pre>{{result.CompileOutput}}</pre>
             </div>
             <div role="tabpanel" class="tab-pane" id="checkproject">
-                <pre>{{example.CheckprojectOut}}</pre>
+                <pre>{{result.TestOutput}}</pre>
             </div>
         </div>
     </div>
@@ -22,8 +22,8 @@
         <div id="src-editor"></div>
         <p>&nbsp;</p>
         <p>
-            <button class="btn btn-default">Kompilieren</button>
-            <button class="btn btn-primary">Kompilieren &amp; Testen</button>
+            <button (click)="compile()" class="btn btn-default">Kompilieren</button>
+            <button (click)="test()" class="btn btn-primary">Kompilieren &amp; Testen</button>
         </p>
     </div>
 </div>
