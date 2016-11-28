@@ -18,6 +18,18 @@ namespace Hacking_INF
                 return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Examples");
             }
         }
+        public string WorkingDir
+        {
+            get
+            {
+                return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/WorkingDir");
+            }
+        }
+
+        public string GetWorkingDir(Guid sessionID)
+        {
+            return Path.Combine(WorkingDir, sessionID.ToString());
+        }
 
         public string GetExampleDir(string course, string name)
         {
@@ -42,13 +54,19 @@ namespace Hacking_INF
                 });
         }
 
-        
-
         public string ReadTextFile(string fileName)
         {
             using (var sr = new StreamReader(fileName))
             {
                 return sr.ReadToEnd();
+            }
+        }
+        public void WriteTextFile(string fileName, string content)
+        {
+            using (var sw = new StreamWriter(fileName))
+            {
+                sw.BaseStream.SetLength(0);
+                sw.Write(content);
             }
         }
 

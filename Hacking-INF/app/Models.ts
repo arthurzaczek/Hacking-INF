@@ -12,5 +12,8 @@ export class Example {
     Difficulty: string;
     Requires: string[];
     SourceCode: string;
+    SessionID: string;
     Instruction: string;
+    CompilerOut: string;
+    CheckprojectOut: string;
 }
