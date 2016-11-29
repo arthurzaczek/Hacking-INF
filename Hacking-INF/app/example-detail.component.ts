@@ -21,9 +21,9 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
         private location: Location,
         private element: ElementRef) { }
 
-    example: Example = <Example>{ };
-    course: Course = <Course>{ };
-    result: Test = <Test>{ };
+    example: Example = <Example>{};
+    course: Course = <Course>{};
+    result: Test = <Test>{};
 
     ngOnInit(): void {
         this.route.params
@@ -39,20 +39,23 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
 
     public ngAfterViewInit(): void {
         this.updateEditor();
-    } 
+    }
 
     public updateEditor(): void {
         if (this.example.SourceCode != null) {
             jsHelper.initEditor(this.example.SourceCode);
         }
-    } 
+    }
 
     public compile(): void {
         var code = jsHelper.getCode();
         this.hackingService
             .compile(this.course.Name, this.example.Name, this.example.SessionID, code)
             .map(response => response.json() as Test)
-            .subscribe(data => this.result = data);
+            .subscribe(data => {
+                this.result = data;
+                jsHelper.showTab('compiler');
+            });
     }
 
     public test(): void {

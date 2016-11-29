@@ -50,6 +50,10 @@
         jsHelper.getCode = function () {
             return editor.getValue();
         }
+
+        jsHelper.showTab = function (tab) {
+            $('a[href=#' + tab + ']').tab('show');
+        }
     </script>
 </body>
 </html>
