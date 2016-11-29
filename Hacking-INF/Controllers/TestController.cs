@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -32,6 +33,17 @@ namespace Hacking_INF.Controllers
         public TestViewModel Test(TestViewModel vmdl)
         {
             var sessionGuid = Guid.Parse(vmdl.SessionID);
+
+            lock (_lock)
+            {
+                TestOutput test;
+                if (_testOutput.TryGetValue(sessionGuid, out test))
+                {
+                    if(!test.Process.HasExited)
+                        test.Process.Kill();
+                }
+            }
+
             var example = _bl.GetExamples(vmdl.Course).Single(i => i.Name == vmdl.Example);
             var course = _bl.GetCourses().Single(i => i.Name == vmdl.Course);
             var workingDir = _bl.GetWorkingDir(sessionGuid);
@@ -62,7 +74,7 @@ namespace Hacking_INF.Controllers
             foreach (var compiler in course.Compiler)
             {
                 sb.AppendLine(compiler.Log);
-                if(Exec(compiler.Cmd, compiler.Args, workingDir, sb) != 0)
+                if (Exec(compiler.Cmd, compiler.Args, workingDir, sb) != 0)
                 {
                     failed = true;
                 }
@@ -90,19 +102,19 @@ namespace Hacking_INF.Controllers
         public TestViewModel GetTestResult(string sessionID)
         {
             var sessionGuid = Guid.Parse(sessionID);
-            lock(_lock)
+            lock (_lock)
             {
                 // Remove zombie entires
                 var dt = DateTime.Now.AddHours(-8);
-                foreach(var kv in _testOutput.Where(i => i.Value.CreatedOn <= dt).ToList())
+                foreach (var kv in _testOutput.Where(i => i.Value.CreatedOn <= dt).ToList())
                 {
                     _testOutput.Remove(kv.Key);
                 }
 
                 TestOutput test;
-                if(_testOutput.TryGetValue(sessionGuid, out test))
+                if (_testOutput.TryGetValue(sessionGuid, out test))
                 {
-                    if(test.Process.HasExited)
+                    if (test.Process.HasExited)
                     {
                         _testOutput.Remove(sessionGuid);
                     }
