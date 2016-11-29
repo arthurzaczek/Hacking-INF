@@ -20,23 +20,68 @@ namespace Hacking_INF.Controllers
             var sessionGuid = Guid.Parse(vmdl.SessionID);
             var example = _bl.GetExamples(vmdl.Course).Single(i => i.Name == vmdl.Example);
             var course = _bl.GetCourses().Single(i => i.Name == vmdl.Course);
-            var dir = _bl.GetWorkingDir(sessionGuid);
+            var workingDir = _bl.GetWorkingDir(sessionGuid);
+            var exampleDir = _bl.GetExampleDir(course.Name, example.Name);
 
-            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            if (!Directory.Exists(workingDir))
+            {
+                Directory.CreateDirectory(workingDir);
+            }
+            else
+            {
+                System.IO.DirectoryInfo di = new DirectoryInfo(workingDir);
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    file.Delete();
+                }
+                foreach (DirectoryInfo subdir in di.GetDirectories())
+                {
+                    subdir.Delete(true);
+                }
+            }
 
-            _bl.WriteTextFile(Path.Combine(dir, course.FileName), vmdl.Code);
+            _bl.WriteTextFile(Path.Combine(workingDir, course.FileName), vmdl.Code);
             var sb = new StringBuilder();
 
+            var result = new TestViewModel();
+            var failed = false;
             foreach (var compiler in course.Compiler)
             {
                 sb.AppendLine(compiler.Log);
-                Exec(compiler.Cmd, compiler.Args, dir, sb);
+                if(Exec(compiler.Cmd, compiler.Args, workingDir, sb) != 0)
+                {
+                    failed = true;
+                }
+            }
+            result.CompileOutput = sb.ToString();
+            result.CompileFailed = failed;
+
+            if (vmdl.CompileAndTest)
+            {
+                // TODO: Use Async call...
+                sb.Clear();
+                File.Copy(Path.Combine(exampleDir, "properties.txt"), Path.Combine(workingDir, "properties.txt"));
+                var args = string.Format("-Dexec={0} -DtestFilesPath=\"{1}\" -jar \"{2}\"",
+                        course.Exe,
+                        Path.Combine(exampleDir, "tests"),
+                        Path.Combine(_bl.ToolsDir, "checkproject.jar"));
+
+                result.TestFailed = Exec("java", args, workingDir, sb) != 0;
+                result.TestOutput = sb.ToString();
             }
 
-            return new TestViewModel() { CompileOutput = sb.ToString() };
+            return result;
         }
 
-        private static void Exec(string cmd, string args, string workingDir, StringBuilder sb)
+        /// <summary>
+        /// Use this only for sync process calls, TODO: Implement async call
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="args"></param>
+        /// <param name="workingDir"></param>
+        /// <param name="sb"></param>
+        /// <returns></returns>
+        private static int Exec(string cmd, string args, string workingDir, StringBuilder sb)
         {
             var p = new Process();
             p.StartInfo.FileName = cmd;
@@ -52,7 +97,14 @@ namespace Hacking_INF.Controllers
             p.Start();
             p.BeginErrorReadLine();
             p.BeginOutputReadLine();
-            p.WaitForExit(10000);
+            if (p.WaitForExit(10000))
+            {
+                return p.ExitCode;
+            }
+            else
+            {
+                return 1; // generic fail.
+            }
         }
     }
 }

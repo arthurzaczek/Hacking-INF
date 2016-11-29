@@ -59,6 +59,17 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
     }
 
     public test(): void {
-
+        var code = jsHelper.getCode();
+        this.hackingService
+            .test(this.course.Name, this.example.Name, this.example.SessionID, code)
+            .map(response => response.json() as Test)
+            .subscribe(data => {
+                this.result = data;
+                if (this.result.CompileFailed) {
+                    jsHelper.showTab('compiler');
+                } else {
+                    jsHelper.showTab('test');
+                }
+            });
     }
 }

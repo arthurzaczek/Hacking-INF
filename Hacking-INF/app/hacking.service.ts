@@ -36,12 +36,21 @@ export class HackingService {
             .then(response => response.json() as Example);
     }
 
-    compile(course: string, example: string, sessionID: string, code: string): Observable<Response> {
+    callCompileOrTest(course: string, example: string, sessionID: string, code: string, compileAndTest: boolean): Observable<Response> {
         var data = new Test();
         data.Course = course;
         data.Example = example;
         data.SessionID = sessionID;
         data.Code = code;
+        data.CompileAndTest = compileAndTest;
         return this.http.post(this.baseUrl + 'Test', data);
+    }
+
+    compile(course: string, example: string, sessionID: string, code: string): Observable<Response> {
+        return this.callCompileOrTest(course, example, sessionID, code, false);
+    }
+
+    test(course: string, example: string, sessionID: string, code: string): Observable<Response> {
+        return this.callCompileOrTest(course, example, sessionID, code, true);
     }
 }

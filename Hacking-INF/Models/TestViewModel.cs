@@ -15,7 +15,9 @@ namespace Hacking_INF.Models
         public bool CompileAndTest { get; set; }
 
         public string CompileOutput { get; set; }
+        public bool CompileFailed { get; set; }
         public string TestOutput { get; set; }
+        public bool TestFailed { get; set; }
 
         public TestViewModel()
         {

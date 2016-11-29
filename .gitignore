@@ -7,8 +7,9 @@ obj/
 /deploy
 /publish
 
-!/Hacking-INF/App_Data/Info.yaml
-/Hacking-INF/App_Data/*
+!/Hacking-INF/App_Data/Examples/Info.yaml
+/Hacking-INF/App_Data/Examples/
+/Hacking-INF/App_Data/WorkingDir/
 
 
 # Only commit repositories.config. The rest of /packages is only a local cache

@@ -670,6 +670,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Examples\BMR-PAD1\" />
+    <Folder Include="App_Data\Tools\" />
     <Folder Include="App_Data\WorkingDir\" />
   </ItemGroup>
   <ItemGroup>

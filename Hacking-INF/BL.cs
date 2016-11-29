@@ -25,6 +25,13 @@ namespace Hacking_INF
                 return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/WorkingDir");
             }
         }
+        public string ToolsDir
+        {
+            get
+            {
+                return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Tools");
+            }
+        }
 
         public string GetWorkingDir(Guid sessionID)
         {
