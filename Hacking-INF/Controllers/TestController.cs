@@ -18,20 +18,20 @@ namespace Hacking_INF.Controllers
         public TestViewModel Test(TestViewModel vmdl)
         {
             var sessionGuid = Guid.Parse(vmdl.SessionID);
-            var mdl = _bl.GetExamples(vmdl.Course).Single(i => i.Name == vmdl.Example);
+            var example = _bl.GetExamples(vmdl.Course).Single(i => i.Name == vmdl.Example);
+            var course = _bl.GetCourses().Single(i => i.Name == vmdl.Course);
             var dir = _bl.GetWorkingDir(sessionGuid);
 
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-            _bl.WriteTextFile(Path.Combine(dir, "main.c"), vmdl.Code);
+            _bl.WriteTextFile(Path.Combine(dir, course.FileName), vmdl.Code);
             var sb = new StringBuilder();
 
-            sb.AppendLine("Compiling");
-            sb.AppendLine("----------------------");
-            Exec("gcc", "-Wall -g -pedantic -Wextra -std=c99 -ggdb -static-libgcc -c main.c", dir, sb);
-            sb.AppendLine("Linking");
-            sb.AppendLine("----------------------");
-            Exec("gcc", "-o main.exe main.o", dir, sb);
+            foreach (var compiler in course.Compiler)
+            {
+                sb.AppendLine(compiler.Log);
+                Exec(compiler.Cmd, compiler.Args, dir, sb);
+            }
 
             return new TestViewModel() { CompileOutput = sb.ToString() };
         }

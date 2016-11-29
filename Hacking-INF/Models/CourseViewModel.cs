@@ -15,7 +15,21 @@ namespace Hacking_INF.Models
         [YamlMember(Alias = "headline")]
         public string HeadLine { get; set; }
         [YamlMember(Alias = "description")]
-        public string Description { get; set;}
+        public string Description { get; set; }
+        [YamlMember(Alias = "filename")]
+        public string FileName { get; set; }
+        [YamlMember(Alias = "compiler")]
+        public List<Compiler> Compiler { get; set; }
+    }
+
+    public class Compiler
+    {
+        [YamlMember(Alias = "cmd")]
+        public string Cmd { get; set; }
+        [YamlMember(Alias = "args")]
+        public string Args { get; set; }
+        [YamlMember(Alias = "log")]
+        public string Log { get; set; }
     }
 
     public class CourseViewModel
