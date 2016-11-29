@@ -69,6 +69,21 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
                     jsHelper.showTab('compiler');
                 } else {
                     jsHelper.showTab('test');
+                    this.updateTestResult();
+                }
+            });
+    }
+
+    public updateTestResult(): void {
+        this.hackingService
+            .getTestResult(this.example.SessionID)
+            .map(response => response.json() as Test)
+            .subscribe(data => {
+                if (data.TestFinished == false) {
+                    setTimeout(() => this.updateTestResult(), 1000);
+                    if (data.TestOutput != "") {
+                        this.result.TestOutput = data.TestOutput;
+                    }
                 }
             });
     }

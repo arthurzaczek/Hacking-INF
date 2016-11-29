@@ -26,5 +26,5 @@ export class Test {
     CompileOutput: string;
     CompileFailed: boolean;
     TestOutput: string;
-    TestFailed: boolean;
+    TestFinished: boolean;
 }

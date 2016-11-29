@@ -53,4 +53,8 @@ export class HackingService {
     test(course: string, example: string, sessionID: string, code: string): Observable<Response> {
         return this.callCompileOrTest(course, example, sessionID, code, true);
     }
+
+    getTestResult(sessionID: string): Observable<Response> {
+        return this.http.get(this.baseUrl + 'Test/GetTestResult?sessionID=' + sessionID);
+    }
 }
