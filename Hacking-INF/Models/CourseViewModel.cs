@@ -16,6 +16,8 @@ namespace Hacking_INF.Models
         public string HeadLine { get; set; }
         [YamlMember(Alias = "description")]
         public string Description { get; set; }
+        [YamlMember(Alias = "exe")]
+        public string Exe { get; set; }
         [YamlMember(Alias = "filename")]
         public string FileName { get; set; }
         [YamlMember(Alias = "compiler")]
