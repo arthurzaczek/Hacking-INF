@@ -34,41 +34,30 @@ namespace Hacking_INF.Controllers
         {
             var sessionGuid = Guid.Parse(vmdl.SessionID);
 
+            // Fist, stop current execution
             lock (_lock)
             {
                 TestOutput test;
                 if (_testOutput.TryGetValue(sessionGuid, out test))
                 {
-                    if(!test.Process.HasExited)
-                        test.Process.Kill();
+                    _bl.KillProcessTree(test.Process);
                 }
             }
 
+            // Collect data
             var example = _bl.GetExamples(vmdl.Course).Single(i => i.Name == vmdl.Example);
             var course = _bl.GetCourses().Single(i => i.Name == vmdl.Course);
             var workingDir = _bl.GetWorkingDir(sessionGuid);
             var exampleDir = _bl.GetExampleDir(course.Name, example.Name);
 
-            if (!Directory.Exists(workingDir))
-            {
-                Directory.CreateDirectory(workingDir);
-            }
-            else
-            {
-                System.IO.DirectoryInfo di = new DirectoryInfo(workingDir);
-                foreach (FileInfo file in di.GetFiles())
-                {
-                    file.Delete();
-                }
-                foreach (DirectoryInfo subdir in di.GetDirectories())
-                {
-                    subdir.Delete(true);
-                }
-            }
+            // Cleanup
+            _bl.CleanupWorkingDir(workingDir);
 
+            // Save code
             _bl.WriteTextFile(Path.Combine(workingDir, course.FileName), vmdl.Code);
-            var sb = new StringBuilder();
 
+            // Compile
+            var sb = new StringBuilder();
             var result = new TestViewModel();
             var failed = false;
             foreach (var compiler in course.Compiler)
@@ -82,6 +71,7 @@ namespace Hacking_INF.Controllers
             result.CompileOutput = sb.ToString();
             result.CompileFailed = failed;
 
+            // Test
             if (vmdl.CompileAndTest)
             {
                 sb.Clear();
