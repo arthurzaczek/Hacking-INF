@@ -647,6 +647,7 @@
     <Content Include="package.json" />
     <Content Include="App_Data\Examples\Info.yaml" />
     <Content Include="app\course-detail.component.html" />
+    <None Include="Properties\PublishProfiles\default.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\highlight.pack.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

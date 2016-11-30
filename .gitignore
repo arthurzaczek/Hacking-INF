@@ -17,3 +17,4 @@ obj/
 !/packages/repositories.config
 /packages/*
 
+/Hacking-INF/Properties/PublishProfiles/default.pubxml.user
