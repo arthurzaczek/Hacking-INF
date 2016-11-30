@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { Headers, Http, Response } from '@angular/http';
+import { Headers, Http } from '@angular/http';
 
 import { Course, Example, Test } from './models';
 
@@ -36,25 +36,27 @@ export class HackingService {
             .then(response => response.json() as Example);
     }
 
-    callCompileOrTest(course: string, example: string, sessionID: string, code: string, compileAndTest: boolean): Observable<Response> {
+    callCompileOrTest(course: string, example: string, sessionID: string, code: string, compileAndTest: boolean): Observable<Test> {
         var data = new Test();
         data.Course = course;
         data.Example = example;
         data.SessionID = sessionID;
         data.Code = code;
         data.CompileAndTest = compileAndTest;
-        return this.http.post(this.baseUrl + 'Test', data);
+        return this.http.post(this.baseUrl + 'Test', data)
+                .map(response => response.json() as Test);
     }
 
-    compile(course: string, example: string, sessionID: string, code: string): Observable<Response> {
+    compile(course: string, example: string, sessionID: string, code: string): Observable<Test> {
         return this.callCompileOrTest(course, example, sessionID, code, false);
     }
 
-    test(course: string, example: string, sessionID: string, code: string): Observable<Response> {
+    test(course: string, example: string, sessionID: string, code: string): Observable<Test> {
         return this.callCompileOrTest(course, example, sessionID, code, true);
     }
 
-    getTestResult(sessionID: string): Observable<Response> {
-        return this.http.get(this.baseUrl + 'Test/GetTestResult?sessionID=' + sessionID);
+    getTestResult(sessionID: string): Observable<Test> {
+        return this.http.get(this.baseUrl + 'Test/GetTestResult?sessionID=' + sessionID)
+                .map(response => response.json() as Test);
     }
 }

@@ -51,7 +51,6 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
         var code = jsHelper.getCode();
         this.hackingService
             .compile(this.course.Name, this.example.Name, this.example.SessionID, code)
-            .map(response => response.json() as Test)
             .subscribe(data => {
                 this.result = data;
                 jsHelper.showTab('compiler');
@@ -62,7 +61,6 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
         var code = jsHelper.getCode();
         this.hackingService
             .test(this.course.Name, this.example.Name, this.example.SessionID, code)
-            .map(response => response.json() as Test)
             .subscribe(data => {
                 this.result = data;
                 if (this.result.CompileFailed) {
@@ -77,7 +75,6 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
     public updateTestResult(): void {
         this.hackingService
             .getTestResult(this.example.SessionID)
-            .map(response => response.json() as Test)
             .subscribe(data => {
                 if (data.TestFinished == false) {
                     setTimeout(() => this.updateTestResult(), 1000);
