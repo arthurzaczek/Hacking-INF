@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.Caching;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -16,6 +17,7 @@ namespace Hacking_INF
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(BL));
         private static readonly ILog _parseErrorLog = LogManager.GetLogger("ParseErrors");
+        private static readonly object _lock = new object();
         public string ExamplesDir
         {
             get
@@ -50,28 +52,52 @@ namespace Hacking_INF
 
         public IEnumerable<Course> GetCourses()
         {
-            return ReadYAML<IEnumerable<Course>>(Path.Combine(ExamplesDir, "Info.yaml")); ;
+            lock (_lock)
+            {
+                var result = (IEnumerable<Course>)System.Web.Hosting.HostingEnvironment.Cache.Get("__all_courses__");
+                if (result == null)
+                {
+                    _log.Info("Reading & caching all courses");
+                    string fileName = GetFileName(ExamplesDir, "info.yaml");
+                    result = ReadYAML<IEnumerable<Course>>(fileName);
+                    System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_courses__", result, new CacheDependency(fileName));
+                }
+                return result;
+            }
         }
 
         public IEnumerable<Example> GetExamples(string course)
         {
-            return Directory.GetDirectories(Path.Combine(ExamplesDir, course))
-                .Select(dir =>
+            lock (_lock)
+            {
+                var result = (IEnumerable<Example>)System.Web.Hosting.HostingEnvironment.Cache.Get("__all_examples__" + course);
+                if (result == null)
                 {
-                    try
-                    {
-                        var example = ReadYAML<Example>(Path.Combine(dir, "info.yaml"));
-                        example.Course = course;
-                        example.Name = Path.GetFileName(dir);
-                        return example;
-                    }
-                    catch
-                    {
-                        // Logging is done by ReadYaml
-                        return null;
-                    }
-                })
-                .Where(i => i != null);
+                    _log.Info("Reading & caching all examples of course " + course);
+                    var path = Path.Combine(ExamplesDir, course);
+                    result = Directory.GetDirectories(path)
+                        .Select(dir =>
+                        {
+                            try
+                            {
+                                var example = ReadYAML<Example>(GetFileName(dir, "info.yaml"));
+                                example.Course = course;
+                                example.Name = Path.GetFileName(dir);
+                                return example;
+                            }
+                            catch
+                            {
+                                // Logging is done by ReadYaml
+                                return null;
+                            }
+                        })
+                        .Where(i => i != null)
+                        .OrderBy(i => i.Title)
+                        .ToList();
+                    System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_examples__" + course, result, new CacheDependency(path));
+                }
+                return result;
+            }
         }
 
         public string ReadTextFile(string fileName)
@@ -180,6 +206,29 @@ namespace Hacking_INF
         public void LogParseError(string filename, Exception ex)
         {
             _parseErrorLog.ErrorFormat("{0}: {1}", filename, ex.Message);
+        }
+
+        public string FirstLetterToUpper(string str)
+        {
+            if (str == null)
+                return null;
+
+            if (str.Length > 1)
+                return char.ToUpper(str[0]) + str.Substring(1);
+
+            return str.ToUpper();
+        }
+
+        private string GetFileName(string dir, string filename)
+        {
+            filename = filename.ToLower();
+            var lower = Path.Combine(dir, filename);
+            if (File.Exists(lower)) return lower;
+
+            var capitalized = Path.Combine(dir, FirstLetterToUpper(filename));
+            if (File.Exists(capitalized)) return capitalized;
+
+            throw new FileNotFoundException("File could not be found, neither lowercase nor capitalized", lower);
         }
     }
 }
