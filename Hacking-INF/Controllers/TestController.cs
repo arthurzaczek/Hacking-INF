@@ -1,4 +1,5 @@
 ﻿using Hacking_INF.Models;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,6 +16,7 @@ namespace Hacking_INF.Controllers
     public class TestController : ApiController
     {
         private BL _bl = new BL();
+        private static readonly ILog _log = LogManager.GetLogger(typeof(TestController));
         private static readonly Dictionary<Guid, TestOutput> _testOutput = new Dictionary<Guid, TestOutput>();
         private static readonly object _lock = new object();
 
@@ -49,6 +51,8 @@ namespace Hacking_INF.Controllers
             var course = _bl.GetCourses().Single(i => i.Name == vmdl.Course);
             var workingDir = _bl.GetWorkingDir(sessionGuid);
             var exampleDir = _bl.GetExampleDir(course.Name, example.Name);
+
+            _log.InfoFormat("Testing {0}/{1}, session {2}", course.Name, example.Name, sessionGuid);
 
             // Cleanup
             _bl.CleanupWorkingDir(workingDir);
@@ -98,6 +102,7 @@ namespace Hacking_INF.Controllers
                 var dt = DateTime.Now.AddHours(-8);
                 foreach (var kv in _testOutput.Where(i => i.Value.CreatedOn <= dt).ToList())
                 {
+                    _log.DebugFormat("Removing zombie session {0}", kv.Key);
                     _testOutput.Remove(kv.Key);
                 }
 

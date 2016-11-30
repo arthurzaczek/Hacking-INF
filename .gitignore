@@ -9,6 +9,7 @@ obj/
 
 !/Hacking-INF/App_Data/Examples/Info.yaml
 /Hacking-INF/App_Data/Examples/
+/Hacking-INF/App_Data/Logs/
 /Hacking-INF/App_Data/WorkingDir/
 
 

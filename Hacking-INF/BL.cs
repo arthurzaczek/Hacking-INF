@@ -1,4 +1,5 @@
 ﻿using Hacking_INF.Models;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +14,8 @@ namespace Hacking_INF
 {
     public class BL
     {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(BL));
+        private static readonly ILog _parseErrorLog = LogManager.GetLogger("ParseErrors");
         public string ExamplesDir
         {
             get
@@ -47,8 +50,7 @@ namespace Hacking_INF
 
         public IEnumerable<Course> GetCourses()
         {
-            var courses = ReadYAML<IEnumerable<Course>>(Path.Combine(ExamplesDir, "Info.yaml"));
-            return courses;
+            return ReadYAML<IEnumerable<Course>>(Path.Combine(ExamplesDir, "Info.yaml")); ;
         }
 
         public IEnumerable<Example> GetExamples(string course)
@@ -63,9 +65,9 @@ namespace Hacking_INF
                         example.Name = Path.GetFileName(dir);
                         return example;
                     }
-                    catch (Exception ex)
+                    catch
                     {
-                        // TODO: Log
+                        // Logging is done by ReadYaml
                         return null;
                     }
                 })
@@ -90,13 +92,22 @@ namespace Hacking_INF
 
         public T ReadYAML<T>(string fileName)
         {
-            using (var input = new StreamReader(fileName))
+            try
             {
-                var deserializer = new DeserializerBuilder()
-                    .WithNamingConvention(new CamelCaseNamingConvention())
-                    .IgnoreUnmatchedProperties()
-                    .Build();
-                return deserializer.Deserialize<T>(input);
+
+                using (var input = new StreamReader(fileName))
+                {
+                    var deserializer = new DeserializerBuilder()
+                        .WithNamingConvention(new CamelCaseNamingConvention())
+                        .IgnoreUnmatchedProperties()
+                        .Build();
+                    return deserializer.Deserialize<T>(input);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogParseError(fileName, ex);
+                throw;
             }
         }
 
@@ -112,6 +123,8 @@ namespace Hacking_INF
         public void KillProcessTree(Process process)
         {
             if (process.HasExited) return;
+
+            _log.InfoFormat("Killing process {0} ({1})", process.ProcessName, process.Id);
 
             var cmd = new Process();
             var sb = new StringBuilder();
@@ -162,6 +175,11 @@ namespace Hacking_INF
                     subdir.Delete(true);
                 }
             }
+        }
+
+        public void LogParseError(string filename, Exception ex)
+        {
+            _parseErrorLog.ErrorFormat("{0}: {1}", filename, ex.Message);
         }
     }
 }
