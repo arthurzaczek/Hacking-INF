@@ -11,8 +11,7 @@ declare var jsHelper: any;
 
 @Component({
     selector: 'course-detail',
-    templateUrl: 'app/example-detail.component.html',
-    providers: [HackingService]
+    templateUrl: 'app/example-detail.component.html'
 })
 export class ExampleDetailComponent implements OnInit, AfterViewInit {
     constructor(

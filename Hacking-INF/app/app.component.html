@@ -13,6 +13,10 @@
                 <li><a routerLink="/courses">Kurse</a></li>
                 <li><a routerLink="/info">Info</a></li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li *ngIf="!User.IsAuthenticated"><a routerLink="/login">Login</a></li>
+                <li *ngIf="User.IsAuthenticated"><a routerLink="/me">{{User.Name}}</a></li>
+            </ul>
         </div>
     </div>
 </div>

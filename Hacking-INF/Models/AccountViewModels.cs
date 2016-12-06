@@ -5,39 +5,18 @@ namespace Hacking_INF.Models
 {
     // Models returned by AccountController actions.
 
-    public class ExternalLoginViewModel
+    public class LoginViewModel
     {
+        public string UID { get; set; }
         public string Name { get; set; }
 
-        public string Url { get; set; }
+        public string Password { get; set; }
 
-        public string State { get; set; }
-    }
+        public string[] Roles { get; set; } = new string[] { };
 
-    public class ManageInfoViewModel
-    {
-        public string LocalLoginProvider { get; set; }
-
-        public string Email { get; set; }
-
-        public IEnumerable<UserLoginInfoViewModel> Logins { get; set; }
-
-        public IEnumerable<ExternalLoginViewModel> ExternalLoginProviders { get; set; }
-    }
-
-    public class UserInfoViewModel
-    {
-        public string Email { get; set; }
-
-        public bool HasRegistered { get; set; }
-
-        public string LoginProvider { get; set; }
-    }
-
-    public class UserLoginInfoViewModel
-    {
-        public string LoginProvider { get; set; }
-
-        public string ProviderKey { get; set; }
+        public override string ToString()
+        {
+            return string.Format("{0};{1}", UID, string.Join(",", Roles));
+        }
     }
 }

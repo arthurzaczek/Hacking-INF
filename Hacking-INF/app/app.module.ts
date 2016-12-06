@@ -9,7 +9,9 @@ import { HomeComponent } from './home.component';
 import { CoursesComponent } from './courses.component';
 import { CourseDetailComponent } from './course-detail.component';
 import { ExampleDetailComponent } from './example-detail.component';
+import { LoginComponent } from './login.component';
 import { MarkdownComponent } from './markdown.component';
+import { HackingService } from './hacking.service';
 
 @NgModule({
     imports: [
@@ -19,6 +21,7 @@ import { MarkdownComponent } from './markdown.component';
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
+            { path: 'login', component: LoginComponent },
             { path: 'courses', component: CoursesComponent },
             { path: 'course/:name', component: CourseDetailComponent },
             { path: 'example/:course/:name', component: ExampleDetailComponent },
@@ -30,7 +33,11 @@ import { MarkdownComponent } from './markdown.component';
         CoursesComponent,
         CourseDetailComponent,
         ExampleDetailComponent,
+        LoginComponent,
         MarkdownComponent,
+    ],
+    providers: [
+        HackingService
     ],
     bootstrap: [AppComponent]
 })

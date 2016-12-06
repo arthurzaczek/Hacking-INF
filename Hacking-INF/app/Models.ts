@@ -28,3 +28,11 @@ export class Test {
     TestOutput: string;
     TestFinished: boolean;
 }
+
+export class User {
+    UID: string;
+    Name: string;
+    Password: string;
+    Roles: string[];
+    IsAuthenticated: boolean;
+}
