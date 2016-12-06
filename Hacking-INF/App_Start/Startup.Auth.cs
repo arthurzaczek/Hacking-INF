@@ -12,6 +12,7 @@ using Hacking_INF.Providers;
 using Hacking_INF.Models;
 using System.Web.Helpers;
 using System.Security.Claims;
+using Microsoft.Owin.Security;
 
 namespace Hacking_INF
 {
@@ -21,10 +22,16 @@ namespace Hacking_INF
         public void ConfigureAuth(IAppBuilder app)
         {
             // Enable the application to use a cookie to store information for the signed in user
-            // and to use a cookie to temporarily store information about a user logging in with a third party login provider
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            // TODO: JWT! Workaround until JWT is implemented
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie
+            });
 
-            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
+            //app.UseJwtBearerAuthentication(new Microsoft.Owin.Security.Jwt.JwtBearerAuthenticationOptions()
+            //{
+
+            //});
         }
     }
 }

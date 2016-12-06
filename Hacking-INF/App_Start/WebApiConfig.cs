@@ -6,6 +6,7 @@ using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Net.Http.Headers;
+using Microsoft.AspNet.Identity;
 
 namespace Hacking_INF
 {
@@ -15,7 +16,9 @@ namespace Hacking_INF
         {
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
-            config.SuppressDefaultHostAuthentication();
+            // TODO: Workaround until JWT is implemented
+            // --> config.SuppressDefaultHostAuthentication(); <--
+            // TODO: Workaround until JWT is implemented
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
             config.Formatters.JsonFormatter.SupportedMediaTypes

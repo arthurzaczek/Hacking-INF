@@ -41,11 +41,9 @@ namespace Hacking_INF.Controllers
                 var claims = new List<Claim>();
 
                 // create required claims
-                claims.Add(new Claim(ClaimTypes.NameIdentifier, vmdl.UID));
-                claims.Add(new Claim(ClaimTypes.Name, vmdl.Name));
-
-                // custom – my serialized AppUserState object
-                claims.Add(new Claim("userState", vmdl.ToString()));
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, vmdl.Name));
+                claims.Add(new Claim(ClaimTypes.Name, vmdl.UID));
+                claims.Add(new Claim(ClaimTypes.Role, string.Join(",", vmdl.Roles)));
 
                 var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
 
