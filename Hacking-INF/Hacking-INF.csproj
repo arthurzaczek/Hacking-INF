@@ -703,7 +703,6 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="package.json" />
-    <Content Include="App_Data\Examples\Info.yaml" />
     <Content Include="app\course-detail.component.html" />
     <None Include="Properties\PublishProfiles\default.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -733,7 +732,7 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\Examples\BMR-PAD1\" />
+    <Folder Include="App_Data\Examples\" />
     <Folder Include="App_Data\Logs\" />
     <Folder Include="App_Data\Tools\" />
     <Folder Include="App_Data\WorkingDir\" />
