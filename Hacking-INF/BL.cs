@@ -264,5 +264,21 @@ namespace Hacking_INF
 
             throw new FileNotFoundException("File could not be found, neither lowercase nor capitalized", lower);
         }
+
+        public string GetClientIp(System.Net.Http.HttpRequestMessage request)
+        {
+            if (request.Properties.ContainsKey("MS_HttpContext"))
+            {
+                return ((HttpContextWrapper)request.Properties["MS_HttpContext"]).Request.UserHostAddress;
+            }
+            else if (HttpContext.Current != null)
+            {
+                return HttpContext.Current.Request.UserHostAddress;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

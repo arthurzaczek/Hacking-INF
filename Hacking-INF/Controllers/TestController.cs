@@ -69,6 +69,21 @@ namespace Hacking_INF.Controllers
             // Save code
             _bl.WriteTextFile(Path.Combine(workingDir, course.FileName), vmdl.Code);
 
+            var user = _bl.GetCurrentUser();
+            if (user != null)
+            {
+                // Optimization hint: use a lock object for each repository
+                // this will prevent global locks.
+                lock (_lock)
+                {
+                    var store = _submissionStoreFactory(course.Name, example.Name, user.UID);
+                    store.Save(course.FileName, new System.IO.MemoryStream (Encoding.UTF8.GetBytes(vmdl.Code)));
+                    store.Commit(string.Format("{0} submitted", course.FileName));
+                    _log.InfoFormat("{0}.{1} commited by {2}", course.Name, example.Name, user.UID);
+                    _logSubmission.InfoFormat("{0}.{1};{2};{3}", course.Name, example.Name, user.UID, _bl.GetClientIp(Request));
+                }
+            }
+
             // Compile
             var sb = new StringBuilder();
             var result = new TestViewModel();
