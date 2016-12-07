@@ -86,4 +86,8 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
                 }
             });
     }
+
+    public submitErrors(): void {
+        alert("Code & errors will be submitted to improve generic suggestions - not implemented yet.");
+    }
 }

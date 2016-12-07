@@ -15,6 +15,9 @@
             </div>            
             <div role="tabpanel" class="tab-pane" id="compiler">
                 <pre>{{result.CompileOutput}}</pre>
+                <p>
+                    <a (click)="submitErrors()" class="btn btn-default">What does this mean?</a>
+                </p>
             </div>
             <div role="tabpanel" class="tab-pane" id="test">
                 <pre>{{result.TestOutput}}</pre>
