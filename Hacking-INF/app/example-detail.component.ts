@@ -1,7 +1,7 @@
 ﻿import { Component, Input, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { Course, Example, Test } from './models';
+import { Course, Example, Test, User } from './models';
 import { HackingService } from './hacking.service';
 
 import 'rxjs/add/operator/switchMap';
@@ -10,7 +10,7 @@ import 'rxjs/add/operator/map';
 declare var jsHelper: any;
 
 @Component({
-    selector: 'course-detail',
+    selector: 'example-detail',
     templateUrl: 'app/example-detail.component.html'
 })
 export class ExampleDetailComponent implements OnInit, AfterViewInit {
@@ -23,12 +23,15 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
     example: Example = <Example>{};
     course: Course = <Course>{};
     result: Test = <Test>{};
+    user: User = <User>{};
 
     ngOnInit(): void {
         this.route.params
             .switchMap((params: Params) => this.hackingService.getExample(params['course'], params['name']))
             .subscribe(data => {
                 this.example = data;
+                if (this.hackingService.user != null)
+                    this.user = this.hackingService.user;
                 this.updateEditor();
             });
         this.route.params
