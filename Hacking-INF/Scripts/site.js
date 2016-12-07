@@ -34,5 +34,5 @@ jsHelper.showWaitDialog = function () {
 }
 
 jsHelper.hideWaitDialog = function () {
-    $("#pleaseWaitDialog").modal();
+    $("#pleaseWaitDialog").modal('hide');
 }
