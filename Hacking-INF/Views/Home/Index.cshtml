@@ -21,8 +21,9 @@
     <script src="Scripts/jquery-1.10.2.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
     <script src="Scripts/highlight.pack.js"></script>
-    <script src="Scripts/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="Scripts/ace/ace.js"></script>
     <script src="Scripts/ace/ext-language_tools.js"></script>
+    <script src="Scripts/site.js"></script>
     <script>
         System.import('app').catch(function (err) { console.error(err); });
     </script>
@@ -36,37 +37,5 @@
             </div>
         </div>
     </my-app>
-    <script type="text/javascript">
-        var jsHelper = {};
-        var editor = {};
-        jsHelper.initHighlightJS = function () {
-            $('pre code.highlight').each(function (i, block) {
-                console.log("highlightBlock")
-                hljs.highlightBlock(block);
-            });
-        };
-
-        jsHelper.initEditor = function (code) {
-            if (code) {
-                editor = ace.edit("src-editor");
-                editor.setOptions({
-                    enableBasicAutocompletion: true,
-                    enableSnippets: true,
-                    enableLiveAutocompletion: false
-                });
-                editor.setTheme("ace/theme/monokai");
-                editor.getSession().setMode("ace/mode/c_cpp");
-                editor.setValue(code);
-            }
-        }
-
-        jsHelper.getCode = function () {
-            return editor.getValue();
-        }
-
-        jsHelper.showTab = function (tab) {
-            $('a[href=#' + tab + ']').tab('show');
-        }
-    </script>
 </body>
 </html>

@@ -5,6 +5,8 @@ import { HackingService } from './hacking.service';
 
 import 'rxjs/add/operator/switchMap';
 
+declare var jsHelper: any;
+
 @Component({
     selector: 'course-detail',
     templateUrl: 'app/login.component.html'
@@ -22,13 +24,16 @@ export class LoginComponent implements OnInit {
     }
 
     login(): void {
+        jsHelper.showWaitDialog();
         var self = this;
         this.hackingService
             .login(this.user)
             .subscribe(data => {
+                jsHelper.hideWaitDialog();
                 self.user = data;
                 self.router.navigate(['/']);
             }, error => {
+                jsHelper.hideWaitDialog();
                 self.invalidLogin = true;
             });
     }
