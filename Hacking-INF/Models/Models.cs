@@ -65,6 +65,7 @@ namespace Hacking_INF.Models
             this.Course = course.Name;
             this.Example = example.Name;
             this.StartTime = startTime;
+            this.XUnitFile = System.IO.Path.Combine(workingDir, "results.xml");
         }
         public StringBuilder Output { get; } = new StringBuilder();
         public Process Process { get; private set; }

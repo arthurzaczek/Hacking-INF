@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Xml;
 
 namespace Hacking_INF.Providers
 {
@@ -49,7 +50,20 @@ namespace Hacking_INF.Providers
                 result.Time = (int)(DateTime.Now - output.StartTime).TotalSeconds;
                 result.LastAttempt = output.CreatedOn;
 
-                // TODO: Add unit test results
+                if(System.IO.File.Exists(output.XUnitFile))
+                {
+                    var xml = new XmlDocument();
+                    xml.Load(output.XUnitFile);
+                    var node = xml.SelectSingleNode("//testsuite | //test-results");
+                    if(node != null)
+                    {
+                        result.NumOfTests = int.Parse(node.Attributes["total"]?.Value ?? "0") + int.Parse(node.Attributes["tests"]?.Value ?? "0");
+                        result.NumOfErrors = int.Parse(node.Attributes["errors"]?.Value ?? "0");
+                        result.NumOfFailed = int.Parse(node.Attributes["failures"]?.Value ?? "0");
+                        result.NumOfSkipped = int.Parse(node.Attributes["skipped"]?.Value ?? "0");
+                        result.NumOfSucceeded = result.NumOfTests - result.NumOfErrors - result.NumOfFailed;
+                    }
+                }
 
                 bl.SaveChanges();
             }

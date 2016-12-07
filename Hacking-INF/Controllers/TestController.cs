@@ -95,7 +95,7 @@ namespace Hacking_INF.Controllers
             {
                 sb.Clear();
                 File.Copy(Path.Combine(exampleDir, "properties.txt"), Path.Combine(workingDir, "properties.txt"));
-                var args = string.Format("-Dexec={0} -DtestFilesPath=\"{1}\" -jar \"{2}\"",
+                var args = string.Format("-Dexec={0} -DtestFilesPath=\"{1}\" -DjunitOutFile=./results.xml -jar \"{2}\"",
                         course.Exe,
                         Path.Combine(exampleDir, "tests"),
                         Path.Combine(_bl.ToolsDir, "checkproject.jar"));
