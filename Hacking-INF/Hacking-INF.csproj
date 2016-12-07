@@ -259,6 +259,7 @@
     <Compile Include="Providers\GitSubmissionStoreProvider.cs" />
     <Compile Include="Providers\ISubmissionStoreProvider.cs" />
     <Compile Include="Providers\LDAPAuthenticator.cs" />
+    <Compile Include="Providers\TestResultSaveService.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

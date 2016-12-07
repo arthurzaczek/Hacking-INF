@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Web;
 using YamlDotNet.Serialization;
 
@@ -53,6 +55,27 @@ namespace Hacking_INF.Models
         [YamlMember(Alias = "requires")]
         public List<string> Requires { get; set; }
     }
+
+    public class TestOutput
+    {
+        public TestOutput(Process p, User user, Course course, Example example, string workingDir, DateTime startTime)
+        {
+            this.Process = p;
+            this.UID = user?.UID;
+            this.Course = course.Name;
+            this.Example = example.Name;
+            this.StartTime = startTime;
+        }
+        public StringBuilder Output { get; } = new StringBuilder();
+        public Process Process { get; private set; }
+        public DateTime CreatedOn { get; } = DateTime.Now;
+        public string XUnitFile { get; private set; }
+        public string Course { get; private set; }
+        public string Example { get; private set; }
+        public string UID { get; private set; }
+        public DateTime StartTime { get; private set; }
+    }
+
 
     [Table("Users")]
     public class User

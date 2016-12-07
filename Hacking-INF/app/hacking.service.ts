@@ -68,23 +68,24 @@ export class HackingService {
             .then(response => response.json() as Example);
     }
 
-    callCompileOrTest(course: string, example: string, sessionID: string, code: string, compileAndTest: boolean): Observable<Test> {
+    callCompileOrTest(course: string, example: string, sessionID: string, startTime: Date, code: string, compileAndTest: boolean): Observable<Test> {
         var data = new Test();
         data.Course = course;
         data.Example = example;
         data.SessionID = sessionID;
+        data.StartTime = startTime;
         data.Code = code;
         data.CompileAndTest = compileAndTest;
         return this.http.post(this._baseUrl + 'Test', data)
             .map(response => response.json() as Test);
     }
 
-    compile(course: string, example: string, sessionID: string, code: string): Observable<Test> {
-        return this.callCompileOrTest(course, example, sessionID, code, false);
+    compile(course: string, example: string, sessionID: string, startTime: Date, code: string): Observable<Test> {
+        return this.callCompileOrTest(course, example, sessionID, startTime, code, false);
     }
 
-    test(course: string, example: string, sessionID: string, code: string): Observable<Test> {
-        return this.callCompileOrTest(course, example, sessionID, code, true);
+    test(course: string, example: string, sessionID: string, startTime: Date, code: string): Observable<Test> {
+        return this.callCompileOrTest(course, example, sessionID, startTime, code, true);
     }
 
     getTestResult(sessionID: string): Observable<Test> {

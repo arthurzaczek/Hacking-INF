@@ -20,24 +20,15 @@ namespace Hacking_INF.Controllers
         private static readonly ILog _log = LogManager.GetLogger(typeof(TestController));
         private readonly log4net.ILog _logSubmission = log4net.LogManager.GetLogger("Submissions");
         private readonly SubmissionStoreProviderFactory _submissionStoreFactory;
+        private readonly ITestResultSaveService _saveService;
         private static readonly Dictionary<Guid, TestOutput> _testOutput = new Dictionary<Guid, TestOutput>();
         private static readonly object _lock = new object();
 
-        public TestController(BL bl, SubmissionStoreProviderFactory submissionStoreFactory)
+        public TestController(BL bl, SubmissionStoreProviderFactory submissionStoreFactory, ITestResultSaveService saveService)
         {
             _bl = bl;
             _submissionStoreFactory = submissionStoreFactory;
-        }
-
-        public class TestOutput
-        {
-            public TestOutput(Process p)
-            {
-                this.Process = p;
-            }
-            public StringBuilder Output { get; } = new StringBuilder();
-            public Process Process { get; private set; }
-            public DateTime CreatedOn { get; } = DateTime.Now;
+            _saveService = saveService;
         }
 
         [HttpPost]
@@ -109,9 +100,14 @@ namespace Hacking_INF.Controllers
                         Path.Combine(exampleDir, "tests"),
                         Path.Combine(_bl.ToolsDir, "checkproject.jar"));
 
-                Exec("java", args, workingDir, sessionGuid);
+                Exec("java", args, workingDir, sessionGuid, vmdl.StartTime, user, course, example);
                 result.TestFinished = false;
                 result.TestOutput = "Starte Tests...";
+            }
+            else
+            {
+                // Just save the compile attempts
+                _saveService.Save(user, course, example, vmdl.StartTime);
             }
 
             return result;
@@ -146,7 +142,7 @@ namespace Hacking_INF.Controllers
             }
         }
 
-        private static int Exec(string cmd, string args, string workingDir, StringBuilder sb)
+        private int Exec(string cmd, string args, string workingDir, StringBuilder sb)
         {
             var p = new Process();
             p.StartInfo.FileName = cmd;
@@ -173,11 +169,11 @@ namespace Hacking_INF.Controllers
         }
 
 
-        private static void Exec(string cmd, string args, string workingDir, Guid sessionGuid)
+        private void Exec(string cmd, string args, string workingDir, Guid sessionGuid, DateTime startTime, User user, Course course, Example example)
         {
 
             var p = new Process();
-            var output = new TestOutput(p);
+            var output = new TestOutput(p, user, course, example, workingDir, startTime);
             lock (_lock)
             {
                 _testOutput[sessionGuid] = output;
@@ -192,6 +188,7 @@ namespace Hacking_INF.Controllers
             p.StartInfo.RedirectStandardError = true;
             p.OutputDataReceived += (s, e) => { lock (_lock) output.Output.AppendLine(e.Data); };
             p.ErrorDataReceived += (s, e) => { lock (_lock) output.Output.AppendLine(e.Data); };
+            p.Exited += (s,e) => _saveService.Save(output);
 
             p.Start();
             p.BeginErrorReadLine();

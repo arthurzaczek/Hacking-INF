@@ -11,6 +11,7 @@ namespace Hacking_INF.Models
         public string Course { get; set; }
         public string Example { get; set; }
         public string SessionID { get; set; }
+        public DateTime StartTime { get; set; }
         public string Code { get; set; }
         public bool CompileAndTest { get; set; }
 

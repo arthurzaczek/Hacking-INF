@@ -40,6 +40,7 @@ namespace Hacking_INF.Controllers
             var example = _bl.GetExamples(course).Single(i => i.Name == name);
             var vmdl = new ExampleViewModel(example);
             vmdl.SessionID = Guid.NewGuid();
+            vmdl.StartTime = DateTime.Now;
 
             var angabe = Directory.GetFiles(Path.Combine(dir, "text"), "*Angabe_full.md").FirstOrDefault();
             if (angabe != null)

@@ -18,6 +18,7 @@ namespace Hacking_INF.Models
         public string SourceCode { get; set; }
         public string Instruction { get; set; }
         public Guid SessionID { get; set; }
+        public DateTime StartTime { get; set; }
 
         public ExampleViewModel()
         {

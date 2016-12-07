@@ -32,6 +32,7 @@ namespace Hacking_INF
                 return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Examples");
             }
         }
+
         public string WorkingDir
         {
             get
@@ -46,12 +47,18 @@ namespace Hacking_INF
                 return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Tools");
             }
         }
+
         public string SubmissionsDir
         {
             get
             {
                 return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Submissions");
             }
+        }
+
+        public void SaveChanges()
+        {
+            _dal.SaveChanges();
         }
 
         public User GetCurrentUser()
@@ -73,6 +80,22 @@ namespace Hacking_INF
 
             return null;
         }
+
+        public User GetUser(string uid)
+        {
+            return _dal.Users.SingleOrDefault(i => i.UID == uid);
+        }
+
+        public ExampleResult GetExampleResult(User user, string course, string example)
+        {
+            return _dal.ExampleResults.SingleOrDefault(i => i.User.UID == user.UID && i.Course == course && i.Example == example);
+        }
+
+        public ExampleResult CreateExampleResult()
+        {
+            return _dal.CreateExampleResult();
+        }
+
 
         public string GetWorkingDir(Guid sessionID)
         {

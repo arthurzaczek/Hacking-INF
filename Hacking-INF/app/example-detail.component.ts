@@ -49,7 +49,7 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
     public compile(): void {
         var code = jsHelper.getCode();
         this.hackingService
-            .compile(this.course.Name, this.example.Name, this.example.SessionID, code)
+            .compile(this.course.Name, this.example.Name, this.example.SessionID, this.example.StartTime, code)
             .subscribe(data => {
                 this.result = data;
                 jsHelper.showTab('compiler');
@@ -59,7 +59,7 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
     public test(): void {
         var code = jsHelper.getCode();
         this.hackingService
-            .test(this.course.Name, this.example.Name, this.example.SessionID, code)
+            .test(this.course.Name, this.example.Name, this.example.SessionID, this.example.StartTime, code)
             .subscribe(data => {
                 this.result = data;
                 if (this.result.CompileFailed) {

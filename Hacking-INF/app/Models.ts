@@ -12,14 +12,16 @@ export class Example {
     Difficulty: string;
     Requires: string[];
     SourceCode: string;
-    SessionID: string;
     Instruction: string;
+    SessionID: string;
+    StartTime: Date;
 }
 
 export class Test {
     Course: string;
     Example: string;
     SessionID: string;
+    StartTime: Date;
     Code: string;
     CompileAndTest: boolean;
 
