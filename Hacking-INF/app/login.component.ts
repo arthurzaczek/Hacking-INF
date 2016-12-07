@@ -1,5 +1,6 @@
 ﻿import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { User } from './models';
 import { HackingService } from './hacking.service';
 
@@ -14,7 +15,8 @@ declare var jsHelper: any;
 export class LoginComponent implements OnInit {
     constructor(
         private hackingService: HackingService,
-        private router: Router) { }
+        private router: Router,
+        private location: Location) { }
 
     user: User = <User>{};
     invalidLogin: boolean = false;
@@ -31,7 +33,7 @@ export class LoginComponent implements OnInit {
             .subscribe(data => {
                 jsHelper.hideWaitDialog();
                 self.user = data;
-                self.router.navigate(['/']);
+                self.location.back();
             }, error => {
                 jsHelper.hideWaitDialog();
                 self.invalidLogin = true;
