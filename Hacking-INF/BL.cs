@@ -18,6 +18,13 @@ namespace Hacking_INF
         private static readonly ILog _log = LogManager.GetLogger(typeof(BL));
         private static readonly ILog _parseErrorLog = LogManager.GetLogger("ParseErrors");
         private static readonly object _lock = new object();
+        private readonly IDAL _dal;
+
+        public BL(IDAL dal)
+        {
+            _dal = dal;
+        }
+
         public string ExamplesDir
         {
             get
@@ -38,6 +45,33 @@ namespace Hacking_INF
             {
                 return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Tools");
             }
+        }
+        public string SubmissionsDir
+        {
+            get
+            {
+                return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Submissions");
+            }
+        }
+
+        public User GetCurrentUser()
+        {
+            var id = System.Threading.Thread.CurrentPrincipal?.Identity;
+            if(id != null && id.IsAuthenticated)
+            {
+                var user = _dal.Users.SingleOrDefault(i => i.UID == id.Name);
+                if(user == null)
+                {
+                    user = _dal.CreateUser();
+                    user.UID = id.Name;
+                    user.Name = (id as System.Security.Claims.ClaimsIdentity)?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? id.Name;
+                    _dal.SaveChanges();
+                }
+
+                return user;
+            }
+
+            return null;
         }
 
         public string GetWorkingDir(Guid sessionID)

@@ -6,24 +6,6 @@ using YamlDotNet.Serialization;
 
 namespace Hacking_INF.Models
 {
-    public class Example
-    {
-        [YamlMember(Alias = "problemshorttitle")]
-        public string Name { get; set; }
-        [YamlIgnore]
-        public string Course { get; set; }
-        [YamlMember(Alias = "problemtitle")]
-        public string Title { get; set; }
-        [YamlMember(Alias = "description")]
-        public string Description { get; set; }
-        [YamlMember(Alias = "category")]
-        public string Category { get; set; }
-        [YamlMember(Alias = "difficulty")]
-        public string Difficulty { get; set; }
-        [YamlMember(Alias = "requires")]
-        public List<string> Requires { get; set; }
-    }
-
     public class ExampleViewModel
     {
         public string Name { get; set; }

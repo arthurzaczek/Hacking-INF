@@ -1,4 +1,7 @@
-﻿using log4net;
+﻿using Autofac;
+using Autofac.Integration.Mvc;
+using Autofac.Integration.WebApi;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +21,30 @@ namespace Hacking_INF
             log4net.Config.XmlConfigurator.Configure();
             _log.Info("** Starting Application **");
 
+            BuildMasterContainer();
+            
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+
+        private void BuildMasterContainer()
+        {
+            var builder = new ContainerBuilder();
+
+            // Register your MVC controllers.
+            builder.RegisterControllers(typeof(WebApiApplication).Assembly);
+            builder.RegisterApiControllers(typeof(WebApiApplication).Assembly); 
+
+            builder.RegisterModule<EntityFrameworkModule>();
+            builder.RegisterModule<HackingModule>();
+
+            // Set the dependency resolver to be Autofac.
+            var container = builder.Build();
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
         }
 
         public override void Init()

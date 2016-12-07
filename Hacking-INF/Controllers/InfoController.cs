@@ -13,7 +13,12 @@ namespace Hacking_INF.Controllers
 {
     public class InfoController : ApiController
     {
-        private BL _bl = new BL();
+        private BL _bl;
+
+        public InfoController(BL bl)
+        {
+            _bl = bl;
+        }
 
         public IEnumerable<CourseViewModel> GetCourses()
         {

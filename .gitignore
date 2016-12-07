@@ -11,6 +11,7 @@ obj/
 /Hacking-INF/App_Data/Examples/
 /Hacking-INF/App_Data/Logs/
 /Hacking-INF/App_Data/WorkingDir/
+/Hacking-INF/App_Data/Submissions/
 
 
 # Only commit repositories.config. The rest of /packages is only a local cache

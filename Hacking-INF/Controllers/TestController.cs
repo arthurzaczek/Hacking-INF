@@ -1,4 +1,5 @@
 ﻿using Hacking_INF.Models;
+using Hacking_INF.Providers;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,18 @@ namespace Hacking_INF.Controllers
 {
     public class TestController : ApiController
     {
-        private BL _bl = new BL();
+        private BL _bl;
         private static readonly ILog _log = LogManager.GetLogger(typeof(TestController));
+        private readonly log4net.ILog _logSubmission = log4net.LogManager.GetLogger("Submissions");
+        private readonly SubmissionStoreProviderFactory _submissionStoreFactory;
         private static readonly Dictionary<Guid, TestOutput> _testOutput = new Dictionary<Guid, TestOutput>();
         private static readonly object _lock = new object();
+
+        public TestController(BL bl, SubmissionStoreProviderFactory submissionStoreFactory)
+        {
+            _bl = bl;
+            _submissionStoreFactory = submissionStoreFactory;
+        }
 
         public class TestOutput
         {

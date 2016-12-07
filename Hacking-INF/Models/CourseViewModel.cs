@@ -6,34 +6,6 @@ using YamlDotNet.Serialization;
 
 namespace Hacking_INF.Models
 {
-    public class Course
-    {
-        [YamlMember(Alias = "name")]
-        public string Name { get; set; }
-        [YamlMember(Alias = "title")]
-        public string Title { get; set; }
-        [YamlMember(Alias = "headline")]
-        public string HeadLine { get; set; }
-        [YamlMember(Alias = "description")]
-        public string Description { get; set; }
-        [YamlMember(Alias = "exe")]
-        public string Exe { get; set; }
-        [YamlMember(Alias = "filename")]
-        public string FileName { get; set; }
-        [YamlMember(Alias = "compiler")]
-        public List<Compiler> Compiler { get; set; }
-    }
-
-    public class Compiler
-    {
-        [YamlMember(Alias = "cmd")]
-        public string Cmd { get; set; }
-        [YamlMember(Alias = "args")]
-        public string Args { get; set; }
-        [YamlMember(Alias = "log")]
-        public string Log { get; set; }
-    }
-
     public class CourseViewModel
     {
         public string Name { get; set; }
