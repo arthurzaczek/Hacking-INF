@@ -4,6 +4,8 @@ import { Location } from '@angular/common';
 import { Course, Example, Test, User } from './models';
 import { HackingService } from './hacking.service';
 
+import { Observable } from 'rxjs/Rx';
+
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
 
@@ -25,6 +27,8 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
     result: Test = <Test>{};
     user: User = <User>{};
 
+    timeElapsed: string = "00:00:00";
+
     ngOnInit(): void {
         this.route.params
             .switchMap((params: Params) => this.hackingService.getExample(params['course'], params['name']))
@@ -37,6 +41,23 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
         this.route.params
             .switchMap((params: Params) => this.hackingService.getCourse(params['course']))
             .subscribe(data => this.course = data);
+
+        var self = this;
+        let timer = Observable.timer(1000, 1000);
+        timer.subscribe(t => {
+            var diff = new Date().getTime() - new Date(self.example.StartTime).getTime();
+
+            var hours = Math.floor(diff / (1000 * 60 * 60));
+            diff -= hours * (1000 * 60 * 60);
+
+            var mins = Math.floor(diff / (1000 * 60));
+            diff -= mins * (1000 * 60);
+
+            var seconds = Math.floor(diff / (1000));
+            diff -= seconds * (1000);
+
+            self.timeElapsed = ('00' + hours).substr(-2, 2) + ":" + ('00' + mins).substr(-2, 2) + ":" + ('00' + seconds).substr(-2, 2);
+        });
     }
 
     public ngAfterViewInit(): void {
