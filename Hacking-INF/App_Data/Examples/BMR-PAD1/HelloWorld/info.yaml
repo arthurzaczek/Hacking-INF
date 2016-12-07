@@ -1,0 +1,17 @@
+---
+problemtitle:           HelloWorld
+problemshorttitle:      HelloWorld
+category:               HelloWorld
+difficulty:             easy (1/5)
+requires:
+    - checkproject
+    
+published:
+    - study program:  BMR
+      semester:       WS1516
+      as:             UE
+
+
+author: traditional
+created: 2015
+...

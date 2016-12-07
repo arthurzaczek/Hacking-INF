@@ -1,0 +1,43 @@
+# enable/disable memcheck
+# yes|no
+# defaults to no
+# not implemented yet
+checkmem=no
+
+# file name prefix of the check mem report
+# defaults to "memoryreport-"
+# the file will be called "memoryreport-{infile}.in.log"
+# checkmemReport=
+
+# relative or absoulute path to Dr. Memory
+# defaults to ../DrMemory/
+# /bin/drmemory.exe will be appended
+# Note! 
+# 1. On Windows, also use the / char as path seperator. e.g. c:/DrMemory/
+# 2. Do not use any non-ascii char in any path segment. DrMemory has troubles finding the exec.
+# drMemoryPath=
+
+# relative or absoulute path to the check memory log file
+# defaults to ./memorylog/
+# Currently Dr. Memory is used. It will produce a file results.txt
+# drMemoryLogPath=
+
+# strict line compare mode. when disabled, whitespaces at the beginning and the end of a line are trimmed. 
+# default is no
+# yes|no 
+strict=yes
+
+# name of the exec
+# if left empty, the current directory name is used
+# the exec is search in the current directory, bin/debug and bin/Debug
+# the extension of the exec may be .exe or nothing  
+# exec=
+
+# timeout in seconds.
+# when the timeout is reached, the exec will be destroyed and the test will fail.
+# default to 60 seconds
+# execTimeout=
+
+# name of a filename where a junit style report is written
+# default is empty
+# junitOutFile=

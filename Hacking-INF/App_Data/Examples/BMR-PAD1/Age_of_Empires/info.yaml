@@ -1,0 +1,18 @@
+---
+problemtitle:      Age of Empires
+problemshorttitle: Age_of_Empires
+description:       Ein Zahlenwert (Alter) mit verschiedenen Formatierungen ausgeben.
+category:          formatted output
+difficulty:        easy (1/5)
+requires:
+    - formatted output
+
+
+published:
+    - study program: BMR
+      semester:      WS1516
+      as:            UE
+
+author: Arthur Zaczek
+created: 2015
+...

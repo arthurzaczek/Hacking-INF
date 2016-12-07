@@ -1,0 +1,17 @@
+---
+problemtitle:           EndlessLoop
+problemshorttitle:      Endless Loop
+category:               HelloWorld
+difficulty:             easy (1/5)
+requires:
+    - checkproject
+    
+published:
+    - study program:  TEST
+      semester:       none
+      as:             TEST
+
+
+author: traditional
+created: 2016
+...

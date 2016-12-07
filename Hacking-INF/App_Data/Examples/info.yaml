@@ -1,0 +1,61 @@
+﻿- name:        _C
+  title:       Basic C
+  headline:    Basiskurs C
+  description: Ein Basiskurs in C
+  filename:    main.c
+  exe:         main.exe
+  compiler:
+    - cmd:     gcc
+      args:    -Wall -g -pedantic -Wextra -std=c99 -ggdb -static-libgcc -c main.c
+      log:	   |
+        Compiler
+        ---------------------------
+    - cmd:     gcc
+      args:    -o main.exe main.o
+      log:	   |
+        Linker
+        ---------------------------
+- name:        _CS
+  title:       Basic C#
+  headline:    Basiskurs C#
+  description: Ein Basiskurs in C#
+- name:        _Java
+  title:       Basic Java
+  headline:    Basiskurs Java
+  description: Ein Basiskurs in Java
+- name:        BMR-PAD1
+  title:       BMR/PAD1
+  headline:    Alle BMR/PAD1 Beispiele der vergangenen Jahre
+  description: Hier haben Sie die Gelegenheit, 
+               alle BMR/PAD1 Beispiele der vergangenen Jahre zu üben
+  filename:    main.c
+  exe:         main.exe
+  compiler:
+    - cmd:     gcc
+      args:    -Wall -g -pedantic -Wextra -std=c99 -ggdb -static-libgcc -c main.c
+      log:	   |
+        Compiler
+        ---------------------------
+    - cmd:     gcc
+      args:    -o main.exe main.o
+      log:	   |
+        Linker
+        ---------------------------
+- name:        BMR-PAD2
+  title:       BMR/PAD2
+  headline:    Alle BMR/PAD2 Beispiele der vergangenen Jahre
+  description: Hier haben Sie die Gelegenheit, 
+               alle BMR/PAD2 Beispiele der vergangenen Jahre zu üben
+  filename:    main.c
+  exe:         main.exe
+  compiler:
+    - cmd:     gcc
+      args:    -Wall -g -pedantic -Wextra -std=c99 -ggdb -static-libgcc -c main.c
+      log:	   |
+        Compiler
+        ---------------------------
+    - cmd:     gcc
+      args:    -o main.exe main.o
+      log:	   |
+        Linker
+        ---------------------------
