@@ -10,6 +10,14 @@ using YamlDotNet.Serialization;
 
 namespace Hacking_INF.Models
 {
+    public enum Types
+    {
+        NotDefined = 0,
+        Open = 1,
+        Closed = 2,
+        Timed = 3,
+    }
+
     public class Course
     {
         [YamlMember(Alias = "name")]
@@ -20,6 +28,8 @@ namespace Hacking_INF.Models
         public string HeadLine { get; set; }
         [YamlMember(Alias = "description")]
         public string Description { get; set; }
+        [YamlMember(Alias = "type")]
+        public Types Type { get; set; }
         [YamlMember(Alias = "exe")]
         public string Exe { get; set; }
         [YamlMember(Alias = "filename")]
@@ -48,6 +58,8 @@ namespace Hacking_INF.Models
         public string Title { get; set; }
         [YamlMember(Alias = "description")]
         public string Description { get; set; }
+        [YamlMember(Alias = "type")]
+        public Types Type { get; set; }
         [YamlMember(Alias = "category")]
         public string Category { get; set; }
         [YamlMember(Alias = "difficulty")]

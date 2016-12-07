@@ -2,6 +2,7 @@
   title:       Basic C
   headline:    Basiskurs C
   description: Ein Basiskurs in C
+  type:        open
   filename:    main.c
   exe:         main.exe
   compiler:
@@ -19,10 +20,12 @@
   title:       Basic C#
   headline:    Basiskurs C#
   description: Ein Basiskurs in C#
+  type:        closed
 - name:        _Java
   title:       Basic Java
   headline:    Basiskurs Java
   description: Ein Basiskurs in Java
+  type:        open
 - name:        BMR-PAD1
   title:       BMR/PAD1
   headline:    Alle BMR/PAD1 Beispiele der vergangenen Jahre
@@ -46,6 +49,24 @@
   headline:    Alle BMR/PAD2 Beispiele der vergangenen Jahre
   description: Hier haben Sie die Gelegenheit, 
                alle BMR/PAD2 Beispiele der vergangenen Jahre zu üben
+  filename:    main.c
+  exe:         main.exe
+  compiler:
+    - cmd:     gcc
+      args:    -Wall -g -pedantic -Wextra -std=c99 -ggdb -static-libgcc -c main.c
+      log:	   |
+        Compiler
+        ---------------------------
+    - cmd:     gcc
+      args:    -o main.exe main.o
+      log:	   |
+        Linker
+        ---------------------------
+- name:        BMR-Exams
+  title:       BMR Exams
+  headline:    Exam area for BMR
+  description: Alle Test & Prüfungen in BMR
+  type:        timed
   filename:    main.c
   exe:         main.exe
   compiler:
