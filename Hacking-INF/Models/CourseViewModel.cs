@@ -12,6 +12,9 @@ namespace Hacking_INF.Models
         public string Title { get; set; }
         public string HeadLine { get; set; }
         public string Description { get; set; }
+        public string Type { get; set; }
+
+
 
         public CourseViewModel()
         {
@@ -32,6 +35,7 @@ namespace Hacking_INF.Models
             target.Title = source.Title;
             target.HeadLine = source.HeadLine;
             target.Description = source.Description;
+            target.Type = source.Type.ToString();
         }
     }
 }

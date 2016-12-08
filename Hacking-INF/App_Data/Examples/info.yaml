@@ -8,12 +8,12 @@
   compiler:
     - cmd:     gcc
       args:    -Wall -g -pedantic -Wextra -std=c99 -ggdb -static-libgcc -c main.c
-      log:	   |
+      log:     |
         Compiler
         ---------------------------
     - cmd:     gcc
       args:    -o main.exe main.o
-      log:	   |
+      log:     |
         Linker
         ---------------------------
 - name:        _CS
@@ -36,12 +36,12 @@
   compiler:
     - cmd:     gcc
       args:    -Wall -g -pedantic -Wextra -std=c99 -ggdb -static-libgcc -c main.c
-      log:	   |
+      log:    |
         Compiler
         ---------------------------
     - cmd:     gcc
       args:    -o main.exe main.o
-      log:	   |
+      log:    |
         Linker
         ---------------------------
 - name:        BMR-PAD2
@@ -54,12 +54,12 @@
   compiler:
     - cmd:     gcc
       args:    -Wall -g -pedantic -Wextra -std=c99 -ggdb -static-libgcc -c main.c
-      log:	   |
+      log:     |
         Compiler
         ---------------------------
     - cmd:     gcc
       args:    -o main.exe main.o
-      log:	   |
+      log:     |
         Linker
         ---------------------------
 - name:        BMR-Exams
@@ -72,11 +72,11 @@
   compiler:
     - cmd:     gcc
       args:    -Wall -g -pedantic -Wextra -std=c99 -ggdb -static-libgcc -c main.c
-      log:	   |
+      log:     |
         Compiler
         ---------------------------
     - cmd:     gcc
       args:    -o main.exe main.o
-      log:	   |
+      log:     |
         Linker
         ---------------------------

@@ -1,12 +1,14 @@
 ﻿export class Course {
     Name: string;
     Title: string;
+    Type: string;
 }
 
 export class Example {
     Name: string;
     Title: string;
     Course: string;
+    Type: string;
     Category: string;
     Description: string;
     Difficulty: string;

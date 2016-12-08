@@ -61,6 +61,14 @@ namespace Hacking_INF
             _dal.SaveChanges();
         }
 
+        public bool IsTeacher
+        {
+            get
+            {
+                return System.Threading.Thread.CurrentPrincipal?.IsInRole("Teacher") ?? false;
+            }
+        }
+
         public User GetCurrentUser()
         {
             var id = System.Threading.Thread.CurrentPrincipal?.Identity;
@@ -116,7 +124,11 @@ namespace Hacking_INF
                 {
                     _log.Info("Reading & caching all courses");
                     string fileName = GetFileName(ExamplesDir, "info.yaml");
+                    var isTeacher = IsTeacher;
                     result = ReadYAML<IEnumerable<Course>>(fileName);
+                    result = result
+                        .Where(i => IsTeacher ||  i.Type != Types.Closed)
+                        .ToList();
                     System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_courses__", result, new CacheDependency(fileName));
                 }
                 return result;
