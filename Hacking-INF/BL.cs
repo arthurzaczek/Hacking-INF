@@ -72,10 +72,10 @@ namespace Hacking_INF
         public User GetCurrentUser()
         {
             var id = System.Threading.Thread.CurrentPrincipal?.Identity;
-            if(id != null && id.IsAuthenticated)
+            if (id != null && id.IsAuthenticated)
             {
                 var user = _dal.Users.SingleOrDefault(i => i.UID == id.Name);
-                if(user == null)
+                if (user == null)
                 {
                     user = _dal.CreateUser();
                     user.UID = id.Name;
@@ -120,16 +120,25 @@ namespace Hacking_INF
             lock (_lock)
             {
                 var result = (IEnumerable<Course>)System.Web.Hosting.HostingEnvironment.Cache.Get("__all_courses__");
-                if (result == null)
+                var isTeacher = IsTeacher;
+                if (result == null || isTeacher)
                 {
                     _log.Info("Reading & caching all courses");
                     string fileName = GetFileName(ExamplesDir, "info.yaml");
-                    var isTeacher = IsTeacher;
                     result = ReadYAML<IEnumerable<Course>>(fileName);
                     result = result
-                        .Where(i => IsTeacher ||  i.Type != Types.Closed)
+                        .Select(i =>
+                        {
+                            if (i.Type == Types.NotDefined)
+                                i.Type = Types.Open;
+                            return i;
+                        })
+                        .Where(i => IsTeacher || i.Type != Types.Closed)
                         .ToList();
-                    System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_courses__", result, new CacheDependency(fileName));
+                    if (!isTeacher)
+                    {
+                        System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_courses__", result, new CacheDependency(fileName));
+                    }
                 }
                 return result;
             }
@@ -140,10 +149,13 @@ namespace Hacking_INF
             lock (_lock)
             {
                 var result = (IEnumerable<Example>)System.Web.Hosting.HostingEnvironment.Cache.Get("__all_examples__" + course);
-                if (result == null)
+                var isTeacher = IsTeacher;
+                if (result == null || isTeacher)
                 {
                     _log.Info("Reading & caching all examples of course " + course);
                     var path = Path.Combine(ExamplesDir, course);
+                    var courseObj = GetCourses().Single(i => i.Name == course);
+                    var now = DateTime.Now;
                     result = Directory.GetDirectories(path)
                         .Select(dir =>
                         {
@@ -152,6 +164,9 @@ namespace Hacking_INF
                                 var example = ReadYAML<Example>(GetFileName(dir, "info.yaml"));
                                 example.Course = course;
                                 example.Name = Path.GetFileName(dir);
+                                if (example.Type == Types.NotDefined)
+                                    example.Type = courseObj.Type;
+
                                 return example;
                             }
                             catch
@@ -161,9 +176,53 @@ namespace Hacking_INF
                             }
                         })
                         .Where(i => i != null)
+                        .Where(i =>
+                        {
+                            if (isTeacher)
+                            {
+                                if (i.Type == Types.Timed)
+                                {
+                                    // Reflect actual state
+                                    if (i.OpenFrom.HasValue
+                                     && i.OpenUntil.HasValue
+                                     && i.OpenFrom.Value <= now
+                                     && i.OpenUntil.Value >= now)
+                                    {
+                                        i.Type = Types.Open;
+                                    }
+                                    else
+                                    {
+                                        i.Type = Types.Closed;
+                                    }
+                                }
+                                return true;
+                            }
+
+                            if (i.Type == Types.Open) return true;
+                            if (i.Type == Types.Closed) return false;
+                            if (i.Type == Types.Timed)
+                            {
+                                if (i.OpenFrom.HasValue
+                                 && i.OpenUntil.HasValue
+                                 && i.OpenFrom.Value <= now
+                                 && i.OpenUntil.Value >= now)
+                                {
+                                    return true;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
+                            }
+
+                            return false; // Fail save. Show less, maybe we're missing a exam example                  
+                        })
                         .OrderBy(i => i.Title)
                         .ToList();
-                    System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_examples__" + course, result, new CacheDependency(path));
+                    if (!isTeacher)
+                    {
+                        System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_examples__" + course, result, new CacheDependency(path));
+                    }
                 }
                 return result;
             }

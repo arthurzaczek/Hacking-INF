@@ -1,0 +1,18 @@
+---
+problemtitle:      Example 2
+problemshorttitle: Example2
+description:       Example two of the current exam
+category:          formatted output
+difficulty:        easy (1/5)
+requires:
+    - formatted output
+
+
+published:
+    - study program: BMR
+      semester:      WS1516
+      as:            UE
+
+author: Arthur Zaczek
+created: 2016
+...

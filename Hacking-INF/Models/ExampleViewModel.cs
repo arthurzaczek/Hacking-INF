@@ -12,6 +12,7 @@ namespace Hacking_INF.Models
         public string Course { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public string Type { get; set; }
         public string Category { get; set; }
         public string Difficulty { get; set; }
         public List<string> Requires { get; set; }
@@ -39,6 +40,7 @@ namespace Hacking_INF.Models
             target.Course = source.Course;
             target.Title = source.Title;
             target.Description = source.Description;
+            target.Type = source.Type.ToString();
             target.Category = source.Category;
             target.Difficulty = source.Difficulty;
             target.Requires = source.Requires ?? new List<string>();

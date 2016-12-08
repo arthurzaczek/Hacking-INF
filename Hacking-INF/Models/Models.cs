@@ -56,6 +56,10 @@ namespace Hacking_INF.Models
         public string Course { get; set; }
         [YamlMember(Alias = "problemtitle")]
         public string Title { get; set; }
+        [YamlMember(Alias = "openfrom")]
+        public DateTime? OpenFrom { get; set; }
+        [YamlMember(Alias = "openuntil")]
+        public DateTime? OpenUntil { get; set; }
         [YamlMember(Alias = "description")]
         public string Description { get; set; }
         [YamlMember(Alias = "type")]

@@ -1,0 +1,19 @@
+---
+problemtitle:      Demo 1
+problemshorttitle: Demo1
+description:       Demo one for training
+type:              open
+category:          formatted output
+difficulty:        easy (1/5)
+requires:
+    - formatted output
+
+
+published:
+    - study program: BMR
+      semester:      WS1516
+      as:            UE
+
+author: Arthur Zaczek
+created: 2016
+...
