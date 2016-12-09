@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
 using System.Configuration;
+using System.Text.RegularExpressions;
 
 namespace Hacking_INF.Providers
 {
@@ -157,14 +158,20 @@ namespace Hacking_INF.Providers
 
             if (repo.Info.IsBare) yield break;
 
-            foreach (var item in repo.Diff.Compare<TreeChanges>(new[] { baseRelPath }, includeUntracked: true, explicitPathsOptions: new ExplicitPathsOptions() { }, compareOptions: new CompareOptions() { IncludeUnmodified = true }))
+            var allExamples = repo.Index
+                .Select(i => Path.GetDirectoryName(i.Path))
+                .Distinct()
+                .Where(i => Regex.Match(i, assignmentName).Success)
+                .ToArray();
+
+            foreach (var item in repo.Diff.Compare<TreeChanges>(allExamples, includeUntracked: true, explicitPathsOptions: new ExplicitPathsOptions() { ShouldFailOnUnmatchedPath = false }, compareOptions: new CompareOptions() { IncludeUnmodified = true }))
             {
                 var fileName = Path.GetFileName(item.Path);
                 if (!includeHiddenFiles && StorageConstants.HiddenFiles.Contains(fileName.ToLower())) continue;
                 yield return new GitSubmissionItem()
                 {
                     Name = fileName,
-                    FilePath = item.Path.Substring(baseRelPath.Length), // Cut off rel path prefix
+                    FilePath = item.Path,
                     FullFileName = Path.Combine(repoPath, item.Path),
                     Added = item.Status.HasFlag(ChangeKind.Added) || item.Status.HasFlag(ChangeKind.Untracked),
                     Deleting = item.Status.HasFlag(ChangeKind.Deleted),

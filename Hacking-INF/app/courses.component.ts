@@ -13,7 +13,7 @@ export class CoursesComponent implements OnInit {
     courses: Course[];
 
     ngOnInit(): void {
-        this.hackingService.getCourses().then(data => {
+        this.hackingService.getCourses().subscribe(data => {
             this.courses = data;
         });
     }

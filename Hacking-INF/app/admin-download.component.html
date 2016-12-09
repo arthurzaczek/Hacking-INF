@@ -1,0 +1,16 @@
+﻿<h1>Download submissions of courses</h1>
+
+<form ngNoForm>
+    <div class="form-group">
+        <label for="course">Course</label>
+        <select id="course" class="form-control" [ngModel]="selectedCourse" (ngModelChange)="onCourseChanged($event)">
+            <option value="">-- Please select a course --</option>
+            <option [ngValue]="i" *ngFor="let i of courses">{{i.Title}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="example">Example (Regex)</label>
+        <input type="text" class="form-control" id="example" placeholder="Example 1 or Example.*" required [(ngModel)]="exampleName">
+    </div>
+    <button type="button" class="btn btn-primary" (click)="download()">Download</button>
+</form>

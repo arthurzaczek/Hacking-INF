@@ -10,6 +10,8 @@ import { CoursesComponent } from './courses.component';
 import { CourseDetailComponent } from './course-detail.component';
 import { ExampleDetailComponent } from './example-detail.component';
 import { LoginComponent } from './login.component';
+import { AdminDownloadComponent } from './admin-download.component';
+
 import { MarkdownComponent } from './markdown.component';
 import { HackingService } from './hacking.service';
 
@@ -25,6 +27,7 @@ import { HackingService } from './hacking.service';
             { path: 'courses', component: CoursesComponent },
             { path: 'course/:name', component: CourseDetailComponent },
             { path: 'example/:course/:name', component: ExampleDetailComponent },
+            { path: 'admin-download', component: AdminDownloadComponent },
         ])
     ],
     declarations: [
@@ -34,6 +37,7 @@ import { HackingService } from './hacking.service';
         CourseDetailComponent,
         ExampleDetailComponent,
         LoginComponent,
+        AdminDownloadComponent,
         MarkdownComponent,
     ],
     providers: [

@@ -44,10 +44,9 @@ export class HackingService {
             });
     }
 
-    getCourses(): Promise<Course[]> {
+    getCourses(): Observable<Course[]> {
         return this.http.get(this._baseUrl + 'Info/GetCourses')
-            .toPromise()
-            .then(response => response.json() as Course[]);
+            .map(response => response.json() as Course[]);
     }
 
     getCourse(name: string): Promise<Course> {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Hacking_INF.Models
@@ -13,6 +14,13 @@ namespace Hacking_INF.Models
         public string Password { get; set; }
 
         public string[] Roles { get; set; } = new string[] { };
+        public bool IsTeacher
+        {
+            get
+            {
+                return Roles?.Any(i => i == "Teacher") ?? false;
+            }
+        }
 
         public override string ToString()
         {

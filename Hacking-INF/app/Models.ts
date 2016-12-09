@@ -39,4 +39,5 @@ export class User {
     Password: string;
     Roles: string[];
     IsAuthenticated: boolean;
+    IsTeacher: boolean;
 }
