@@ -25,6 +25,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li *ngIf="!User.IsAuthenticated"><a routerLink="/login">Login</a></li>
                 <li *ngIf="User.IsAuthenticated"><a routerLink="/me">{{User.Name}}</a></li>
+                <li *ngIf="User.IsAuthenticated"><a href="#" (click)="logout($event)">Logout</a></li>
             </ul>
         </div>
     </div>

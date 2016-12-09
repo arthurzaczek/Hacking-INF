@@ -24,4 +24,10 @@ export class AppComponent implements OnInit {
                 self.User = item;
             });
     }
+
+    logout(event: any): void {
+        if (event != null) event.preventDefault();
+
+        this.hackingService.logout();
+    }
 }

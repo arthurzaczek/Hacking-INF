@@ -44,6 +44,22 @@ export class HackingService {
             });
     }
 
+    logout(): void {
+        var self = this;
+        this.http.post(this._baseUrl + 'Account/Logout', { logout: true })
+            .catch(error => {
+                console.log(error);
+                return Observable.throw(error);
+            })
+            .map(response => {
+                self._user = new User();
+                self._user.IsAuthenticated = false;
+                self._userLoginSource.next(self._user);
+                return self._user;
+            })
+            .subscribe();
+    }
+
     getCourses(): Observable<Course[]> {
         return this.http.get(this._baseUrl + 'Info/GetCourses')
             .map(response => response.json() as Course[]);
