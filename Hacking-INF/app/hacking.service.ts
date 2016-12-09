@@ -60,6 +60,26 @@ export class HackingService {
             .subscribe();
     }
 
+    whoAmI(): void {
+        var self = this;
+        this.http.get(this._baseUrl + 'Account/WhoAmI')
+            .catch(error => {
+                console.log(error);
+                return Observable.throw(error);
+            })
+            .map(response => {
+                self._user = response.json() as User;
+                if (self._user == null) {
+                    self._user = new User();
+                } else {
+                    self._user.IsAuthenticated = true;
+                }
+                self._userLoginSource.next(self._user);
+                return self._user;
+            })
+            .subscribe();
+    }
+
     getCourses(): Observable<Course[]> {
         return this.http.get(this._baseUrl + 'Info/GetCourses')
             .map(response => response.json() as Course[]);

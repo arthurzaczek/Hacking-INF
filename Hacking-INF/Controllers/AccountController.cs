@@ -23,8 +23,11 @@ namespace Hacking_INF.Controllers
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
-        public AccountController()
+        private BL _bl;
+
+        public AccountController(BL bl)
         {
+            _bl = bl;
         }
 
         // POST api/Account/Login
@@ -70,6 +73,25 @@ namespace Hacking_INF.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return Ok();
+        }
+
+        // POST api/Account/WhoAmI
+        [Route("WhoAmI")]
+        [HttpGet]
+        [AllowAnonymous]
+        public IHttpActionResult WhoAmI()
+        {
+            LoginViewModel vmdl = null;
+            var user = _bl.GetCurrentUser();
+            if(user != null)
+            {
+                var p = System.Threading.Thread.CurrentPrincipal;
+                vmdl = new LoginViewModel();
+                vmdl.UID = user.UID;
+                vmdl.Name = user.Name;
+                vmdl.Roles = p.IsInRole("Teacher") ? new[] { "Teacher" } : new string[] { };
+            } 
+            return Ok(vmdl);
         }
 
         private IAuthenticationManager AuthenticationManager

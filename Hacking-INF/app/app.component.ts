@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
             .subscribe(item => {
                 self.User = item;
             });
+        this.hackingService.whoAmI();
     }
 
     logout(event: any): void {
