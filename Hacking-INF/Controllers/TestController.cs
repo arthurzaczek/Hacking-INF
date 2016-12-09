@@ -107,7 +107,7 @@ namespace Hacking_INF.Controllers
             else
             {
                 // Just save the compile attempts
-                _saveService.Save(user, course, example, vmdl.StartTime);
+                _saveService.Save(user, sessionGuid, course, example, vmdl.StartTime);
             }
 
             return result;
@@ -173,7 +173,7 @@ namespace Hacking_INF.Controllers
         {
 
             var p = new Process();
-            var output = new TestOutput(p, user, course, example, workingDir, startTime);
+            var output = new TestOutput(p, user, sessionGuid, course, example, workingDir, startTime);
             lock (_lock)
             {
                 _testOutput[sessionGuid] = output;

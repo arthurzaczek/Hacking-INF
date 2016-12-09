@@ -11,7 +11,7 @@ namespace Hacking_INF.Providers
     public interface ITestResultSaveService
     {
         void Save(TestOutput output);
-        void Save(User user, Course course, Example example, DateTime startTime);
+        void Save(User user, Guid? sessionID, Course course, Example example, DateTime startTime);
     }
 
     public class TestResultSaveService : ITestResultSaveService
@@ -26,17 +26,18 @@ namespace Hacking_INF.Providers
 
         public void Save(TestOutput output)
         {
-            if (string.IsNullOrWhiteSpace(output.UID)) return; // nothing to save
-
             using (var scope = _rootScope.BeginLifetimeScope())
             {
                 var bl = scope.Resolve<BL>();
-                var user = bl.GetUser(output.UID);
-                var result = bl.GetExampleResult(user, output.Course, output.Example);
+                var user = !string.IsNullOrWhiteSpace(output.UID) ? bl.GetUser(output.UID) : null;
+                var sessionID = output.SessionID;
+
+                var result = bl.GetExampleResult(user, sessionID, output.Course, output.Example);
                 if(result == null)
                 {
                     result = bl.CreateExampleResult();
                     result.User = user;
+                    result.SessionID = user == null ? sessionID : (Guid?)null;
                     result.Course = output.Course;
                     result.Example = output.Example;
                     result.FirstAttempt = output.CreatedOn;
@@ -69,18 +70,17 @@ namespace Hacking_INF.Providers
             }
         }
 
-        public void Save(User user, Course course, Example example, DateTime startTime)
+        public void Save(User user, Guid? sessionID, Course course, Example example, DateTime startTime)
         {
-            if (user == null) return; // nothing to save
-
             using (var scope = _rootScope.BeginLifetimeScope())
             {
                 var bl = scope.Resolve<BL>();
-                var result = bl.GetExampleResult(user, course.Name, example.Name);
+                var result = bl.GetExampleResult(user, sessionID, course.Name, example.Name);
                 if (result == null)
                 {
                     result = bl.CreateExampleResult();
                     result.User = user;
+                    result.SessionID = user == null ? sessionID : null;
                     result.Course = course.Name;
                     result.Example = example.Name;
                     result.FirstAttempt = DateTime.Now;

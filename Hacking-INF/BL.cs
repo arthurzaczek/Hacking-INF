@@ -94,9 +94,10 @@ namespace Hacking_INF
             return _dal.Users.SingleOrDefault(i => i.UID == uid);
         }
 
-        public ExampleResult GetExampleResult(User user, string course, string example)
+        public ExampleResult GetExampleResult(User user, Guid? sessionID, string course, string example)
         {
-            return _dal.ExampleResults.SingleOrDefault(i => i.User.UID == user.UID && i.Course == course && i.Example == example);
+            var userUID = user?.UID;
+            return _dal.ExampleResults.SingleOrDefault(i => (i.User.UID == userUID || i.SessionID == sessionID) && i.Course == course && i.Example == example);
         }
 
         public ExampleResult CreateExampleResult()

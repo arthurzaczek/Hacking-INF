@@ -253,6 +253,10 @@
     <Compile Include="Migrations\201612070930550_InitialCreate.Designer.cs">
       <DependentUpon>201612070930550_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612091324482_Log_Anonymous_Submissions.cs" />
+    <Compile Include="Migrations\201612091324482_Log_Anonymous_Submissions.Designer.cs">
+      <DependentUpon>201612091324482_Log_Anonymous_Submissions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Models.cs" />
@@ -773,6 +777,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201612070930550_InitialCreate.resx">
       <DependentUpon>201612070930550_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612091324482_Log_Anonymous_Submissions.resx">
+      <DependentUpon>201612091324482_Log_Anonymous_Submissions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

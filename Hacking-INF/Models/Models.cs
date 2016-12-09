@@ -74,10 +74,11 @@ namespace Hacking_INF.Models
 
     public class TestOutput
     {
-        public TestOutput(Process p, User user, Course course, Example example, string workingDir, DateTime startTime)
+        public TestOutput(Process p, User user, Guid sessionID, Course course, Example example, string workingDir, DateTime startTime)
         {
             this.Process = p;
             this.UID = user?.UID;
+            this.SessionID = sessionID;
             this.Course = course.Name;
             this.Example = example.Name;
             this.StartTime = startTime;
@@ -90,6 +91,7 @@ namespace Hacking_INF.Models
         public string Course { get; private set; }
         public string Example { get; private set; }
         public string UID { get; private set; }
+        public Guid SessionID { get; private set; }
         public DateTime StartTime { get; private set; }
     }
 
@@ -120,8 +122,8 @@ namespace Hacking_INF.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        [Required]
         public virtual User User { get; set; }
+        public Guid? SessionID { get; set; }
 
         [Required]
         public string Course { get; set; }
