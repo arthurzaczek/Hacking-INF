@@ -42,6 +42,7 @@ namespace Hacking_INF.Providers
         const string ATTRIBUTES = "ou=People,dc=technikum-wien,dc=at";
         const string HOST = "ldap.technikum-wien.at";
         const int PORT = 389;
+        private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(LDAPAuthenticator));
 
         private static bool? _disablePasswordCheck;
         public static bool DisablePasswordCheck
@@ -52,6 +53,7 @@ namespace Hacking_INF.Providers
                 {
                     // set DEV_ENVIRONMENT = 1, done by IISExpress
                     _disablePasswordCheck = System.Environment.GetEnvironmentVariable("DEV_ENVIRONMENT") == "1";
+                    _log.InfoFormat("DisablePasswordCheck = {0}", _disablePasswordCheck);
                 }
                 return _disablePasswordCheck.Value;
             }
@@ -65,6 +67,7 @@ namespace Hacking_INF.Providers
                 if (_startTLS == null)
                 {
                     _startTLS = (System.Configuration.ConfigurationManager.AppSettings["ldap_start_tls"] as string ?? "true") == "true";
+                    _log.InfoFormat("StartTLS = {0}", _startTLS);
                 }
                 return _startTLS.Value;
             }
@@ -121,16 +124,17 @@ namespace Hacking_INF.Providers
                     }
 
                 }
-                catch// wird u.a. ausgelöst, wenn ldap-server den parameter nicht liefert
+                catch (Exception ex)
                 {
-                    //nix tun - default werte werden verwendet
+                    _log.Warn("Unable to get ldap user attributes.", ex);
                 }
 
 
                 return new LDAPUser(true, sFirstName, sLastName, sDisplayName, sMail, sStudiengang, sStudiengangKuerzel, sPersonalBezeichnung);
             }
-            catch
+            catch (Exception ex)
             {
+                _log.Warn("Unable to get ldap user, might be a auth fail.", ex);
                 return new LDAPUser();
             }
         }
