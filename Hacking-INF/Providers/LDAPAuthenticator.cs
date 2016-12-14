@@ -51,7 +51,7 @@ namespace Hacking_INF.Providers
                 if (_disablePasswordCheck == null)
                 {
                     // set DEV_ENVIRONMENT = 1, done by IISExpress
-                    _disablePasswordCheck = System.Web.Hosting.HostingEnvironment.IsDevelopmentEnvironment;
+                    _disablePasswordCheck = System.Environment.GetEnvironmentVariable("DEV_ENVIRONMENT") == "1";
                 }
                 return _disablePasswordCheck.Value;
             }
