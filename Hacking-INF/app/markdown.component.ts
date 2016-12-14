@@ -1,5 +1,6 @@
 ﻿import { Component, Input, OnInit, OnChanges, SimpleChanges, AfterViewChecked, ElementRef } from '@angular/core';
 
+declare var marked: any;
 declare var jsHelper: any;
 
 @Component({
@@ -20,10 +21,10 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
     ngOnChanges(changes: SimpleChanges): void {
         if (this.data != null) {
             var renderer = new marked.Renderer();
-            renderer.table = function (header, body) {
+            renderer.table = function (header: any, body: any) {
                 return '<table class="table table-striped">' + header + body + '</table>';
             };
-            renderer.code = function (code, language) {
+            renderer.code = function (code: any, language: any) {
                 var newCode = code.replace('/\\stdin\{(.*)\}/', '<span class="stdin">$1</span>');
                 return '<pre><code class="highlight">' + newCode + '</code></pre>'; 
             };
