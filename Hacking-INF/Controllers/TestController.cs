@@ -170,7 +170,6 @@ namespace Hacking_INF.Controllers
 
         private void Exec(string cmd, string args, string workingDir, Guid sessionGuid, DateTime startTime, User user, Course course, Example example)
         {
-
             var p = new Process();
             var output = new TestOutput(p, user, sessionGuid, course, example, workingDir, startTime);
             lock (_lock)
@@ -187,7 +186,11 @@ namespace Hacking_INF.Controllers
             p.StartInfo.RedirectStandardError = true;
             p.OutputDataReceived += (s, e) => { lock (_lock) output.Output.AppendLine(e.Data); };
             p.ErrorDataReceived += (s, e) => { lock (_lock) output.Output.AppendLine(e.Data); };
-            p.Exited += (s,e) => _saveService.Save(output);
+            p.Exited += (s, e) =>
+            {
+                _log.DebugFormat("Process {0} exited", cmd);
+                _saveService.Save(output);
+            };
 
             p.Start();
             p.BeginErrorReadLine();
