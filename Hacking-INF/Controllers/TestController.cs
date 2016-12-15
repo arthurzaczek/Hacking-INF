@@ -121,7 +121,7 @@ namespace Hacking_INF.Controllers
                 var dt = DateTime.Now.AddHours(-8);
                 foreach (var kv in _testOutput.Where(i => i.Value.CreatedOn <= dt).ToList())
                 {
-                    _log.DebugFormat("Removing zombie session {0}", kv.Key);
+                    _log.InfoFormat("Removing zombie session {0}", kv.Key);
                     _testOutput.Remove(kv.Key);
                 }
 
@@ -188,7 +188,7 @@ namespace Hacking_INF.Controllers
             p.ErrorDataReceived += (s, e) => { lock (_lock) output.Output.AppendLine(e.Data); };
             p.Exited += (s, e) =>
             {
-                _log.DebugFormat("Process {0} exited", cmd);
+                _log.InfoFormat("Process {0} exited", cmd);
                 _saveService.Save(output);
             };
 

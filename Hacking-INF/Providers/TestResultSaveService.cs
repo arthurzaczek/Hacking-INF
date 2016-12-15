@@ -30,7 +30,7 @@ namespace Hacking_INF.Providers
         {
             try
             {
-                _log.DebugFormat("Saving {0}/{1} for {2}", output.Course, output.Example, !string.IsNullOrWhiteSpace(output.UID) ? (object)output.UID : (object)output.SessionID);
+                _log.InfoFormat("Saving {0}/{1} for {2}", output.Course, output.Example, !string.IsNullOrWhiteSpace(output.UID) ? (object)output.UID : (object)output.SessionID);
                 using (var scope = _rootScope.BeginLifetimeScope())
                 {
                     var bl = scope.Resolve<BL>();

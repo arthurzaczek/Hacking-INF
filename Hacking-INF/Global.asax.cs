@@ -19,6 +19,7 @@ namespace Hacking_INF
         protected void Application_Start()
         {
             log4net.Config.XmlConfigurator.Configure();
+            
             _log.Info("** Starting Application **");
 
             BuildMasterContainer();
