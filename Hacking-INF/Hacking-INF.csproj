@@ -246,6 +246,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HackingModule.cs" />
+    <Compile Include="LogExceptionFilterAttribute.cs" />
     <Compile Include="Migrations\201612070930550_InitialCreate.cs" />
     <Compile Include="Migrations\201612070930550_InitialCreate.Designer.cs">
       <DependentUpon>201612070930550_InitialCreate.cs</DependentUpon>

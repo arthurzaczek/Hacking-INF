@@ -33,6 +33,8 @@ namespace Hacking_INF
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Filters.Add(new LogExceptionFilterAttribute());
         }
     }
 }
