@@ -17,7 +17,7 @@ namespace Hacking_INF.Providers
 
     public class TestResultSaveService : ITestResultSaveService
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(TestResultSaveService));
+        private readonly ILog _log = LogManager.GetLogger(typeof(TestResultSaveService));
         private readonly ILifetimeScope _rootScope;
 
         public TestResultSaveService(ILifetimeScope rootScope)

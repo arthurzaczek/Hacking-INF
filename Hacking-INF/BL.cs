@@ -15,8 +15,8 @@ namespace Hacking_INF
 {
     public class BL
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(BL));
-        private static readonly ILog _parseErrorLog = LogManager.GetLogger("ParseErrors");
+        private readonly ILog _log = LogManager.GetLogger(typeof(BL));
+        private readonly ILog _parseErrorLog = LogManager.GetLogger("ParseErrors");
         private static readonly object _lock = new object();
         private readonly IDAL _dal;
 

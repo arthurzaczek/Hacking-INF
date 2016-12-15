@@ -15,7 +15,7 @@ namespace Hacking_INF
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
-        ILog _log = LogManager.GetLogger(typeof(WebApiApplication));
+        private readonly ILog _log = LogManager.GetLogger(typeof(WebApiApplication));
         protected void Application_Start()
         {
             log4net.Config.XmlConfigurator.Configure();

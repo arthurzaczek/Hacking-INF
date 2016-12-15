@@ -16,7 +16,7 @@ namespace Hacking_INF.Controllers
     public class TestController : ApiController
     {
         private BL _bl;
-        private static readonly ILog _log = LogManager.GetLogger(typeof(TestController));
+        private readonly ILog _log = LogManager.GetLogger(typeof(TestController));
         private readonly log4net.ILog _logSubmission = log4net.LogManager.GetLogger("Submissions");
         private readonly SubmissionStoreProviderFactory _submissionStoreFactory;
         private readonly ITestResultSaveService _saveService;

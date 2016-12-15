@@ -45,7 +45,7 @@ namespace Hacking_INF
 
     public class HackingInfContext : DbContext, IDAL
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(HackingInfContext));
+        private readonly ILog _log = LogManager.GetLogger(typeof(HackingInfContext));
 
         public HackingInfContext()
             : base("HackingInfEntities")
