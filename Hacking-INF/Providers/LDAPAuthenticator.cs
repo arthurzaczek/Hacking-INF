@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.DirectoryServices.Protocols;
+using Novell.Directory.Ldap;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -77,19 +77,8 @@ namespace Hacking_INF.Providers
         {
             try
             {
-                ldap.Bind();
-
                 //user daten parameter lesen - frage: daten nur holen, wenn noch nicht registriert oder sollen die daten immer verwendet werden und u.U auch in sofi aktualisiert werden
                 string[] attributesToReturn = new string[] { "displayName", "sn", "givenName", "cn", "mail", "ou", "gidNumber", "uid" };
-                SearchRequest searchRequest = new SearchRequest(ATTRIBUTES, string.Format("(uid={0})", username), System.DirectoryServices.Protocols.SearchScope.Subtree, null);
-
-                SearchResponse searchResponse = (SearchResponse)ldap.SendRequest(searchRequest);
-                if (searchResponse.Entries.Count != 1)
-                {
-                    return new LDAPUser();
-                }
-
-                SearchResultEntry entry = searchResponse.Entries[0];
 
                 var result = new LDAPUser();
                 string sMail = "";
@@ -100,85 +89,89 @@ namespace Hacking_INF.Providers
                 string sStudiengangKuerzel = "";
                 string sPersonalBezeichnung = "";
 
-                try
+                var queue = ldap.Search(ATTRIBUTES, LdapConnection.SCOPE_SUB, string.Format("(uid={0})", username), attributesToReturn, false);
+
+                LdapEntry entry = queue.next();
+                if (entry != null)
                 {
-                    sMail = (string)entry.Attributes["mail"]?[0] ?? string.Empty;
-                    sLastName = (string)entry.Attributes["sn"]?[0] ?? string.Empty;
-                    sFirstName = (string)entry.Attributes["givenName"]?[0] ?? string.Empty;
-                    sDisplayName = (string)entry.Attributes["displayName"]?[0] ?? string.Format("{0} {1}", sFirstName, sLastName);
-                    string iGidNumber = (string)entry.Attributes["gidNumber"]?[0] ?? string.Empty; // 101=Technikum, 102=Student
+                    sMail = entry.getAttribute("mail").StringValue ?? string.Empty;
+                    sLastName = entry.getAttribute("sn").StringValue ?? string.Empty;
+                    sFirstName = entry.getAttribute("givenName").StringValue ?? string.Empty;
+                    sDisplayName = entry.getAttribute("displayName").StringValue ?? string.Format("{0} {1}", sFirstName, sLastName);
+                    string iGidNumber = entry.getAttribute("gidNumber").StringValue ?? string.Empty; // 101=Technikum, 102=Student
 
                     sStudiengang = "";
                     sStudiengangKuerzel = "";
                     sPersonalBezeichnung = "";
-                    DirectoryAttribute oOu = entry.Attributes["ou"];
-                    if (oOu.Count > 0 && iGidNumber == "101") //tw-personal - in ou steht meist Teacher
+                    var oOu = entry.getAttribute("ou");
+                    if (oOu.size() > 0 && iGidNumber == "101") //tw-personal - in ou steht meist Teacher
                     {
-                        //sStudiengang = (string)oOu[1];
-                        sPersonalBezeichnung = (string)oOu[1];
+                        sPersonalBezeichnung = oOu.StringValueArray[1];
                     }
-                    else if (oOu.Count > 0 && iGidNumber == "102") //student
+                    else if (oOu.size() > 0 && iGidNumber == "102") //student
                     {
-                        sStudiengang = (string)oOu[1];
-                        sStudiengangKuerzel = (string)oOu[2];
+                        sStudiengang = oOu.StringValueArray[1];
+                        sStudiengangKuerzel = oOu.StringValueArray[2];
                     }
-
                 }
-                catch (Exception ex)
-                {
-                    _log.Warn("Unable to get ldap user attributes.", ex);
-                }
-
 
                 return new LDAPUser(true, sFirstName, sLastName, sDisplayName, sMail, sStudiengang, sStudiengangKuerzel, sPersonalBezeichnung);
             }
             catch (Exception ex)
             {
-                _log.Warn("Unable to get ldap user, might be a auth fail.", ex);
+                _log.Warn("Unable to get ldap user attributes.", ex);
                 return new LDAPUser();
             }
         }
 
         public static LDAPUser GetUserParameter(string username)
         {
-            using (var ldap = Connect())
+            var ldap = Connect();
+            try
             {
-                ldap.AuthType = AuthType.Anonymous;
-
+                ldap.Bind(null, null);
                 return GetUserParameter(ldap, username);
+            }
+            finally
+            {
+                ldap.Disconnect();
             }
         }
 
         public static LDAPUser Authenticate(string username, string password)
         {
-            using (var ldap = Connect())
+            var ldap = Connect();
+            try
             {
-
                 if (DisablePasswordCheck == false)
                 {
-                    NetworkCredential credential = new NetworkCredential();
-                    credential.UserName = "uid=" + username + "," + ATTRIBUTES;
-                    credential.Password = password;
-
-                    ldap.AuthType = AuthType.Basic;
-                    ldap.Credential = credential;
+                    ldap.Bind("uid=" + username + "," + ATTRIBUTES, password);
                 }
                 else
                 {
-                    ldap.AuthType = AuthType.Anonymous;
+                    ldap.Bind(null, null);
                 }
 
                 return GetUserParameter(ldap, username);
+            }
+            catch (Exception ex)
+            {
+                _log.Warn(string.Format("Unable to authenticate user {0}.", username), ex);
+                return new LDAPUser();
+            }
+            finally
+            {
+                ldap.Disconnect();
             }
         }
 
         private static LdapConnection Connect()
         {
-            var ldap = new LdapConnection(HOST + ":" + PORT.ToString());
+            var ldap = new LdapConnection();
+            ldap.Connect(HOST, PORT);
             if (StartTLS)
             {
-                ldap.SessionOptions.ProtocolVersion = 3;
-                ldap.SessionOptions.StartTransportLayerSecurity(null);
+                ldap.startTLS();
             }
             return ldap;
         }
