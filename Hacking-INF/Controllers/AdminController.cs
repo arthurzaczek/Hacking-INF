@@ -1,5 +1,6 @@
 ﻿using Hacking_INF.Providers;
 using Ionic.Zip;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,8 @@ namespace Hacking_INF.Controllers
     {
         private readonly BL _bl;
         private readonly SubmissionCollectorFactory _submissionCollectorFactory;
+        private readonly ILog _log = LogManager.GetLogger(typeof(AdminController));
+
         public AdminController(BL bl, SubmissionCollectorFactory submissionCollectorFactory)
         {
             _bl = bl;
@@ -27,7 +30,7 @@ namespace Hacking_INF.Controllers
         [HttpGet]
         public HttpResponseMessage Download(string course, string example)
         {
-            if(string.IsNullOrWhiteSpace(example))
+            if (string.IsNullOrWhiteSpace(example))
             {
                 example = ".*";
             }
@@ -40,11 +43,18 @@ namespace Hacking_INF.Controllers
 
             foreach (var store in stores)
             {
-                foreach (var item in store.GetItems(includeHidenFiles: true))
+                try
                 {
-                    var s = item.GetStream();
-                    zip.AddEntry(store.UID + "\\" + item.FilePath, s);
-                    toDispose.Add(s);
+                    foreach (var item in store.GetItems(includeHidenFiles: true))
+                    {
+                        var s = item.GetStream();
+                        zip.AddEntry(store.UID + "\\" + item.FilePath, s);
+                        toDispose.Add(s);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _log.Warn(string.Format("Unable to download from repo {0}, continue", store.UID), ex);
                 }
             }
 
@@ -58,7 +68,7 @@ namespace Hacking_INF.Controllers
             result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = fileName };
 
             zip.Dispose();
-            foreach(var d in toDispose)
+            foreach (var d in toDispose)
             {
                 d.Dispose();
             }
