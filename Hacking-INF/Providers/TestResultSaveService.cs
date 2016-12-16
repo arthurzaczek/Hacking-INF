@@ -83,30 +83,39 @@ namespace Hacking_INF.Providers
 
         public void Save(User user, Guid? sessionID, Course course, Example example, DateTime startTime)
         {
-            using (var scope = _rootScope.BeginLifetimeScope())
+            try
             {
-                var bl = scope.Resolve<BL>();
-                var result = bl.GetExampleResult(user, sessionID, course.Name, example.Name);
-                if (result == null)
+                _log.InfoFormat("Saving {0}/{1} for {2}", course, example, user != null ? (object)user.UID : (object)sessionID);
+                using (var scope = _rootScope.BeginLifetimeScope())
                 {
-                    result = bl.CreateExampleResult();
-                    result.User = user;
-                    result.SessionID = user == null ? sessionID : null;
-                    result.Course = course.Name;
-                    result.Example = example.Name;
-                    result.FirstAttempt = DateTime.Now;
-                    result.NumOfCompilations = 0;
-                    result.NumOfTestRuns = 0;
+                    var bl = scope.Resolve<BL>();
+                    var result = bl.GetExampleResult(user, sessionID, course.Name, example.Name);
+                    if (result == null)
+                    {
+                        result = bl.CreateExampleResult();
+                        result.User = user;
+                        result.SessionID = user == null ? sessionID : null;
+                        result.Course = course.Name;
+                        result.Example = example.Name;
+                        result.FirstAttempt = DateTime.Now;
+                        result.NumOfCompilations = 0;
+                        result.NumOfTestRuns = 0;
+                    }
+
+                    result.LastAttempt = DateTime.Now;
+
+                    result.Time = (int)(DateTime.Now - startTime).TotalSeconds;
+                    result.NumOfCompilations++;
+
+                    // no unit test results
+
+                    bl.SaveChanges();
                 }
-
-                result.LastAttempt = DateTime.Now;
-
-                result.Time = (int)(DateTime.Now - startTime).TotalSeconds;
-                result.NumOfCompilations++;
-
-                // no unit test results
-
-                bl.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _log.Error(string.Format("Error saving {0}/{1} for {2}", course, example, user != null ? (object)user.UID : (object)sessionID), ex);
+                throw;
             }
         }
     }

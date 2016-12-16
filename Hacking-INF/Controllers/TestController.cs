@@ -149,6 +149,7 @@ namespace Hacking_INF.Controllers
             p.StartInfo.WorkingDirectory = workingDir;
             p.StartInfo.UseShellExecute = false;
 
+            p.EnableRaisingEvents = true;
             p.StartInfo.RedirectStandardOutput = true;
             p.StartInfo.RedirectStandardError = true;
             p.OutputDataReceived += (s, e) => sb.AppendLine(e.Data);
@@ -159,10 +160,12 @@ namespace Hacking_INF.Controllers
             p.BeginOutputReadLine();
             if (p.WaitForExit(10000))
             {
+                _log.InfoFormat("Process {0} exited with error code {1}", cmd, p.ExitCode);
                 return p.ExitCode;
             }
             else
             {
+                _log.WarnFormat("Process {0} did not exited within 10 sec.");
                 return 1; // generic fail.
             }
         }
@@ -182,13 +185,14 @@ namespace Hacking_INF.Controllers
             p.StartInfo.WorkingDirectory = workingDir;
             p.StartInfo.UseShellExecute = false;
 
+            p.EnableRaisingEvents = true;
             p.StartInfo.RedirectStandardOutput = true;
             p.StartInfo.RedirectStandardError = true;
             p.OutputDataReceived += (s, e) => { lock (_lock) output.Output.AppendLine(e.Data); };
             p.ErrorDataReceived += (s, e) => { lock (_lock) output.Output.AppendLine(e.Data); };
             p.Exited += (s, e) =>
             {
-                _log.InfoFormat("Process {0} exited", cmd);
+                _log.InfoFormat("Process {0} exited with error code {1}", cmd, p.ExitCode);
                 _saveService.Save(output);
             };
 
