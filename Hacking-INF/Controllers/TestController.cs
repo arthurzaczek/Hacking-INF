@@ -57,7 +57,8 @@ namespace Hacking_INF.Controllers
             _bl.CleanupWorkingDir(workingDir);
 
             // Save code
-            _bl.WriteTextFile(Path.Combine(workingDir, course.FileName), vmdl.Code);
+            var codeFileName = example.FileName ?? course.FileName;
+            _bl.WriteTextFile(Path.Combine(workingDir, codeFileName), vmdl.Code);
 
             var user = _bl.GetCurrentUser();
             if (user != null)
@@ -67,8 +68,8 @@ namespace Hacking_INF.Controllers
                 lock (_lock)
                 {
                     var store = _submissionStoreFactory(course.Name, example.Name, user.UID);
-                    store.Save(course.FileName, new System.IO.MemoryStream (Encoding.UTF8.GetBytes(vmdl.Code)));
-                    store.Commit(string.Format("{0} submitted", course.FileName));
+                    store.Save(codeFileName, new System.IO.MemoryStream (Encoding.UTF8.GetBytes(vmdl.Code)));
+                    store.Commit(string.Format("{0} submitted", codeFileName));
                     _log.InfoFormat("{0}.{1} commited by {2}", course.Name, example.Name, user.UID);
                     _logSubmission.InfoFormat("{0}.{1};{2};{3}", course.Name, example.Name, user.UID, _bl.GetClientIp(Request));
                 }
@@ -78,7 +79,7 @@ namespace Hacking_INF.Controllers
             var sb = new StringBuilder();
             var result = new TestViewModel();
             var failed = false;
-            foreach (var compiler in course.Compiler)
+            foreach (var compiler in example.Compiler ?? course.Compiler)
             {
                 sb.AppendLine(compiler.Log);
                 if (Exec(compiler.Cmd, compiler.Args, workingDir, sb) != 0)
@@ -95,7 +96,7 @@ namespace Hacking_INF.Controllers
                 sb.Clear();
                 File.Copy(Path.Combine(exampleDir, "properties.txt"), Path.Combine(workingDir, "properties.txt"));
                 var args = string.Format("-Dexec={0} -DtestFilesPath=\"{1}\" -DjunitOutFile=./results.xml -jar \"{2}\"",
-                        course.Exe,
+                        example.Exe ?? course.Exe,
                         Path.Combine(exampleDir, "tests"),
                         Path.Combine(_bl.ToolsDir, "checkproject.jar"));
 

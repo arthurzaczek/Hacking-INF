@@ -30,6 +30,7 @@ namespace Hacking_INF.Models
         public string Description { get; set; }
         [YamlMember(Alias = "type")]
         public Types Type { get; set; }
+
         [YamlMember(Alias = "exe")]
         public string Exe { get; set; }
         [YamlMember(Alias = "filename")]
@@ -70,6 +71,14 @@ namespace Hacking_INF.Models
         public string Difficulty { get; set; }
         [YamlMember(Alias = "requires")]
         public List<string> Requires { get; set; }
+
+        // Overrides
+        [YamlMember(Alias = "exe")]
+        public string Exe { get; set; }
+        [YamlMember(Alias = "filename")]
+        public string FileName { get; set; }
+        [YamlMember(Alias = "compiler")]
+        public List<Compiler> Compiler { get; set; }
     }
 
     public class TestOutput
