@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home.component';
+import { MeComponent } from './me.component';
 import { CoursesComponent } from './courses.component';
 import { CourseDetailComponent } from './course-detail.component';
 import { ExampleDetailComponent } from './example-detail.component';
@@ -23,6 +24,7 @@ import { HackingService } from './hacking.service';
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
+            { path: 'me', component: MeComponent },
             { path: 'login', component: LoginComponent },
             { path: 'courses', component: CoursesComponent },
             { path: 'course/:name', component: CourseDetailComponent },
@@ -33,6 +35,7 @@ import { HackingService } from './hacking.service';
     declarations: [
         AppComponent,
         HomeComponent,
+        MeComponent,
         CoursesComponent,
         CourseDetailComponent,
         ExampleDetailComponent,

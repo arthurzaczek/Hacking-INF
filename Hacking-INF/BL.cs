@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Web;
 using System.Web.Caching;
@@ -91,6 +92,12 @@ namespace Hacking_INF
 
         public User GetUser(string uid)
         {
+            if (!IsTeacher)
+            {
+                var id = System.Threading.Thread.CurrentPrincipal?.Identity;
+                if (id?.Name != uid)
+                    throw new SecurityException("You have no right to access others results");
+            }
             return _dal.Users.SingleOrDefault(i => i.UID == uid);
         }
 

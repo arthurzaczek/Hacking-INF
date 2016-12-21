@@ -80,6 +80,14 @@ export class HackingService {
             .subscribe();
     }
 
+    getUserDetails(user: User): Observable<User> {
+        if (user == null) {
+            user = this.user;
+        }
+        return this.http.get(this._baseUrl + 'User?uid=' + user.UID)
+            .map(response => response.json() as User);
+    }
+
     getCourses(): Observable<Course[]> {
         return this.http.get(this._baseUrl + 'Info/GetCourses')
             .map(response => response.json() as Course[]);

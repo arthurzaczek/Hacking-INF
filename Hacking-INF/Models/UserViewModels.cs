@@ -4,10 +4,27 @@ using System.Collections.Generic;
 
 namespace Hacking_INF.Models
 {
-    // Models returned by AccountController actions.
-
-    public class LoginViewModel
+    public class UserViewModel
     {
+        public UserViewModel()
+        {
+
+        }
+
+        public UserViewModel(User obj)
+        {
+            Refresh(obj);
+        }
+
+        public void Refresh(User obj)
+        {
+            var target = this;
+            var source = obj;
+
+            target.UID = obj.UID;
+            target.Name = obj.Name;
+        }
+
         public string UID { get; set; }
         public string Name { get; set; }
 
@@ -21,6 +38,8 @@ namespace Hacking_INF.Models
                 return Roles?.Any(i => i == "Teacher") ?? false;
             }
         }
+
+        public IEnumerable<ExampleResultViewModel> Results { get; set; }
 
         public override string ToString()
         {

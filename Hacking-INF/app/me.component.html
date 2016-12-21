@@ -1,0 +1,24 @@
+﻿<h1>Me</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Example</th>
+            <th>Date</th>
+            <th>Time (sec)</th>
+            <th>Testruns</th>
+            <th>Tests</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let r of user.Results" [ngClass]="{'danger': r.NumOfSucceeded==0, 'success': r.NumOfSucceeded > 0 && r.NumOfSucceeded == r.NumOfTests, 'warning': r.NumOfSucceeded > 0 && r.NumOfSucceeded != r.NumOfTests}">
+            <td>{{r.CourseTitle}}</td>
+            <td>{{r.ExampleTitle}}</td>
+            <td>{{r.LastAttempt | date:'dd.MM.yyyy hh:mm'}}</td>
+            <td>{{r.Time}} sec.</td>
+            <td>{{r.NumOfTestRuns}}</td>
+            <td>{{r.NumOfSucceeded}} / {{r.NumOfTests}}</td>
+        </tr>
+    </tbody>
+</table>
+<p class="alert alert-info" *ngIf="isLoading">Loading...</p>

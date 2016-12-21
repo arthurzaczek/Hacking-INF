@@ -40,4 +40,32 @@ export class User {
     Roles: string[];
     IsAuthenticated: boolean;
     IsTeacher: boolean;
+
+    Results: ExampleResult[];
+}
+
+export class ExampleResult {
+    ID: number;
+
+    Course: string;
+    CourseTitle: string;
+    Example: string;
+    ExampleTitle: string;
+
+    FirstAttempt: Date;
+    LastAttempt: Date;
+    Time: number;
+
+    NumOfTests: number;
+    NumOfSucceeded: number;
+    NumOfFailed: number;
+    NumOfErrors: number;
+    NumOfSkipped: number;
+
+    NumOfCompilations: number;
+    NumOfTestRuns: number;
+
+    LinesOfCode: number;
+    CyclomaticComplexity: number;
+    MemErrors: number;
 }

@@ -241,6 +241,7 @@
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InfoController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -256,7 +257,8 @@
       <DependentUpon>201612091324482_Log_Anonymous_Submissions.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ExampleResultViewModel.cs" />
+    <Compile Include="Models\UserViewModels.cs" />
     <Compile Include="Models\Models.cs" />
     <Compile Include="Models\TestViewModel.cs" />
     <Compile Include="Models\ExampleViewModel.cs" />
@@ -272,6 +274,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\admin-download.component.html" />
+    <Content Include="app\me.component.html" />
     <Content Include="app\login.component.html" />
     <Content Include="app\example-detail.component.html" />
     <Content Include="app\home.component.html" />
@@ -758,6 +761,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\admin-download.component.ts" />
+    <TypeScriptCompile Include="app\me.component.ts" />
     <TypeScriptCompile Include="app\login.component.ts" />
     <TypeScriptCompile Include="app\example-detail.component.ts" />
     <TypeScriptCompile Include="app\course-detail.component.ts" />

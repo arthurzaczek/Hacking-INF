@@ -33,7 +33,7 @@ namespace Hacking_INF.Controllers
         // POST api/Account/Login
         [Route("Login")]
         [AllowAnonymous]
-        public IHttpActionResult Login(LoginViewModel vmdl)
+        public IHttpActionResult Login(UserViewModel vmdl)
         {
             var ldapUser = LDAPAuthenticator.Authenticate(vmdl.UID, vmdl.Password);
             if (ldapUser.IsAuthenticated)
@@ -81,12 +81,12 @@ namespace Hacking_INF.Controllers
         [AllowAnonymous]
         public IHttpActionResult WhoAmI()
         {
-            LoginViewModel vmdl = null;
+            UserViewModel vmdl = null;
             var user = _bl.GetCurrentUser();
             if(user != null)
             {
                 var p = System.Threading.Thread.CurrentPrincipal;
-                vmdl = new LoginViewModel();
+                vmdl = new UserViewModel();
                 vmdl.UID = user.UID;
                 vmdl.Name = user.Name;
                 vmdl.Roles = p.IsInRole("Teacher") ? new[] { "Teacher" } : new string[] { };
