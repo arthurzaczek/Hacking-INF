@@ -94,24 +94,28 @@ namespace Hacking_INF.Providers
                 LdapEntry entry = queue.next();
                 if (entry != null)
                 {
-                    sMail = entry.getAttribute("mail").StringValue ?? string.Empty;
-                    sLastName = entry.getAttribute("sn").StringValue ?? string.Empty;
-                    sFirstName = entry.getAttribute("givenName").StringValue ?? string.Empty;
-                    sDisplayName = entry.getAttribute("displayName").StringValue ?? string.Format("{0} {1}", sFirstName, sLastName);
-                    string iGidNumber = entry.getAttribute("gidNumber").StringValue ?? string.Empty; // 101=Technikum, 102=Student
+                    sMail = entry.getAttribute("mail")?.StringValue ?? string.Empty;
+                    sLastName = entry.getAttribute("sn")?.StringValue ?? string.Empty;
+                    sFirstName = entry.getAttribute("givenName")?.StringValue ?? string.Empty;
+                    sDisplayName = entry.getAttribute("displayName")?.StringValue ?? string.Format("{0} {1}", sFirstName, sLastName);
+                    string iGidNumber = entry.getAttribute("gidNumber")?.StringValue ?? string.Empty; // 101=Technikum, 102=Student
 
                     sStudiengang = "";
                     sStudiengangKuerzel = "";
                     sPersonalBezeichnung = "";
                     var oOu = entry.getAttribute("ou");
-                    if (oOu.size() > 0 && iGidNumber == "101") //tw-personal - in ou steht meist Teacher
+                    if (oOu != null && oOu.size() > 0)
                     {
-                        sPersonalBezeichnung = oOu.StringValueArray[1];
-                    }
-                    else if (oOu.size() > 0 && iGidNumber == "102") //student
-                    {
-                        sStudiengang = oOu.StringValueArray[1];
-                        sStudiengangKuerzel = oOu.StringValueArray[2];
+                        switch (iGidNumber)
+                        {
+                            case "101": //tw-personal - in ou steht meist Teacher
+                                sPersonalBezeichnung = oOu.StringValueArray[1];
+                                break;
+                            case "102": //student
+                                sStudiengang = oOu.StringValueArray[1];
+                                sStudiengangKuerzel = oOu.StringValueArray[2];
+                                break;
+                        }
                     }
                 }
 
