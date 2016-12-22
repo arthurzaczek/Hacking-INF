@@ -1,12 +1,14 @@
-#include <stdio.h>
-#include <stdlib.h>
+import java.io.*;
 
-int main()
-{
-    char name[128];
-    printf("Name: ");
-    scanf("%127s", name);
-    printf("Hello %s!\n", name);
-
-    return 0;
+public class Main {
+    public static void main(String[] args) throws Exception {
+		// read name
+		System.out.print("Name: ");
+		BufferedReader in = new BufferedReader(
+		    new InputStreamReader(System.in));
+		String name = in.readLine();
+		
+		// say hello 
+		System.out.println("Hello " + name + "!");
+    }
 }
