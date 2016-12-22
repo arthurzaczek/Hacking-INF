@@ -90,9 +90,9 @@ namespace Hacking_INF
             return null;
         }
 
-        public User GetUser(string uid)
+        public User GetUser(string uid, bool checkAccess = true)
         {
-            if (!IsTeacher)
+            if (!IsTeacher && checkAccess)
             {
                 var id = System.Threading.Thread.CurrentPrincipal?.Identity;
                 if (id?.Name != uid)

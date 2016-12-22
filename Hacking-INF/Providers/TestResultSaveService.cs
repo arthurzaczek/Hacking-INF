@@ -34,7 +34,7 @@ namespace Hacking_INF.Providers
                 using (var scope = _rootScope.BeginLifetimeScope())
                 {
                     var bl = scope.Resolve<BL>();
-                    var user = !string.IsNullOrWhiteSpace(output.UID) ? bl.GetUser(output.UID) : null;
+                    var user = !string.IsNullOrWhiteSpace(output.UID) ? bl.GetUser(output.UID, checkAccess: false) : null;
                     var sessionID = output.SessionID;
 
                     var result = bl.GetExampleResult(user, sessionID, output.Course, output.Example);
