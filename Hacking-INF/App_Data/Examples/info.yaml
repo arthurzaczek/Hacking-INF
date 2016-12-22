@@ -26,6 +26,11 @@
   headline:    Basiskurs Java
   description: Ein Basiskurs in Java
   type:        open
+  filename:    Main.java
+  exe:         c:/tools/java.cmd Main
+  compiler:
+    - cmd:     javac
+      args:    Main.java
 - name:        BMR-PAD1
   title:       BMR/PAD1
   headline:    Alle BMR/PAD1 Beispiele der vergangenen Jahre
