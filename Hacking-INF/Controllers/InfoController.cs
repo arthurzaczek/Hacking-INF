@@ -48,14 +48,14 @@ namespace Hacking_INF.Controllers
                 vmdl.Instruction = _bl.ReadTextFile(angabe);
             }
 
-            var use_this_main = Path.Combine(dir, "src", "use_this_main.c");
-            if (File.Exists(use_this_main))
+            var use_this_main = Directory.GetFiles(Path.Combine(dir, "src"), "use_this_main.*").FirstOrDefault();
+            if (use_this_main != null)
             {
                 vmdl.SourceCode = _bl.ReadTextFile(use_this_main);
             }
             else
             {
-                vmdl.SourceCode = "int main()\n{\n}";
+                vmdl.SourceCode = "";
             }
 
             return vmdl;
