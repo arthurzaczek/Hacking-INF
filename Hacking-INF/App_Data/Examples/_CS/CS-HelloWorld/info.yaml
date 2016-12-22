@@ -1,0 +1,11 @@
+---
+problemtitle:           CS-HelloWorld
+problemshorttitle:      CS HelloWorld
+category:               HelloWorld
+difficulty:             easy (1/5)
+requires:
+    - checkproject
+    
+author: traditional
+created: 2016
+...

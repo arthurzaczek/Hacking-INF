@@ -20,7 +20,12 @@
   title:       Basic C#
   headline:    Basiskurs C#
   description: Ein Basiskurs in C#
-  type:        closed
+  type:        open
+  filename:    Main.cs
+  exe:         c:/tools/mono.cmd Main.exe
+  compiler:
+    - cmd:     csc
+      args:    /out:Main.exe Main.cs
 - name:        _Java
   title:       Basic Java
   headline:    Basiskurs Java
