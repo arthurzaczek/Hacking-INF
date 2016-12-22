@@ -58,7 +58,15 @@ namespace Hacking_INF.Controllers
 
             // Save code
             var codeFileName = example.FileName ?? course.FileName;
-            _bl.WriteTextFile(Path.Combine(workingDir, codeFileName), vmdl.Code);
+            // Get optional main code
+            var ourMainCode = "";
+            var our_main = Directory.GetFiles(Path.Combine(exampleDir, "src"), "our_main.*").FirstOrDefault();
+            if(our_main != null)
+            {
+                ourMainCode = Environment.NewLine + _bl.ReadTextFile(our_main);
+            }
+
+            _bl.WriteTextFile(Path.Combine(workingDir, codeFileName), vmdl.Code + ourMainCode);
 
             var user = _bl.GetCurrentUser();
             if (user != null)

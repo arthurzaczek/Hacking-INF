@@ -1,11 +1,11 @@
 HelloWorld
 =======================
 
-Schreiben Sie ein Java-Programm, das einen Namen (ohne Lehrzeichen) von der Console ausliest und diesen mit "Hallo NAME" wieder ausgeben kann.
+Schreiben Sie ein private Java-Klasse und Methode, die einen übergebenen Namen mit "Hallo NAME" wieder zurück geben kann.
 
 ## Aufgabe 
 
-Lesen Sie mit `scanf()` einen Namen ein und geben Sie `println()` "Hallo " + `name` wieder aus.
+Schreiben Sie eine private Klasse `Greetings` mit einer public Methode `String sayHello(String name)`die "Hallo " + `name` wieder zurück gibt.
 
 ## Beispiele: 
 (Text in rot = Benutzereingabe)
