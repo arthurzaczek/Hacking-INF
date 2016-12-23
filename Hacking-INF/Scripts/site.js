@@ -7,7 +7,7 @@ jsHelper.initHighlightJS = function () {
     });
 };
 
-jsHelper.initEditor = function (code) {
+jsHelper.initEditor = function (code, compileCallback) {
     if (code) {
         editor = ace.edit("src-editor");
         editor.setOptions({
@@ -17,6 +17,13 @@ jsHelper.initEditor = function (code) {
         });
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode("ace/mode/c_cpp");
+        editor.commands.addCommand({
+            name: "save",
+            bindKey: { win: "Ctrl-s", mac: "Command-s" },
+            exec: function (editor) {
+                if (compileCallback) compileCallback();
+            }
+        })
         editor.setValue(code);
     }
 }
