@@ -58,3 +58,7 @@ pre {
 #src-editor {
     height: calc(100vh - 240px);
 }
+
+.couse-panel.description {
+    height: 6em;
+}

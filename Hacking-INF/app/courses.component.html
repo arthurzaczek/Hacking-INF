@@ -1,13 +1,13 @@
 ﻿<h1>List of all Courses</h1>
 <div class="row">
     <div *ngFor="let c of courses" class="col-md-6">
-        <div class="panel" [ngClass]="{'panel-success': c.Type=='Open'||c.Type=='NotDefined', 'panel-danger': c.Type=='Closed', 'panel-warning': c.Type=='Timed' }">
+        <div class="panel couse-panel" [ngClass]="{'panel-success': c.Type=='Open'||c.Type=='NotDefined', 'panel-danger': c.Type=='Closed', 'panel-warning': c.Type=='Timed' }">
             <div class="panel-heading">
                 <h3 class="panel-title">{{c.Title}}</h3>
             </div>
             <div class="panel-body">
                 <strong>{{c.HeadLine}}</strong>
-                <p>
+                <p class="couse-panel description">
                     {{c.Description}}
                 </p>
                 <p>
