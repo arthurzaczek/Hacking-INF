@@ -12,7 +12,7 @@ namespace Hacking_INF.Providers
     public interface ITestResultSaveService
     {
         void Save(TestOutput output);
-        void Save(User user, Guid? sessionID, Course course, Example example, DateTime startTime);
+        void Save(string uid, Guid? sessionID, Course course, Example example, DateTime startTime);
     }
 
     public class TestResultSaveService : ITestResultSaveService
@@ -81,14 +81,15 @@ namespace Hacking_INF.Providers
             }
         }
 
-        public void Save(User user, Guid? sessionID, Course course, Example example, DateTime startTime)
+        public void Save(string uid, Guid? sessionID, Course course, Example example, DateTime startTime)
         {
             try
             {
-                _log.InfoFormat("Saving {0}/{1} for {2}", course, example, user != null ? (object)user.UID : (object)sessionID);
+                _log.InfoFormat("Saving {0}/{1} for {2}", course, example, !string.IsNullOrWhiteSpace(uid) ? (object)uid : sessionID);
                 using (var scope = _rootScope.BeginLifetimeScope())
                 {
                     var bl = scope.Resolve<BL>();
+                    var user = !string.IsNullOrWhiteSpace(uid) ? bl.GetUser(uid, checkAccess: false) : null;
                     var result = bl.GetExampleResult(user, sessionID, course.Name, example.Name);
                     if (result == null)
                     {
@@ -114,7 +115,7 @@ namespace Hacking_INF.Providers
             }
             catch (Exception ex)
             {
-                _log.Error(string.Format("Error saving {0}/{1} for {2}", course, example, user != null ? (object)user.UID : (object)sessionID), ex);
+                _log.Error(string.Format("Error saving {0}/{1} for {2}", course, example, !string.IsNullOrWhiteSpace(uid) ? (object)uid : sessionID), ex);
                 throw;
             }
         }

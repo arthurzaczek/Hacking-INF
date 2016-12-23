@@ -115,7 +115,7 @@ namespace Hacking_INF.Controllers
             else
             {
                 // Just save the compile attempts
-                _saveService.Save(user, sessionGuid, course, example, vmdl.StartTime);
+                _saveService.Save(user?.UID, sessionGuid, course, example, vmdl.StartTime);
             }
 
             return result;
