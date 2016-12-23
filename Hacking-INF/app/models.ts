@@ -31,6 +31,10 @@ export class Test {
     CompileFailed: boolean;
     TestOutput: string;
     TestFinished: boolean;
+
+    NumOfTests: number = 0;
+    NumOfSucceeded: number = 0;
+    Succeeded: boolean = false;
 }
 
 export class User {

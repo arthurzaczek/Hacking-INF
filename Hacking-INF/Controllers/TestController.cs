@@ -139,12 +139,19 @@ namespace Hacking_INF.Controllers
                 TestOutput test;
                 if (_testOutput.TryGetValue(sessionGuid, out test))
                 {
-                    if (test.HasExited)
+                    if (test.IsFinished)
                     {
                         test.Dispose();
                         _testOutput.Remove(sessionGuid);
                     }
-                    return new TestViewModel() { SessionID = sessionID, TestFinished = test.HasExited, TestOutput = test.Output.ToString() };
+                    return new TestViewModel()
+                    {
+                        SessionID = sessionID,
+                        TestFinished = test.IsFinished,
+                        TestOutput = test.Output.ToString(),
+                        NumOfTests = test.NumOfTests,
+                        NumOfSucceeded = test.NumOfSucceeded,
+                    };
                 }
                 else
                 {
@@ -216,8 +223,8 @@ namespace Hacking_INF.Controllers
             p.Exited += (s, e) =>
             {
                 _log.InfoFormat("Process {0} exited with error code {1}", cmd, p.ExitCode);
+                output.Finish();
                 _saveService.Save(output);
-                output.HasExited = true;
                 p.Dispose();
             };
 

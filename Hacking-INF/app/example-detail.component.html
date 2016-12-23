@@ -23,6 +23,9 @@
                 </p>
             </div>
             <div role="tabpanel" class="tab-pane" id="test">
+                <p *ngIf="result.NumOfTests > 0" class="alert" [ngClass]="{'alert-danger': result.NumOfSucceeded==0, 'alert-success': result.NumOfSucceeded > 0 && result.NumOfSucceeded == result.NumOfTests, 'alert-warning': result.NumOfSucceeded > 0 && result.NumOfSucceeded != result.NumOfTests}">
+                    {{result.NumOfSucceeded}} of {{result.NumOfTests}} succeeded
+                </p>
                 <pre>{{result.TestOutput}}</pre>
             </div>
         </div>

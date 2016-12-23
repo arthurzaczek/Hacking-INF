@@ -48,18 +48,20 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
         var self = this;
         let timer = Observable.timer(1000, 1000);
         timer.subscribe(t => {
-            var diff = new Date().getTime() - new Date(self.example.StartTime).getTime();
+            if (!self.result.Succeeded) {
+                var diff = new Date().getTime() - new Date(self.example.StartTime).getTime();
 
-            var hours = Math.floor(diff / (1000 * 60 * 60));
-            diff -= hours * (1000 * 60 * 60);
+                var hours = Math.floor(diff / (1000 * 60 * 60));
+                diff -= hours * (1000 * 60 * 60);
 
-            var mins = Math.floor(diff / (1000 * 60));
-            diff -= mins * (1000 * 60);
+                var mins = Math.floor(diff / (1000 * 60));
+                diff -= mins * (1000 * 60);
 
-            var seconds = Math.floor(diff / (1000));
-            diff -= seconds * (1000);
+                var seconds = Math.floor(diff / (1000));
+                diff -= seconds * (1000);
 
-            self.timeElapsed = ('00' + hours).substr(-2, 2) + ":" + ('00' + mins).substr(-2, 2) + ":" + ('00' + seconds).substr(-2, 2);
+                self.timeElapsed = ('00' + hours).substr(-2, 2) + ":" + ('00' + mins).substr(-2, 2) + ":" + ('00' + seconds).substr(-2, 2);
+            }
         });
     }
 
@@ -117,6 +119,10 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
         this.hackingService
             .getTestResult(this.example.SessionID)
             .subscribe(data => {
+                this.result.NumOfSucceeded = data.NumOfSucceeded;
+                this.result.NumOfTests = data.NumOfTests;
+                this.result.Succeeded = data.Succeeded;
+
                 if (data.TestOutput != "") {
                     this.result.TestOutput = data.TestOutput;
                 }

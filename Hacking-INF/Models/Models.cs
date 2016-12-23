@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Xml;
 using YamlDotNet.Serialization;
 
 namespace Hacking_INF.Models
@@ -102,11 +103,35 @@ namespace Hacking_INF.Models
         public string UID { get; private set; }
         public Guid SessionID { get; private set; }
         public DateTime StartTime { get; private set; }
-        public bool HasExited { get; set; }
+        public bool IsFinished { get; private set; }
+
+        public int NumOfTests { get; private set; }
+        public int NumOfErrors { get; private set; }
+        public int NumOfFailed { get; private set; }
+        public int NumOfSkipped { get; private set; }
+        public int NumOfSucceeded { get; private set; }
 
         public void Dispose()
         {
             Process?.Dispose();
+        }
+        public void Finish()
+        {
+            IsFinished = true;
+            if (System.IO.File.Exists(XUnitFile))
+            {
+                var xml = new XmlDocument();
+                xml.Load(XUnitFile);
+                var node = xml.SelectSingleNode("//testsuite | //test-results");
+                if (node != null)
+                {
+                    NumOfTests = int.Parse(node.Attributes["total"]?.Value ?? "0") + int.Parse(node.Attributes["tests"]?.Value ?? "0");
+                    NumOfErrors = int.Parse(node.Attributes["errors"]?.Value ?? "0");
+                    NumOfFailed = int.Parse(node.Attributes["failures"]?.Value ?? "0");
+                    NumOfSkipped = int.Parse(node.Attributes["skipped"]?.Value ?? "0");
+                    NumOfSucceeded = NumOfTests - NumOfErrors - NumOfFailed;
+                }
+            }
         }
     }
 

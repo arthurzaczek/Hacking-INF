@@ -20,6 +20,17 @@ namespace Hacking_INF.Models
         public string TestOutput { get; set; }
         public bool TestFinished { get; set; }
 
+        public int NumOfTests { get; set; }
+        public int NumOfSucceeded { get; set; }
+
+        public bool Succeeded
+        {
+            get
+            {
+                return NumOfTests > 0 && NumOfTests == NumOfSucceeded;
+            }
+        }
+
         public TestViewModel()
         {
 
