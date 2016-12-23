@@ -117,11 +117,11 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
         this.hackingService
             .getTestResult(this.example.SessionID)
             .subscribe(data => {
+                if (data.TestOutput != "") {
+                    this.result.TestOutput = data.TestOutput;
+                }
                 if (data.TestFinished == false) {
                     setTimeout(() => this.updateTestResult(), 1000);
-                    if (data.TestOutput != "") {
-                        this.result.TestOutput = data.TestOutput;
-                    }
                 }
             });
     }
