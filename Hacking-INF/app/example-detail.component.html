@@ -2,6 +2,9 @@
 <div *ngIf="!user.IsAuthenticated" class="alert alert-warning">
     Warning! You are not authenticated. To get personal statistics and badges you have to login. <a class="btn btn-default" routerLink="/login">Login</a>
 </div>
+<div *ngIf="hasError" class="alert alert-danger">
+    ERROR! {{errorMessage}}
+</div>
 <div class="row">
     <div class="col-md-6">
         <ul class="nav nav-tabs" role="tablist">

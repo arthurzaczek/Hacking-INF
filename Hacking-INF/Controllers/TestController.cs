@@ -3,6 +3,7 @@ using Hacking_INF.Providers;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -61,7 +62,7 @@ namespace Hacking_INF.Controllers
             // Get optional main code
             var ourMainCode = "";
             var our_main = Directory.GetFiles(Path.Combine(exampleDir, "src"), "our_main.*").FirstOrDefault();
-            if(our_main != null)
+            if (our_main != null)
             {
                 ourMainCode = Environment.NewLine + _bl.ReadTextFile(our_main);
             }
@@ -76,7 +77,7 @@ namespace Hacking_INF.Controllers
                 lock (_lock)
                 {
                     var store = _submissionStoreFactory(course.Name, example.Name, user.UID);
-                    store.Save(codeFileName, new System.IO.MemoryStream (Encoding.UTF8.GetBytes(vmdl.Code)));
+                    store.Save(codeFileName, new System.IO.MemoryStream(Encoding.UTF8.GetBytes(vmdl.Code)));
                     store.Commit(string.Format("{0} submitted", codeFileName));
                     _log.InfoFormat("{0}.{1} commited by {2}", course.Name, example.Name, user.UID);
                     _logSubmission.InfoFormat("{0}.{1};{2};{3}", course.Name, example.Name, user.UID, _bl.GetClientIp(Request));
@@ -131,17 +132,19 @@ namespace Hacking_INF.Controllers
                 foreach (var kv in _testOutput.Where(i => i.Value.CreatedOn <= dt).ToList())
                 {
                     _log.InfoFormat("Removing zombie session {0}", kv.Key);
+                    kv.Value.Dispose();
                     _testOutput.Remove(kv.Key);
                 }
 
                 TestOutput test;
                 if (_testOutput.TryGetValue(sessionGuid, out test))
                 {
-                    if (test.Process.HasExited)
+                    if (test.HasExited)
                     {
+                        test.Dispose();
                         _testOutput.Remove(sessionGuid);
                     }
-                    return new TestViewModel() { SessionID = sessionID, TestFinished = false, TestOutput = test.Output.ToString() };
+                    return new TestViewModel() { SessionID = sessionID, TestFinished = test.HasExited, TestOutput = test.Output.ToString() };
                 }
                 else
                 {
@@ -152,30 +155,41 @@ namespace Hacking_INF.Controllers
 
         private int Exec(string cmd, string args, string workingDir, StringBuilder sb)
         {
-            var p = new Process();
-            p.StartInfo.FileName = cmd;
-            p.StartInfo.Arguments = args;
-            p.StartInfo.WorkingDirectory = workingDir;
-            p.StartInfo.UseShellExecute = false;
-
-            p.EnableRaisingEvents = true;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.RedirectStandardError = true;
-            p.OutputDataReceived += (s, e) => sb.AppendLine(e.Data);
-            p.ErrorDataReceived += (s, e) => sb.AppendLine(e.Data);
-
-            p.Start();
-            p.BeginErrorReadLine();
-            p.BeginOutputReadLine();
-            if (p.WaitForExit(10000))
+            using (var p = new Process())
             {
-                _log.InfoFormat("Process {0} exited with error code {1}", cmd, p.ExitCode);
-                return p.ExitCode;
-            }
-            else
-            {
-                _log.WarnFormat("Process {0} did not exited within 10 sec.");
-                return 1; // generic fail.
+                p.StartInfo.FileName = cmd;
+                p.StartInfo.Arguments = args;
+                p.StartInfo.WorkingDirectory = workingDir;
+                p.StartInfo.UseShellExecute = false;
+
+                p.EnableRaisingEvents = true;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardError = true;
+                p.OutputDataReceived += (s, e) => sb.AppendLine(e.Data);
+                p.ErrorDataReceived += (s, e) => sb.AppendLine(e.Data);
+
+                p.Start();
+                p.BeginErrorReadLine();
+                p.BeginOutputReadLine();
+                if (p.WaitForExit(10000))
+                {
+                    _log.InfoFormat("Process {0} exited with error code {1}", cmd, p.ExitCode);
+                    return p.ExitCode;
+                }
+                else
+                {
+                    _log.WarnFormat("Process {0} did not exited within 10 sec.");
+                    try
+                    {
+                        p.Kill();
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Warn("  unable to kill process", ex);
+                    }
+
+                    return 1; // generic fail.
+                }
             }
         }
 
@@ -203,6 +217,8 @@ namespace Hacking_INF.Controllers
             {
                 _log.InfoFormat("Process {0} exited with error code {1}", cmd, p.ExitCode);
                 _saveService.Save(output);
+                output.HasExited = true;
+                p.Dispose();
             };
 
             p.Start();

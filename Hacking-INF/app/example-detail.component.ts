@@ -27,6 +27,9 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
     result: Test = <Test>{};
     user: User = <User>{};
 
+    hasError: boolean = false;
+    errorMessage: String = "";
+
     timeElapsed: string = "00:00:00";
 
     ngOnInit(): void {
@@ -72,19 +75,31 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
 
     public compile(): void {
         var code = jsHelper.getCode();
+        this.result = new Test();
+        this.result.CompileOutput = "Compiling...";
+        jsHelper.showTab('compiler');
+
         this.hackingService
             .compile(this.course.Name, this.example.Name, this.example.SessionID, this.example.StartTime, code)
             .subscribe(data => {
+                this.hasError = false;
                 this.result = data;
-                jsHelper.showTab('compiler');
+            }, error => {
+                this.hasError = true;
+                this.errorMessage = "A server error occurred.";
             });
     }
 
     public test(): void {
         var code = jsHelper.getCode();
+        this.result = new Test();
+        this.result.CompileOutput = "Compiling...";
+        jsHelper.showTab('compiler');
+
         this.hackingService
             .test(this.course.Name, this.example.Name, this.example.SessionID, this.example.StartTime, code)
             .subscribe(data => {
+                this.hasError = false;
                 this.result = data;
                 if (this.result.CompileFailed) {
                     jsHelper.showTab('compiler');
@@ -92,6 +107,9 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
                     jsHelper.showTab('test');
                     this.updateTestResult();
                 }
+            }, error => {
+                this.hasError = true;
+                this.errorMessage = "A server error occurred.";
             });
     }
 

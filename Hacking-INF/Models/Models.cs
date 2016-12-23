@@ -81,7 +81,7 @@ namespace Hacking_INF.Models
         public List<Compiler> Compiler { get; set; }
     }
 
-    public class TestOutput
+    public class TestOutput : IDisposable
     {
         public TestOutput(Process p, User user, Guid sessionID, Course course, Example example, string workingDir, DateTime startTime)
         {
@@ -102,6 +102,12 @@ namespace Hacking_INF.Models
         public string UID { get; private set; }
         public Guid SessionID { get; private set; }
         public DateTime StartTime { get; private set; }
+        public bool HasExited { get; set; }
+
+        public void Dispose()
+        {
+            Process?.Dispose();
+        }
     }
 
 
