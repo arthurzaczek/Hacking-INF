@@ -284,7 +284,15 @@ namespace Hacking_INF
 
         public void KillProcessTree(Process process)
         {
-            if (process.HasExited) return;
+            try
+            {
+                if (process.HasExited) return;
+            }
+            catch
+            {
+                // Is already disposed
+                return;
+            }
 
             _log.InfoFormat("Killing process {0} ({1})", process.ProcessName, process.Id);
 
