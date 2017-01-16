@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
-import { Course, Example, Test, User } from './models';
+import { Course, Example, Test, User, Category } from './models';
 
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
@@ -97,6 +97,12 @@ export class HackingService {
         return this.http.get(this._baseUrl + 'Info/GetCourse?name=' + name)
             .toPromise()
             .then(response => response.json() as Course);
+    }
+
+    getCategories(course: string): Promise<Category[]> {
+        return this.http.get(this._baseUrl + 'Info/GetCategories?course=' + course)
+            .toPromise()
+            .then(response => response.json() as Category[]);
     }
 
     getExamples(course: string): Promise<Example[]> {

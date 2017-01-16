@@ -29,6 +29,8 @@ namespace Hacking_INF.Models
         public string HeadLine { get; set; }
         [YamlMember(Alias = "description")]
         public string Description { get; set; }
+        [YamlMember(Alias = "categories")]
+        public List<Category> Categories { get; set; }
         [YamlMember(Alias = "type")]
         public Types Type { get; set; }
 
@@ -48,6 +50,16 @@ namespace Hacking_INF.Models
         public string Args { get; set; }
         [YamlMember(Alias = "log")]
         public string Log { get; set; }
+    }
+
+    public class Category
+    {
+        [YamlMember(Alias = "name")]
+        public string Name { get; set; }
+        [YamlMember(Alias = "title")]
+        public string Title { get; set; }
+        [YamlMember(Alias = "description")]
+        public string Description { get; set; }
     }
 
     public class Example

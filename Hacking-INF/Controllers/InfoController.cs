@@ -11,6 +11,7 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace Hacking_INF.Controllers
 {
+    [RoutePrefix("api/Info")]
     public class InfoController : ApiController
     {
         private BL _bl;
@@ -20,20 +21,29 @@ namespace Hacking_INF.Controllers
             _bl = bl;
         }
 
+        [Route("GetCourses")]
         public IEnumerable<CourseViewModel> GetCourses()
         {
             return _bl.GetCourses().Select(i => new CourseViewModel(i));
         }
+        [Route("GetCourse")]
         public CourseViewModel GetCourse(string name)
         {
             return new CourseViewModel(_bl.GetCourses().Single(i => i.Name == name));
         }
+        [Route("GetCategories")]
+        public IEnumerable<CategoryViewModel> GetCategories(string course)
+        {
+            return _bl.GetCourses().Single(i => i.Name == course).Categories?.Select(i => new CategoryViewModel(i));
+        }
 
+        [Route("GetExamples")]
         public IEnumerable<ExampleViewModel> GetExamples(string course)
         {
             return _bl.GetExamples(course).Select(i => new ExampleViewModel(i));
         }
 
+        [Route("GetExample")]
         public ExampleViewModel GetExample(string course, string name)
         {
             var dir = _bl.GetExampleDir(course, name);

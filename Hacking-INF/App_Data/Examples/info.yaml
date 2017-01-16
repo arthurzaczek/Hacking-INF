@@ -2,6 +2,10 @@
   title:       Basic C
   headline:    Basiskurs C
   description: Ein Basiskurs in C
+  categories:
+    - name:         helloworld
+      title:        Hello World
+      description:  Basic programs
   type:        open
   filename:    main.c
   exe:         main.exe
@@ -20,6 +24,10 @@
   title:       Basic C#
   headline:    Basiskurs C#
   description: Ein Basiskurs in C#
+  categories:
+    - name:         helloworld
+      title:        Hello World
+      description:  Basic programs
   type:        open
   filename:    Main.cs
   exe:         c:/tools/mono.cmd Main.exe
@@ -30,6 +38,10 @@
   title:       Basic Java
   headline:    Basiskurs Java
   description: Ein Basiskurs in Java
+  categories:
+    - name:         helloworld
+      title:        Hello World
+      description:  Basic programs
   type:        open
   filename:    Main.java
   exe:         c:/tools/java.cmd Main
@@ -41,6 +53,19 @@
   headline:    Alle BMR/PAD1 Beispiele der vergangenen Jahre
   description: Hier haben Sie die Gelegenheit, 
                alle BMR/PAD1 Beispiele der vergangenen Jahre zu üben
+  categories:
+    - name:         helloworld
+      title:        Hello World
+      description:  Basic programs
+    - name:         formatted output
+      title:        Formatted Output
+      description:  Basic formating examples
+    - name:         2 dimensional arrays
+      title:        2 dimensional Arrays
+      description:  Definition and usage of 2 dimensional arrays
+    - name:         functions
+      title:        Functions
+      description:  Definition and usage of functions
   filename:    main.c
   exe:         main.exe
   compiler:
@@ -59,6 +84,10 @@
   headline:    Alle BMR/PAD2 Beispiele der vergangenen Jahre
   description: Hier haben Sie die Gelegenheit, 
                alle BMR/PAD2 Beispiele der vergangenen Jahre zu üben
+  categories:
+    - name:         helloworld
+      title:        Hello World
+      description:  Basic programs
   filename:    main.c
   exe:         main.exe
   compiler:

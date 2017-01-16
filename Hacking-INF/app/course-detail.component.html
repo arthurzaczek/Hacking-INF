@@ -1,24 +1,44 @@
 ﻿<h1>Kurs {{course.Title}}</h1>
-<div *ngFor="let e of examples" class="panel" [ngClass]="{'panel-success': e.Type=='Open'||e.Type=='NotDefined', 'panel-danger': e.Type=='Closed', 'panel-warning': e.Type=='Timed' }">
-    <div class="panel-heading">
-        <h3 class="panel-title">{{e.Title}}</h3>
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-6">
-                <p>{{e.Difficulty}}</p>
-                <p>{{e.Description}}</p>
-            </div>
-            <div class="col-md-6">
-                <p>Kategorie: {{e.Category}}</p>
-                <p>Benötigtes Vorwissen:</p>
-                <ul>
-                    <li *ngFor="let r of e.Requires">{{r}}</li>
-                </ul>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div *ngFor="let cat of categories" class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{cat.Name}}">
+                    {{cat.Title}}
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-{{cat.Name}}" class="panel-collapse collapse" role="tabpanel">
+            <div class="panel-body">
+                <p class="well">
+                    {{cat.Description}}
+                </p>
+                <div *ngFor="let e of cat.Examples" class="panel" [ngClass]="{'panel-success': e.Type=='Open'||e.Type=='NotDefined', 'panel-danger': e.Type=='Closed', 'panel-warning': e.Type=='Timed' }">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{e.Title}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>{{e.Difficulty}}</p>
+                                <p>{{e.Description}}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>Kategorie: {{e.Category}}</p>
+                                <p>Benötigtes Vorwissen:</p>
+                                <ul>
+                                    <li *ngFor="let r of e.Requires">{{r}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p>
+                            <a [routerLink]="['/example', course.Name, e.Name]" class="btn btn-success pull-right">Lösen</a>
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </div>
-        <p>
-            <a [routerLink]="['/example', course.Name, e.Name]" class="btn btn-success pull-right">Lösen</a>
-        </p>
     </div>
 </div>
+

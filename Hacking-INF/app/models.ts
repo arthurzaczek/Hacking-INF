@@ -4,6 +4,13 @@
     Type: string;
 }
 
+export class Category {
+    Name: string;
+    Title: string;
+    Description: string;
+    Examples: Example[];
+}
+
 export class Example {
     Name: string;
     Title: string;

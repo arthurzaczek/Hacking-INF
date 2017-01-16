@@ -41,7 +41,7 @@ namespace Hacking_INF.Models
             target.Title = source.Title;
             target.Description = source.Description;
             target.Type = source.Type.ToString();
-            target.Category = source.Category;
+            target.Category = source.Category.ToValidName();
             target.Difficulty = source.Difficulty;
             target.Requires = source.Requires ?? new List<string>();
         }

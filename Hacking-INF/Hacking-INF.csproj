@@ -243,6 +243,7 @@
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DAL.cs" />
+    <Compile Include="ExtensionHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -257,6 +258,7 @@
       <DependentUpon>201612091324482_Log_Anonymous_Submissions.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\ExampleResultViewModel.cs" />
     <Compile Include="Models\UserViewModels.cs" />
     <Compile Include="Models\Models.cs" />

@@ -6,34 +6,30 @@ using YamlDotNet.Serialization;
 
 namespace Hacking_INF.Models
 {
-    public class CourseViewModel
+    public class CategoryViewModel
     {
         public string Name { get; set; }
         public string Title { get; set; }
-        public string HeadLine { get; set; }
         public string Description { get; set; }
-        public string Type { get; set; }
-
-        public CourseViewModel()
+ 
+        public CategoryViewModel()
         {
 
         }
 
-        public CourseViewModel(Course obj)
+        public CategoryViewModel(Category obj)
         {
             Refresh(obj);
         }
 
-        public void Refresh(Course obj)
+        public void Refresh(Category obj)
         {
             var target = this;
             var source = obj;
 
-            target.Name = source.Name;
+            target.Name = source.Name.ToValidName();
             target.Title = source.Title;
-            target.HeadLine = source.HeadLine;
             target.Description = source.Description;
-            target.Type = source.Type.ToString();
         }
     }
 }
