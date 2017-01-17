@@ -1,0 +1,22 @@
+﻿name:        _C
+title:       Basic C
+headline:    Basiskurs C
+description: Ein Basiskurs in C
+categories:
+  - name:         helloworld
+    title:        Hello World
+    description:  Basic programs
+type:        open
+filename:    main.c
+exe:         main.exe
+compiler:
+  - cmd:     gcc
+    args:    -Wall -g -pedantic -Wextra -std=c99 -ggdb -static-libgcc -c main.c
+    log:     |
+      Compiler
+      ---------------------------
+  - cmd:     gcc
+    args:    -o main.exe main.o
+    log:     |
+      Linker
+      ---------------------------

@@ -1,0 +1,31 @@
+﻿name:        BMR-PAD1
+title:       BMR/PAD1
+headline:    Alle BMR/PAD1 Beispiele der vergangenen Jahre
+description: Hier haben Sie die Gelegenheit, 
+             alle BMR/PAD1 Beispiele der vergangenen Jahre zu üben
+categories:
+  - name:         helloworld
+    title:        Hello World
+    description:  Basic programs
+  - name:         formatted output
+    title:        Formatted Output
+    description:  Basic formating examples
+  - name:         2 dimensional arrays
+    title:        2 dimensional Arrays
+    description:  Definition and usage of 2 dimensional arrays
+  - name:         functions
+    title:        Functions
+    description:  Definition and usage of functions
+filename:    main.c
+exe:         main.exe
+compiler:
+  - cmd:     gcc
+    args:    -Wall -g -pedantic -Wextra -std=c99 -ggdb -static-libgcc -c main.c
+    log:    |
+      Compiler
+      ---------------------------
+  - cmd:     gcc
+    args:    -o main.exe main.o
+    log:    |
+      Linker
+      ---------------------------

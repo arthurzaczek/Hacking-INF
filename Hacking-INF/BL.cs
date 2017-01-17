@@ -132,9 +132,22 @@ namespace Hacking_INF
                 if (result == null || isTeacher)
                 {
                     _log.Info("Reading & caching all courses");
-                    string fileName = GetFileName(ExamplesDir, "info.yaml");
-                    result = ReadYAML<IEnumerable<Course>>(fileName);
-                    result = result
+                    var list = new List<Course>();
+                    var fileNames = new List<string>();
+                    foreach (var dir in Directory.GetDirectories(ExamplesDir))
+                    {
+                        try
+                        {
+                            string fileName = GetFileName(dir, "info.yaml");
+                            fileNames.Add(fileName);
+                            list.Add(ReadYAML<Course>(fileName));
+                        }
+                        catch (FileNotFoundException)
+                        {
+                            _log.WarnFormat("Directory {0} contains no info.yaml", Path.GetFileName(dir));
+                        }
+                    }
+                    result = list
                         .Select(i =>
                         {
                             if (i.Type == Types.NotDefined)
@@ -145,7 +158,7 @@ namespace Hacking_INF
                         .ToList();
                     if (!isTeacher)
                     {
-                        System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_courses__", result, new CacheDependency(fileName));
+                        System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_courses__", result, new CacheDependency(fileNames.ToArray()));
                     }
                 }
                 return result;

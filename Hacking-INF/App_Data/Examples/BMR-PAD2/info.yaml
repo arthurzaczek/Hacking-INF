@@ -1,0 +1,22 @@
+﻿name:        BMR-PAD2
+title:       BMR/PAD2
+headline:    Alle BMR/PAD2 Beispiele der vergangenen Jahre
+description: Hier haben Sie die Gelegenheit, 
+             alle BMR/PAD2 Beispiele der vergangenen Jahre zu üben
+categories:
+  - name:         helloworld
+    title:        Hello World
+    description:  Basic programs
+filename:    main.c
+exe:         main.exe
+compiler:
+  - cmd:     gcc
+    args:    -Wall -g -pedantic -Wextra -std=c99 -ggdb -static-libgcc -c main.c
+    log:     |
+      Compiler
+      ---------------------------
+  - cmd:     gcc
+    args:    -o main.exe main.o
+    log:     |
+      Linker
+      ---------------------------
