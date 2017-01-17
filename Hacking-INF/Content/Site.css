@@ -46,6 +46,7 @@ tr.inactive {
     text-decoration: line-through;
 }
 
+span.stdin .hljs-number,
 span.stdin {
     color: red;
 }

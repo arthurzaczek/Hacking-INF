@@ -7,7 +7,7 @@ Schreiben Sie ein C-Programm, das nach der Eingabe Ihres Alters Ihr Alter wieder
 
 Hierfür soll das Alter unterschiedlich formatiert werden:
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.text}
 %d
 %+d
 % d
@@ -20,7 +20,7 @@ Hierfür soll das Alter unterschiedlich formatiert werden:
 ## Beispiele: 
 (Text in rot = Benutzereingabe)
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.text}
 Your age: \stdin{37}
 %d:   ~37~
 %+d:  ~+37~
