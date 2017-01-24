@@ -1,0 +1,18 @@
+---
+problemtitle:           Java-HelloWorld
+problemshorttitle:      Java HelloWorld
+category:               HelloWorld
+difficulty:             easy (1/5)
+requires:
+    - checkproject
+    
+author: traditional
+created: 2016
+
+# course overrides
+filename:    Main.java
+exe:         /usr/bin/java Main
+compiler:
+- cmd:     javac
+  args:    Main.java
+...

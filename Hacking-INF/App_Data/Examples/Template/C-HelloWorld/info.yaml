@@ -1,0 +1,28 @@
+---
+problemtitle:           C-HelloWorld
+problemshorttitle:      C HelloWorld
+category:               HelloWorld
+difficulty:             easy (1/5)
+requires:
+    - checkproject
+    
+author: traditional
+created: 2016
+
+# course overrides
+type:        closed
+filename:    main.c
+exe:         main.exe
+compiler:
+- cmd:     gcc
+  args:    -Wall -g -pedantic -Wextra -std=c99 -ggdb -static-libgcc -c main.c
+  log:    |
+    Compiler
+    ---------------------------
+- cmd:     gcc
+  args:    -o main.exe main.o
+  log:    |
+    Linker
+    ---------------------------
+
+...

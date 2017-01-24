@@ -1,0 +1,28 @@
+---
+problemtitle:           CPP-HelloWorld
+problemshorttitle:      C++ HelloWorld
+category:               HelloWorld
+difficulty:             easy (1/5)
+requires:
+    - checkproject
+    
+author: traditional
+created: 2017
+
+# course overrides
+type:        closed
+filename:    main.cpp
+exe:         main.exe
+compiler:
+- cmd:     g++
+  args:    -Wall -fexceptions -g -pedantic-errors -pedantic -Wextra -c main.cpp -o main.o
+  log:    |
+    Compiler
+    ---------------------------
+- cmd:     g++
+  args:    -o main.exe main.o
+  log:    |
+    Linker
+    ---------------------------
+
+...

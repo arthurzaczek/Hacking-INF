@@ -1,0 +1,9 @@
+﻿name:        Template
+title:       Template
+headline:    Templates for examples
+description: Templates for all possible kinds of examples
+categories:
+  - name:         helloworld
+    title:        Hello World
+    description:  Basic programs
+type:        closed
