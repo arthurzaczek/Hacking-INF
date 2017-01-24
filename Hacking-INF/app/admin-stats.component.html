@@ -6,6 +6,7 @@
             <th>Example</th>
             <th>First Attempt</th>
             <th>Last Attempt</th>
+            <th># Attempts</th>
             <th>Avg. Time (sec)</th>
             <th>Avg. Testruns</th>
             <th>Avg. Tests</th>
@@ -17,6 +18,7 @@
             <td>{{r.ExampleTitle}}</td>
             <td>{{r.FirstAttempt | date:'dd.MM.yyyy hh:mm'}}</td>
             <td>{{r.LastAttempt | date:'dd.MM.yyyy hh:mm'}}</td>
+            <td>{{r.NumOfAttempts}}</td>
             <td>{{r.Time}} sec.</td>
             <td>{{r.NumOfTestRuns}}</td>
             <td>{{r.NumOfSucceeded}} / {{r.NumOfTests}}</td>

@@ -87,6 +87,7 @@ namespace Hacking_INF.Controllers
                 Example = i.FirstOrDefault().Example,
                 FirstAttempt = i.Min(p => p.FirstAttempt),
                 LastAttempt = i.Max(p => p.LastAttempt),
+                NumOfAttempts = i.Count(),
 
                 Time = i.Average(p => p.Time),
 
@@ -107,6 +108,7 @@ namespace Hacking_INF.Controllers
 
                     FirstAttempt = i.FirstAttempt,
                     LastAttempt = i.LastAttempt,
+                    NumOfAttempts = i.NumOfAttempts,
 
                     Time = (int?)i.Time,
 

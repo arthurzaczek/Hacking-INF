@@ -67,6 +67,7 @@ export class ExampleResult {
     FirstAttempt: Date;
     LastAttempt: Date;
     Time: number;
+    NumOfAttempts: number;
 
     NumOfTests: number;
     NumOfSucceeded: number;

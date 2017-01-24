@@ -21,6 +21,7 @@ namespace Hacking_INF.Models
         /// Time needed in seconds
         /// </summary>
         public int? Time { get; set; }
+        public int NumOfAttempts { get; set; } = 1;
 
         public int NumOfTests { get; set; }
         public int NumOfSucceeded { get; set; }
