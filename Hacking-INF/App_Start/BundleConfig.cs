@@ -20,7 +20,7 @@ namespace Hacking_INF
 
             bundles.Add(new ScriptBundle("~/bundles/scripts")
                 .Include(
-                    "~/node_modules/marked/marked.js",
+                    "~/node_modules/marked/marked.min.js",
                     "~/Scripts/jquery-{version}.js",
                     "~/Scripts/bootstrap.js",
                     "~/Scripts/highlight.pack.js",
