@@ -33,7 +33,7 @@ jsHelper.getCode = function () {
 }
 
 jsHelper.showTab = function (tab) {
-    $('a[href=#' + tab + ']').tab('show');
+    $('a[href="#' + tab + '"]').tab('show');
 }
 
 jsHelper.showWaitDialog = function () {
