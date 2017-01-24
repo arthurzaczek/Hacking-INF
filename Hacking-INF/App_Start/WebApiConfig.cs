@@ -14,15 +14,6 @@ namespace Hacking_INF
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
-            // Configure Web API to use only bearer token authentication.
-            // TODO: Workaround until JWT is implemented
-            // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-            // config.SuppressDefaultHostAuthentication(); 
-            // config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
-            // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            // TODO: Workaround until JWT is implemented
-
             config.Formatters.JsonFormatter.SupportedMediaTypes
                 .Add(new MediaTypeHeaderValue("text/html"));
 

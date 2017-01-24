@@ -774,6 +774,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\admin-download.component.ts" />
+    <TypeScriptCompile Include="app\http-client.ts" />
     <TypeScriptCompile Include="app\me.component.ts" />
     <TypeScriptCompile Include="app\login.component.ts" />
     <TypeScriptCompile Include="app\example-detail.component.ts" />

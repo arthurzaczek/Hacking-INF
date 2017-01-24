@@ -2,9 +2,11 @@
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
 using log4net;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -16,14 +18,15 @@ namespace Hacking_INF
     public class WebApiApplication : System.Web.HttpApplication
     {
         private readonly ILog _log = LogManager.GetLogger(typeof(WebApiApplication));
+
         protected void Application_Start()
         {
             log4net.Config.XmlConfigurator.Configure();
-            
+
             _log.Info("** Starting Application **");
 
             BuildMasterContainer();
-            
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -37,7 +40,7 @@ namespace Hacking_INF
 
             // Register your MVC controllers.
             builder.RegisterControllers(typeof(WebApiApplication).Assembly);
-            builder.RegisterApiControllers(typeof(WebApiApplication).Assembly); 
+            builder.RegisterApiControllers(typeof(WebApiApplication).Assembly);
 
             builder.RegisterModule<EntityFrameworkModule>();
             builder.RegisterModule<HackingModule>();
@@ -52,6 +55,22 @@ namespace Hacking_INF
         {
             base.Init();
             this.Error += new EventHandler(WebApiApplication_Error);
+            this.AuthenticateRequest += WebApiApplication_AuthenticateRequest;
+        }
+
+        private void WebApiApplication_AuthenticateRequest(object sender, EventArgs e)
+        {
+            var bl = Autofac.Integration.Mvc.AutofacDependencyResolver.Current.GetService<BL>();
+            if (bl != null)
+            {
+                var authToken = Request.Headers["Authorization"]?.Split(' ')?[1];
+                var principal = bl.ValidateJwt(authToken);
+                if (principal != null)
+                {
+                    HttpContext.Current.User = principal;
+                    System.Threading.Thread.CurrentPrincipal = principal;
+                }
+            }
         }
 
         void WebApiApplication_Error(object sender, EventArgs e)

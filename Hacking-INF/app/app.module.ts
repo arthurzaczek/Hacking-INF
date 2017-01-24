@@ -15,6 +15,7 @@ import { AdminDownloadComponent } from './admin-download.component';
 
 import { MarkdownComponent } from './markdown.component';
 import { HackingService } from './hacking.service';
+import { HttpClient } from './http-client';
 
 @NgModule({
     imports: [
@@ -44,7 +45,8 @@ import { HackingService } from './hacking.service';
         MarkdownComponent,
     ],
     providers: [
-        HackingService
+        HackingService,
+        HttpClient,
     ],
     bootstrap: [AppComponent]
 })

@@ -1,11 +1,15 @@
 ﻿using Hacking_INF.Models;
 using log4net;
+using Microsoft.AspNet.Identity;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Web;
 using System.Web.Caching;
@@ -56,6 +60,13 @@ namespace Hacking_INF
                 return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Submissions");
             }
         }
+        public string DataDir
+        {
+            get
+            {
+                return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data");
+            }
+        }
 
         public void SaveChanges()
         {
@@ -80,7 +91,7 @@ namespace Hacking_INF
                 {
                     user = _dal.CreateUser();
                     user.UID = id.Name;
-                    user.Name = (id as System.Security.Claims.ClaimsIdentity)?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? id.Name;
+                    user.Name = (id as ClaimsIdentity)?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? id.Name;
                     _dal.SaveChanges();
                 }
 
@@ -88,6 +99,94 @@ namespace Hacking_INF
             }
 
             return null;
+        }
+
+        public IPrincipal ValidateJwt(string authToken)
+        {
+            if (string.IsNullOrWhiteSpace(authToken)) return null;
+
+            var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(GetSecretKey()));
+            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256Signature);
+
+            var validationParameters = new TokenValidationParameters();
+            validationParameters.ValidIssuer = "https://hacking-inf.technikum-wien.at";
+            validationParameters.ValidAudience = "https://hacking-inf.technikum-wien.at";
+            validationParameters.IssuerSigningKey = signingKey;
+
+            try
+            {
+                SecurityToken validatedToken;
+                return tokenHandler.ValidateToken(authToken, validationParameters, out validatedToken);
+            }
+            catch (SecurityTokenException)
+            {
+                return null;
+            }
+            catch(Exception ex)
+            {
+                _log.Warn("Unable to validate Jwt", ex);
+                return null;
+            }
+        }
+
+        public string CreateJwt(UserViewModel vmdl)
+        {
+            var claims = new List<Claim>();
+
+            // create required claims
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, vmdl.Name));
+            claims.Add(new Claim(ClaimTypes.Name, vmdl.UID));
+            claims.Add(new Claim(ClaimTypes.Role, string.Join(",", vmdl.Roles)));
+
+            var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ExternalBearer);
+
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(GetSecretKey()));
+            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256Signature);
+            var securityTokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Audience = "https://hacking-inf.technikum-wien.at",
+                Issuer = "https://hacking-inf.technikum-wien.at",
+                Subject = identity,
+                SigningCredentials = signingCredentials,
+                IssuedAt = DateTime.Now,
+                Expires = DateTime.Now.AddDays(14)
+            };
+            var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var plainToken = tokenHandler.CreateToken(securityTokenDescriptor);
+
+            return tokenHandler.WriteToken(plainToken);
+        }
+
+        private static string _secretKey = null;
+        public string GetSecretKey()
+        {
+            lock (_lock)
+            {
+                if (_secretKey == null)
+                {
+                    var file = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data"), "SecretKey.txt");
+                    if (!File.Exists(file))
+                    {
+                        _secretKey = Guid.NewGuid().ToString();
+                        using (var sw = new StreamWriter(file))
+                        {
+                            sw.BaseStream.SetLength(0);
+                            sw.Write(_secretKey);
+                        }
+                    }
+                    else
+                    {
+                        using (var sr = new StreamReader(file))
+                        {
+                            _secretKey = sr.ReadToEnd().Trim();
+                        }
+                    }
+                }
+
+                return _secretKey;
+            }
         }
 
         public User GetUser(string uid, bool checkAccess = true)

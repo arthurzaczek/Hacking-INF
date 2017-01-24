@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { HttpClient } from './http-client';
 
 import { Course, Example, Test, User, Category } from './models';
 
@@ -19,9 +19,11 @@ export class HackingService {
     get user(): User {
         return this._user;
     }
-    
-    constructor(private http: Http) {
+
+    constructor(private http: HttpClient) {
         this._user.Name = "Anonymous";
+        let token = localStorage.getItem("__jwt__");
+        this.http.setJwt(token);
     }
 
     login(user: User): Observable<User> {
@@ -36,8 +38,12 @@ export class HackingService {
                 self._user = response.json() as User;
                 if (self._user == null) {
                     self._user = new User();
+                    this.http.setJwt(null);
+                    localStorage.removeItem("__jwt__");
                 } else {
                     self._user.IsAuthenticated = true;
+                    this.http.setJwt(self._user.Jwt);
+                    localStorage.setItem("__jwt__", self._user.Jwt);
                 }
                 self._userLoginSource.next(self._user);
                 return self._user;
@@ -45,22 +51,16 @@ export class HackingService {
     }
 
     logout(): void {
-        var self = this;
-        this.http.post(this._baseUrl + 'Account/Logout', { logout: true })
-            .catch(error => {
-                console.log(error);
-                return Observable.throw(error);
-            })
-            .map(response => {
-                self._user = new User();
-                self._user.IsAuthenticated = false;
-                self._userLoginSource.next(self._user);
-                return self._user;
-            })
-            .subscribe();
+        this.http.setJwt(null);
+        localStorage.removeItem("__jwt__");
+        this._user = new User();
+        this._user.IsAuthenticated = false;
+        this._userLoginSource.next(this._user);
     }
 
     whoAmI(): void {
+        if (!this.http.hasJwt()) return;
+
         var self = this;
         this.http.get(this._baseUrl + 'Account/WhoAmI')
             .catch(error => {
@@ -71,8 +71,12 @@ export class HackingService {
                 self._user = response.json() as User;
                 if (self._user == null) {
                     self._user = new User();
+                    this.http.setJwt(null);
+                    localStorage.removeItem("__jwt__");
                 } else {
                     self._user.IsAuthenticated = true;
+                    this.http.setJwt(self._user.Jwt);
+                    localStorage.setItem("__jwt__", self._user.Jwt);
                 }
                 self._userLoginSource.next(self._user);
                 return self._user;

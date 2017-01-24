@@ -48,6 +48,7 @@ export class User {
     UID: string;
     Name: string;
     Password: string;
+    Jwt: string;
     Roles: string[];
     IsAuthenticated: boolean;
     IsTeacher: boolean;

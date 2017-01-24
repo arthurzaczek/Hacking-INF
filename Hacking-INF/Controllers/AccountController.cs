@@ -16,6 +16,7 @@ using Microsoft.Owin.Security.OAuth;
 using Hacking_INF.Models;
 using Hacking_INF.Providers;
 using Hacking_INF.Results;
+using System.Text;
 
 namespace Hacking_INF.Controllers
 {
@@ -40,39 +41,15 @@ namespace Hacking_INF.Controllers
             {
                 vmdl.Roles = new[] { ldapUser.PersonalType };
                 vmdl.Name = ldapUser.Fullname;
-
-                var claims = new List<Claim>();
-
-                // create required claims
-                claims.Add(new Claim(ClaimTypes.NameIdentifier, vmdl.Name));
-                claims.Add(new Claim(ClaimTypes.Name, vmdl.UID));
-                claims.Add(new Claim(ClaimTypes.Role, string.Join(",", vmdl.Roles)));
-
-                var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
-
-                AuthenticationManager.SignIn(new AuthenticationProperties()
-                {
-                    AllowRefresh = true,
-                    IsPersistent = false,
-                    ExpiresUtc = DateTime.UtcNow.AddDays(7)
-                }, identity);
-
                 vmdl.Password = null; // don't send password back to client
+                vmdl.Jwt = _bl.CreateJwt(vmdl);
+
                 return Ok(vmdl);
             }
             else
             {
                 return Unauthorized();
             }
-        }
-
-
-        // POST api/Account/Logout
-        [Route("Logout")]
-        public IHttpActionResult Logout()
-        {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return Ok();
         }
 
         // POST api/Account/WhoAmI
@@ -90,13 +67,9 @@ namespace Hacking_INF.Controllers
                 vmdl.UID = user.UID;
                 vmdl.Name = user.Name;
                 vmdl.Roles = p.IsInRole("Teacher") ? new[] { "Teacher" } : new string[] { };
-            } 
+                vmdl.Jwt = _bl.CreateJwt(vmdl); // Refresh token
+            }
             return Ok(vmdl);
-        }
-
-        private IAuthenticationManager AuthenticationManager
-        {
-            get { return Request.GetOwinContext().Authentication; }
         }
     }
 }

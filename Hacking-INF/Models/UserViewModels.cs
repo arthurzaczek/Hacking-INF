@@ -29,6 +29,7 @@ namespace Hacking_INF.Models
         public string Name { get; set; }
 
         public string Password { get; set; }
+        public string Jwt { get; set; }
 
         public string[] Roles { get; set; } = new string[] { };
         public bool IsTeacher
