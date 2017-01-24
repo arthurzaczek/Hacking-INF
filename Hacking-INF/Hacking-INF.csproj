@@ -277,6 +277,7 @@
   <ItemGroup>
     <Content Include="app\admin-download.component.html" />
     <Content Include="app\info.component.html" />
+    <Content Include="app\admin-stats.component.html" />
     <Content Include="app\me.component.html" />
     <Content Include="app\login.component.html" />
     <Content Include="app\example-detail.component.html" />
@@ -777,6 +778,7 @@
     <TypeScriptCompile Include="app\admin-download.component.ts" />
     <TypeScriptCompile Include="app\info.component.ts" />
     <TypeScriptCompile Include="app\http-client.ts" />
+    <TypeScriptCompile Include="app\admin-stats.component.ts" />
     <TypeScriptCompile Include="app\me.component.ts" />
     <TypeScriptCompile Include="app\login.component.ts" />
     <TypeScriptCompile Include="app\example-detail.component.ts" />

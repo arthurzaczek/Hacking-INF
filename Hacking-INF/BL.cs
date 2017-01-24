@@ -206,6 +206,11 @@ namespace Hacking_INF
             return _dal.ExampleResults.SingleOrDefault(i => (i.User.UID == userUID || i.SessionID == sessionID) && i.Course == course && i.Example == example);
         }
 
+        public IQueryable<ExampleResult> GetExampleResults()
+        {
+            return _dal.ExampleResults;
+        }
+
         public ExampleResult CreateExampleResult()
         {
             return _dal.CreateExampleResult();

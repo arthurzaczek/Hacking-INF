@@ -13,6 +13,7 @@ import { CourseDetailComponent } from './course-detail.component';
 import { ExampleDetailComponent } from './example-detail.component';
 import { LoginComponent } from './login.component';
 import { AdminDownloadComponent } from './admin-download.component';
+import { AdminStatsComponent } from './admin-stats.component';
 
 import { MarkdownComponent } from './markdown.component';
 import { HackingService } from './hacking.service';
@@ -33,6 +34,7 @@ import { HttpClient } from './http-client';
             { path: 'course/:name', component: CourseDetailComponent },
             { path: 'example/:course/:name', component: ExampleDetailComponent },
             { path: 'admin-download', component: AdminDownloadComponent },
+            { path: 'admin-stats', component: AdminStatsComponent },
         ])
     ],
     declarations: [
@@ -45,6 +47,7 @@ import { HttpClient } from './http-client';
         ExampleDetailComponent,
         LoginComponent,
         AdminDownloadComponent,
+        AdminStatsComponent,
         MarkdownComponent,
     ],
     providers: [

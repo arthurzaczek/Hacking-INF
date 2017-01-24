@@ -1,4 +1,5 @@
-﻿using Hacking_INF.Providers;
+﻿using Hacking_INF.Models;
+using Hacking_INF.Providers;
 using Ionic.Zip;
 using log4net;
 using System;
@@ -74,6 +75,45 @@ namespace Hacking_INF.Controllers
             }
 
             return result;
+        }
+
+        [Route("GetStats")]
+        [HttpGet]
+        public ExampleResultViewModel[] GetStats()
+        {
+            var results = _bl.GetExampleResults().GroupBy(i => i.Course + "-" + i.Example).Select(i => new
+            {
+                Course = i.FirstOrDefault().Course,
+                Example = i.FirstOrDefault().Example,
+                FirstAttempt = i.Min(p => p.FirstAttempt),
+                LastAttempt = i.Max(p => p.LastAttempt),
+
+                Time = i.Average(p => p.Time),
+
+                NumOfTestRuns = i.Average(p => p.NumOfTestRuns),
+                NumOfSucceeded = i.Average(p => p.NumOfSucceeded),
+                NumOfTests = i.Max(p => p.NumOfTests),
+            }).ToList();
+
+            return results
+                .OrderBy(i => i.Course)
+                .ThenBy(i => i.Example)
+                .Select(i => new ExampleResultViewModel()
+                {
+                    Course = i.Course,
+                    CourseTitle = i.Course,
+                    Example = i.Example,
+                    ExampleTitle = i.Example,
+
+                    FirstAttempt = i.FirstAttempt,
+                    LastAttempt = i.LastAttempt,
+
+                    Time = (int?)i.Time,
+
+                    NumOfTestRuns = (int)i.NumOfTestRuns,
+                    NumOfSucceeded = (int)i.NumOfSucceeded,
+                    NumOfTests = i.NumOfTests,
+                }).ToArray();
         }
     }
 }

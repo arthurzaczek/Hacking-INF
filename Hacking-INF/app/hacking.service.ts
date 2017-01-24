@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient } from './http-client';
 
-import { Course, Example, Test, User, Category } from './models';
+import { Course, Example, Test, User, Category, ExampleResult } from './models';
 
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
@@ -90,6 +90,11 @@ export class HackingService {
         }
         return this.http.get(this._baseUrl + 'User?uid=' + user.UID)
             .map(response => response.json() as User);
+    }
+
+    getAdminStats(): Observable<ExampleResult[]> {
+        return this.http.get(this._baseUrl + 'Admin/GetStats')
+            .map(response => response.json() as ExampleResult[]);
     }
 
     getCourses(): Observable<Course[]> {
