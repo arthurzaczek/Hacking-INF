@@ -312,6 +312,7 @@ namespace Hacking_INF
                     _log.Info("Reading & caching all examples of course " + course);
                     var path = Path.Combine(ExamplesDir, course);
                     var courseObj = GetCourses().Single(i => i.Name == course);
+                    var orderList = courseObj.Categories.Where(c => c.Examples != null).SelectMany(c => c.Examples).ToList();
                     var now = DateTime.Now;
                     result = Directory.GetDirectories(path)
                         .Select(dir =>
@@ -321,6 +322,10 @@ namespace Hacking_INF
                                 var example = ReadYAML<Example>(GetFileName(dir, "info.yaml"));
                                 example.Course = course;
                                 example.Name = Path.GetFileName(dir);
+
+                                example.Order = orderList.IndexOf(example.Name);
+                                if (example.Order < 0) example.Order = int.MaxValue;
+
                                 if (example.Type == Types.NotDefined)
                                     example.Type = courseObj.Type;
 
@@ -374,8 +379,10 @@ namespace Hacking_INF
 
                             return false; // Fail save. Show less, maybe we're missing a exam example                  
                         })
-                        .OrderBy(i => i.Title)
+                        .OrderBy(i => i.Order)
+                        .ThenBy(i => i.Title)
                         .ToList();
+
                     if (!isTeacher)
                     {
                         System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_examples__" + course, result, new CacheDependency(path));

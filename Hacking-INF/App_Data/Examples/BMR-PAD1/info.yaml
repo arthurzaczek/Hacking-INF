@@ -7,9 +7,14 @@ categories:
   - name:         helloworld
     title:        Hello World
     description:  Basic programs
+    examples:
+      - HelloWorld
+      - EndlessLoop
   - name:         formatted output
     title:        Formatted Output
     description:  Basic formating examples
+    examples:
+      - Age_of_Empires
   - name:         2 dimensional arrays
     title:        2 dimensional Arrays
     description:  Definition and usage of 2 dimensional arrays

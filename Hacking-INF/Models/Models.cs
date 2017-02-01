@@ -60,6 +60,8 @@ namespace Hacking_INF.Models
         public string Title { get; set; }
         [YamlMember(Alias = "description")]
         public string Description { get; set; }
+        [YamlMember(Alias = "examples")]
+        public string[] Examples { get; set; }
     }
 
     public class Example
@@ -92,6 +94,7 @@ namespace Hacking_INF.Models
         public string FileName { get; set; }
         [YamlMember(Alias = "compiler")]
         public List<Compiler> Compiler { get; set; }
+        public int Order { get; set; }
     }
 
     public class TestOutput : IDisposable
