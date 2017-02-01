@@ -15,7 +15,7 @@ jsHelper.initEditor = function (code, compileCallback) {
             enableSnippets: true,
             enableLiveAutocompletion: false
         });
-        editor.setTheme("ace/theme/monokai");
+        editor.setTheme("ace/theme/chrome");
         editor.getSession().setMode("ace/mode/c_cpp");
         editor.commands.addCommand({
             name: "save",
