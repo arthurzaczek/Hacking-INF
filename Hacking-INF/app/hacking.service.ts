@@ -84,6 +84,13 @@ export class HackingService {
             .subscribe();
     }
 
+    getAccessToken(): Observable<string> {
+        if (!this.http.hasJwt()) return Observable.throw("Not logged in");
+
+        return this.http.get(this._baseUrl + 'Account/GetToken')
+            .map(response => response.json() as string);
+    }
+
     getUserDetails(user: User): Observable<User> {
         if (user == null) {
             user = this.user;

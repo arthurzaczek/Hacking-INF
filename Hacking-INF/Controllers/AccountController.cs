@@ -52,7 +52,7 @@ namespace Hacking_INF.Controllers
             }
         }
 
-        // POST api/Account/WhoAmI
+        // GET api/Account/WhoAmI
         [Route("WhoAmI")]
         [HttpGet]
         [AllowAnonymous]
@@ -70,6 +70,19 @@ namespace Hacking_INF.Controllers
                 vmdl.Jwt = _bl.CreateJwt(vmdl); // Refresh token
             }
             return Ok(vmdl);
+        }
+
+        // GET api/Account/GetToken
+        [Route("GetToken")]
+        [HttpGet]
+        public IHttpActionResult GetToken()
+        {
+            var user = _bl.GetCurrentUser();
+            if (user != null)
+            {
+                return Ok(_bl.GetAccessToken());
+            }
+            return Unauthorized();
         }
     }
 }

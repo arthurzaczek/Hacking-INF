@@ -159,6 +159,37 @@ namespace Hacking_INF
             return tokenHandler.WriteToken(plainToken);
         }
 
+        private static Dictionary<Guid, IPrincipal> _tokenList = new Dictionary<Guid, IPrincipal>();
+        public Guid GetAccessToken()
+        {
+            if (System.Threading.Thread.CurrentPrincipal == null) throw new InvalidOperationException("Get Access Token can only be called when authenticated");
+
+            var token = Guid.NewGuid();
+            lock(_lock)
+            {
+                _tokenList[token] = System.Threading.Thread.CurrentPrincipal;
+            }
+
+            return token;
+        }
+
+        public IPrincipal ValidateAccessToken(Guid token)
+        {
+            if (token == default(Guid)) return null;
+
+            IPrincipal user;
+            lock(_lock)
+            {
+                if(_tokenList.TryGetValue(token, out user))
+                {
+                    _tokenList.Remove(token);
+                    return user;
+                }
+            }
+
+            return null;
+        }
+
         private static string _secretKey = null;
         public string GetSecretKey()
         {

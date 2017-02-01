@@ -28,8 +28,10 @@ export class AdminDownloadComponent implements OnInit {
     }
 
     download(): void {
-        if(this.selectedCourse != null) {
-            window.open("/api/Admin/Download?course=" + encodeURIComponent(this.selectedCourse.Name) + "&example=" + encodeURIComponent(this.exampleName));
+        if (this.selectedCourse != null) {
+            this.hackingService.getAccessToken().subscribe(token => {
+                window.open("/api/Admin/Download?course=" + encodeURIComponent(this.selectedCourse.Name) + "&example=" + encodeURIComponent(this.exampleName) + "&token=" + encodeURIComponent(token));
+            });
         }
     }
 }

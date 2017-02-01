@@ -29,8 +29,12 @@ namespace Hacking_INF.Controllers
 
         [Route("Download")]
         [HttpGet]
-        public HttpResponseMessage Download(string course, string example)
+        [AllowAnonymous]
+        public HttpResponseMessage Download(string course, string example, Guid token)
         {
+            var user = _bl.ValidateAccessToken(token);
+            if (user == null || !user.IsInRole("Teacher")) return new HttpResponseMessage(HttpStatusCode.Unauthorized);
+
             if (string.IsNullOrWhiteSpace(example))
             {
                 example = ".*";
