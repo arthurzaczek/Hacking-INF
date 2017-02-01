@@ -17,6 +17,7 @@ namespace Hacking_INF.Models
         public string Difficulty { get; set; }
         public List<string> Requires { get; set; }
         public string SourceCode { get; set; }
+        public string UseThisMain { get; set; }
         public string Instruction { get; set; }
         public Guid SessionID { get; set; }
         public DateTime StartTime { get; set; }

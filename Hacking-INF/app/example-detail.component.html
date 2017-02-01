@@ -9,6 +9,7 @@
     <div class="col-md-6">
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#instruction" aria-controls="instruction" role="tab" data-toggle="tab">Instructions</a></li>
+            <li role="presentation"><a href="#usethismain" aria-controls="usethismain" role="tab" data-toggle="tab">Use this main</a></li>
             <li role="presentation"><a href="#compiler" aria-controls="compiler" role="tab" data-toggle="tab">Compiler</a></li>
             <li role="presentation"><a href="#test" aria-controls="test" role="tab" data-toggle="tab">Tests</a></li>
         </ul>
@@ -16,6 +17,9 @@
             <div role="tabpanel" class="tab-pane active" id="instruction">
                 <markdown [data]="example.Instruction"></markdown>
             </div>            
+            <div role="tabpanel" class="tab-pane" id="usethismain">
+                <pre>{{example.UseThisMain}}</pre>
+            </div>
             <div role="tabpanel" class="tab-pane" id="compiler">
                 <pre>{{result.CompileOutput}}</pre>
                 <p>

@@ -202,6 +202,7 @@ namespace Hacking_INF
 
         public ExampleResult GetExampleResult(User user, Guid? sessionID, string course, string example)
         {
+            if (user == null && sessionID == null) return null;
             var userUID = user?.UID;
             return _dal.ExampleResults.SingleOrDefault(i => (i.User.UID == userUID || i.SessionID == sessionID) && i.Course == course && i.Example == example);
         }

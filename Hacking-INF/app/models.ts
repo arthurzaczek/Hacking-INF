@@ -21,6 +21,7 @@ export class Example {
     Difficulty: string;
     Requires: string[];
     SourceCode: string;
+    UseThisMain: string;
     Instruction: string;
     SessionID: string;
     StartTime: Date;
