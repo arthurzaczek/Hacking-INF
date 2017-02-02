@@ -35,7 +35,7 @@ namespace Hacking_INF
                 )
             );
 
-            bundles.Add(new StyleBundle("~/Content/css")
+            bundles.Add(new StyleBundle("~/bundles/css")
                 .Include(
                     "~/Content/bootstrap.css",
                     "~/Content/highlight/zenburn.css",
