@@ -6,12 +6,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="favicon.png" />
+    <script type="text/javascript">
+        __baseUrl = "@Url.Content("~/")";
+    </script>
     @Styles.Render("~/bundles/css")
 
     @Scripts.Render("~/bundles/angular")
     @Scripts.Render("~/bundles/scripts")
     @Scripts.Render("~/bundles/extra-scripts")
-    <script>
+    <script type="text/javascript">
         System.import('app').catch(function (err) { console.error(err); });
     </script>
 </head>
