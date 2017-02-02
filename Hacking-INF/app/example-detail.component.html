@@ -12,6 +12,7 @@
             <li role="presentation"><a href="#usethismain" aria-controls="usethismain" role="tab" data-toggle="tab">Use this main</a></li>
             <li role="presentation"><a href="#compiler" aria-controls="compiler" role="tab" data-toggle="tab">Compiler</a></li>
             <li role="presentation"><a href="#test" aria-controls="test" role="tab" data-toggle="tab">Tests</a></li>
+            <li role="presentation"><a href="#testcases" aria-controls="test" role="tab" data-toggle="tab">Test cases</a></li>
         </ul>
         <div class="tab-content" id="tab-example-instructions">
             <div role="tabpanel" class="tab-pane active" id="instruction">
@@ -31,6 +32,15 @@
                     {{result.NumOfSucceeded}} of {{result.NumOfTests}} succeeded
                 </p>
                 <pre>{{result.TestOutput}}</pre>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="testcases">
+                <div *ngFor="let t of example.TestFiles">
+                    <h3>{{t.Name}}</h3>
+                    <strong>Input:</strong>
+                    <pre>{{t.In}}</pre>
+                    <strong>Expected output:</strong>
+                    <pre>{{t.SExp}}</pre>
+                </div>
             </div>
         </div>
     </div>

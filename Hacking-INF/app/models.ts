@@ -23,8 +23,16 @@ export class Example {
     SourceCode: string;
     UseThisMain: string;
     Instruction: string;
+    TestFiles: TestFile[];
+
     SessionID: string;
     StartTime: Date;
+}
+
+export class TestFile {
+    Name: string;
+    In: string;
+    SExp: string;
 }
 
 export class Test {

@@ -260,6 +260,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\ExampleResultViewModel.cs" />
+    <Compile Include="Models\TestFileViewModel.cs" />
     <Compile Include="Models\UserViewModels.cs" />
     <Compile Include="Models\Models.cs" />
     <Compile Include="Models\TestViewModel.cs" />

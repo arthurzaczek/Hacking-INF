@@ -92,6 +92,20 @@ namespace Hacking_INF.Controllers
                 vmdl.SourceCode = vmdl.UseThisMain;
             }
 
+            vmdl.TestFiles = Directory.GetFiles(Path.Combine(dir, "tests"), "*.in").Select(inFile => 
+            {
+                var path = Path.GetDirectoryName(inFile);
+                var result = new TestFileViewModel();
+                result.Name = Path.GetFileNameWithoutExtension(inFile);
+
+                result.In = _bl.ReadTextFile(inFile);
+                result.SExp = _bl.ReadTextFile(Path.Combine(path, result.Name + ".sexp"));
+
+                return result;
+            })
+            .OrderBy(i => i.Name)
+            .ToList();
+
             return vmdl;
         }
     }
