@@ -9,6 +9,7 @@ jsHelper.initHighlightJS = function () {
 
 jsHelper.initEditor = function (code, compileCallback) {
     if (code) {
+        ace.config.set("basePath", "/Scripts/ace");
         editor = ace.edit("src-editor");
         editor.setOptions({
             enableBasicAutocompletion: true,
