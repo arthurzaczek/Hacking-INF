@@ -39,6 +39,11 @@ namespace Hacking_INF.Controllers
         {
             return _bl.GetCourses().Single(i => i.Name == course).Categories?.Select(i => new CategoryViewModel(i));
         }
+        [Route("GetCompilerMessages")]
+        public IEnumerable<CompilerMessageViewModel> GetCompilerMessages()
+        {
+            return _bl.GetCompilerMessages().Select(i => new CompilerMessageViewModel(i));
+        }
 
         [Route("GetExamples")]
         public IEnumerable<ExampleViewModel> GetExamples(string course)

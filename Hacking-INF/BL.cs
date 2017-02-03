@@ -60,6 +60,7 @@ namespace Hacking_INF
                 return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Submissions");
             }
         }
+
         public string DataDir
         {
             get
@@ -124,7 +125,7 @@ namespace Hacking_INF
             {
                 return null;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _log.Warn("Unable to validate Jwt", ex);
                 return null;
@@ -159,13 +160,18 @@ namespace Hacking_INF
             return tokenHandler.WriteToken(plainToken);
         }
 
+        public void CleanupOldReportedCompilerMessages()
+        {
+            _dal.CleanupOldReportedCompilerMessages();
+        }
+
         private static Dictionary<Guid, IPrincipal> _tokenList = new Dictionary<Guid, IPrincipal>();
         public Guid GetAccessToken()
         {
             if (System.Threading.Thread.CurrentPrincipal == null) throw new InvalidOperationException("Get Access Token can only be called when authenticated");
 
             var token = Guid.NewGuid();
-            lock(_lock)
+            lock (_lock)
             {
                 _tokenList[token] = System.Threading.Thread.CurrentPrincipal;
             }
@@ -178,9 +184,9 @@ namespace Hacking_INF
             if (token == default(Guid)) return null;
 
             IPrincipal user;
-            lock(_lock)
+            lock (_lock)
             {
-                if(_tokenList.TryGetValue(token, out user))
+                if (_tokenList.TryGetValue(token, out user))
                 {
                     _tokenList.Remove(token);
                     return user;
@@ -247,7 +253,18 @@ namespace Hacking_INF
         {
             return _dal.CreateExampleResult();
         }
+        public ReportedCompilerMessages CreateReportedCompilerMessages()
+        {
+            var obj = _dal.CreateReportedCompilerMessages();
+            obj.Date = DateTime.Now;
+            obj.User = GetCurrentUser();
+            return obj;
+        }
 
+        public IQueryable<ReportedCompilerMessages> GetReportedCompilerMessages()
+        {
+            return _dal.ReportedCompilerMessages;
+        }
 
         public string GetWorkingDir(Guid sessionID)
         {
@@ -326,8 +343,15 @@ namespace Hacking_INF
                                 example.Order = orderList.IndexOf(example.Name);
                                 if (example.Order < 0) example.Order = int.MaxValue;
 
+                                // Inheritance
                                 if (example.Type == Types.NotDefined)
                                     example.Type = courseObj.Type;
+
+                                if (string.IsNullOrWhiteSpace(example.FileName))
+                                    example.FileName = courseObj.FileName;
+
+                                if (string.IsNullOrWhiteSpace(example.Exe))
+                                    example.Exe = courseObj.Exe;
 
                                 return example;
                             }
@@ -391,6 +415,36 @@ namespace Hacking_INF
                 return result;
             }
         }
+
+        public IEnumerable<CompilerMessage> GetCompilerMessages()
+        {
+            lock (_lock)
+            {
+                var result = (IEnumerable<CompilerMessage>)System.Web.Hosting.HostingEnvironment.Cache.Get("__all_compiler_messages__");
+                var isTeacher = IsTeacher;
+                if (result == null || isTeacher)
+                {
+                    _log.Info("Reading & caching all compiler messages");
+                    var path = Path.Combine(ExamplesDir, "compiler-messages.yaml");
+
+                    if (File.Exists(path))
+                    {
+                        result = ReadYAML<IEnumerable<CompilerMessage>>(path);
+                    }
+                    else
+                    {
+                        result = new List<CompilerMessage>();
+                    }
+
+                    if (!isTeacher)
+                    {
+                        System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_compiler_messages__", result, new CacheDependency(path));
+                    }
+                }
+                return result;
+            }
+        }
+
 
         public string ReadTextFile(string fileName)
         {

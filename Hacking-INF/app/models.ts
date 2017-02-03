@@ -35,6 +35,29 @@ export class TestFile {
     SExp: string;
 }
 
+export class CompilerMessage {
+    Message: string;
+    Hint: string;
+}
+
+export class CompilerMessageHint {
+    Message: string;
+    Hint: string;
+}
+
+export class ReportedCompilerMessage {
+    Course: string;
+    CourseTitle: string;
+    Example: string;
+    ExampleTitle: string;
+
+    UID: string;
+    Date: Date;
+
+    Message: string;
+    Hint: string;
+}
+
 export class Test {
     Course: string;
     Example: string;

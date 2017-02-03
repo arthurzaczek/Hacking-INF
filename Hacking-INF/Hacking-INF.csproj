@@ -257,9 +257,15 @@
     <Compile Include="Migrations\201612091324482_Log_Anonymous_Submissions.Designer.cs">
       <DependentUpon>201612091324482_Log_Anonymous_Submissions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702021420397_ReportedCompilerMessages.cs" />
+    <Compile Include="Migrations\201702021420397_ReportedCompilerMessages.Designer.cs">
+      <DependentUpon>201702021420397_ReportedCompilerMessages.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoryViewModel.cs" />
+    <Compile Include="Models\ReportedCompilerMessageViewModel.cs" />
     <Compile Include="Models\ExampleResultViewModel.cs" />
+    <Compile Include="Models\CompilerMessageViewModel.cs" />
     <Compile Include="Models\TestFileViewModel.cs" />
     <Compile Include="Models\UserViewModels.cs" />
     <Compile Include="Models\Models.cs" />
@@ -277,6 +283,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\admin-download.component.html" />
+    <Content Include="app\admin-compiler-messages.component.html" />
     <Content Include="app\info.component.html" />
     <Content Include="app\admin-stats.component.html" />
     <Content Include="app\me.component.html" />
@@ -778,6 +785,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\admin-download.component.ts" />
+    <TypeScriptCompile Include="app\admin-compiler-messages.component.ts" />
     <TypeScriptCompile Include="app\info.component.ts" />
     <TypeScriptCompile Include="app\http-client.ts" />
     <TypeScriptCompile Include="app\admin-stats.component.ts" />
@@ -805,6 +813,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612091324482_Log_Anonymous_Submissions.resx">
       <DependentUpon>201612091324482_Log_Anonymous_Submissions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702021420397_ReportedCompilerMessages.resx">
+      <DependentUpon>201702021420397_ReportedCompilerMessages.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient } from './http-client';
 
-import { Course, Example, Test, User, Category, ExampleResult } from './models';
+import { Course, Example, Test, User, Category, ExampleResult, CompilerMessage, ReportedCompilerMessage } from './models';
 
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
@@ -104,6 +104,11 @@ export class HackingService {
             .map(response => response.json() as ExampleResult[]);
     }
 
+    getAdminReportedCompilerMessages(): Observable<ReportedCompilerMessage[]> {
+        return this.http.get(this._baseUrl + 'Admin/GetReportedCompilerMessages')
+            .map(response => response.json() as ReportedCompilerMessage[]);
+    }
+
     getCourses(): Observable<Course[]> {
         return this.http.get(this._baseUrl + 'Info/GetCourses')
             .map(response => response.json() as Course[]);
@@ -119,6 +124,13 @@ export class HackingService {
         return this.http.get(this._baseUrl + 'Info/GetCategories?course=' + course)
             .toPromise()
             .then(response => response.json() as Category[]);
+    }
+
+    getCompilerMessages(): Promise<CompilerMessage[]> {
+        // TODO: Cache them
+        return this.http.get(this._baseUrl + 'Info/GetCompilerMessages')
+            .toPromise()
+            .then(response => response.json() as CompilerMessage[]);
     }
 
     getExamples(course: string): Promise<Example[]> {

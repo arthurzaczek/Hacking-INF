@@ -1,0 +1,44 @@
+﻿<h1>Compiler Messages</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Example</th>
+            <th>Date</th>
+            <th>Uid</th>
+            <th>Code &amp; Messages</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let m of messages">
+            <td>{{m.CourseTitle}}</td>
+            <td>{{m.ExampleTitle}}</td>
+            <td>{{m.Date | date:'dd.MM.yyyy hh:mm'}}</td>
+            <td>{{m.UID}}</td>
+            <td>
+                <button type="button" class="btn btn-default" (click)="showDetails(m)" data-toggle="modal" data-target="#detailsDialog">View</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="detailsDialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Details</h4>
+            </div>
+            <div class="modal-body">
+                <pre>{{detail.Code}}</pre>
+                <pre>{{detail.Messages}}</pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p class="alert alert-info" *ngIf="isLoading">Loading...</p>

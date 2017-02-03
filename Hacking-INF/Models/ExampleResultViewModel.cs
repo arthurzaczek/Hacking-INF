@@ -51,6 +51,7 @@ namespace Hacking_INF.Models
             var target = this;
             var source = obj;
 
+            target.ID = source.ID;
             target.Course = source.Course;
             target.Example = source.Example;
 

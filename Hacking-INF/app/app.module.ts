@@ -14,6 +14,7 @@ import { ExampleDetailComponent } from './example-detail.component';
 import { LoginComponent } from './login.component';
 import { AdminDownloadComponent } from './admin-download.component';
 import { AdminStatsComponent } from './admin-stats.component';
+import { AdminCompilerMessagesComponent } from './admin-compiler-messages.component';
 
 import { MarkdownComponent } from './markdown.component';
 import { HackingService } from './hacking.service';
@@ -35,6 +36,7 @@ import { HttpClient } from './http-client';
             { path: 'example/:course/:name', component: ExampleDetailComponent },
             { path: 'admin-download', component: AdminDownloadComponent },
             { path: 'admin-stats', component: AdminStatsComponent },
+            { path: 'admin-compiler-messages', component: AdminCompilerMessagesComponent },
         ])
     ],
     declarations: [
@@ -48,6 +50,7 @@ import { HttpClient } from './http-client';
         LoginComponent,
         AdminDownloadComponent,
         AdminStatsComponent,
+        AdminCompilerMessagesComponent,
         MarkdownComponent,
     ],
     providers: [

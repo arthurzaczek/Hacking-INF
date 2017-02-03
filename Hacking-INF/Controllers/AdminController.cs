@@ -121,5 +121,22 @@ namespace Hacking_INF.Controllers
                     NumOfTests = i.NumOfTests,
                 }).ToArray();
         }
+
+        [Route("GetReportedCompilerMessages")]
+        [HttpGet]
+        public ReportedCompilerMessageViewModel[] GetReportedCompilerMessages()
+        {
+            return _bl.GetReportedCompilerMessages()
+                .OrderBy(i => i.Course)
+                .ThenBy(i => i.Example)
+                .ThenByDescending(i => i.Date)
+                .ToList()
+                .Select(i => new ReportedCompilerMessageViewModel(i)
+                {
+                    CourseTitle = i.Course,
+                    ExampleTitle = i.Example,
+                })
+                .ToArray();
+        }
     }
 }

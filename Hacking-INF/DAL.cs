@@ -35,9 +35,12 @@ namespace Hacking_INF
     {
         IQueryable<User> Users { get; }
         IQueryable<ExampleResult> ExampleResults { get; }
+        IQueryable<ReportedCompilerMessages> ReportedCompilerMessages { get; }
 
         User CreateUser();
         ExampleResult CreateExampleResult();
+        void CleanupOldReportedCompilerMessages();
+        ReportedCompilerMessages CreateReportedCompilerMessages();
 
         void SaveChanges();
         IEnumerable<object> GetModifiedEntities();
@@ -55,6 +58,7 @@ namespace Hacking_INF
 
         public DbSet<User> Users { get; set; }
         public DbSet<ExampleResult> ExampleResults { get; set; }
+        public DbSet<ReportedCompilerMessages> ReportedCompilerMessages { get; set; }
 
         public User CreateUser()
         {
@@ -68,6 +72,22 @@ namespace Hacking_INF
             var obj = new ExampleResult();
             this.ExampleResults.Add(obj);
             return obj;
+        }
+
+        public ReportedCompilerMessages CreateReportedCompilerMessages()
+        {
+            var obj = new ReportedCompilerMessages();
+            this.ReportedCompilerMessages.Add(obj);
+            return obj;
+        }
+
+        public void CleanupOldReportedCompilerMessages()
+        {
+            var toDelete = DateTime.Now.AddMonths(-3);
+            foreach(var obj in this.ReportedCompilerMessages.Where(i => i.Date < toDelete).ToList())
+            {
+                this.ReportedCompilerMessages.Remove(obj);
+            }
         }
 
         public new void SaveChanges()
@@ -98,6 +118,11 @@ namespace Hacking_INF
         IQueryable<ExampleResult> IDAL.ExampleResults
         {
             get { return this.ExampleResults.Include(i => i.User); }
+        }
+
+        IQueryable<ReportedCompilerMessages> IDAL.ReportedCompilerMessages
+        {
+            get { return this.ReportedCompilerMessages.Include(i => i.User); }
         }
 
         public IEnumerable<object> GetModifiedEntities()

@@ -99,6 +99,19 @@ namespace Hacking_INF.Controllers
             result.CompileOutput = sb.ToString();
             result.CompileFailed = failed;
 
+            if(failed)
+            {
+                var rcm = _bl.CreateReportedCompilerMessages();
+                rcm.Code = vmdl.Code;
+                rcm.Course = course.Name;
+                rcm.Example = example.Name;
+                rcm.Messages = result.CompileOutput;
+
+                _bl.CleanupOldReportedCompilerMessages();
+
+                _bl.SaveChanges();
+            }
+
             // Test
             if (vmdl.CompileAndTest)
             {

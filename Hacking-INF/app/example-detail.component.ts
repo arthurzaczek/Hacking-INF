@@ -1,7 +1,7 @@
 ﻿import { Component, Input, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { Course, Example, Test, User } from './models';
+import { Course, Example, Test, User, CompilerMessage, CompilerMessageHint } from './models';
 import { HackingService } from './hacking.service';
 
 import { Observable } from 'rxjs/Rx';
@@ -26,6 +26,9 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
     course: Course = <Course>{};
     result: Test = <Test>{};
     user: User = <User>{};
+    compilerMessages: CompilerMessage[] = [];
+    compilerMessageHints: CompilerMessageHint[] = [];
+    showCompilerMessageHints: boolean = false;
 
     hasError: boolean = false;
     errorMessage: String = "";
@@ -44,6 +47,9 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
         this.route.params
             .switchMap((params: Params) => this.hackingService.getCourse(params['course']))
             .subscribe(data => this.course = data);
+        this.route.params
+            .switchMap((params: Params) => this.hackingService.getCompilerMessages())
+            .subscribe(data => this.compilerMessages = data);
 
         var self = this;
         let timer = Observable.timer(1000, 1000);
@@ -80,6 +86,7 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
         var code = jsHelper.getCode();
         this.result = new Test();
         this.result.CompileOutput = "Compiling...";
+        this.showCompilerMessageHints = false;
         jsHelper.showTab('compiler');
 
         this.hackingService
@@ -87,6 +94,7 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
             .subscribe(data => {
                 this.hasError = false;
                 this.result = data;
+                this.interpreteErrors();
             }, error => {
                 this.hasError = true;
                 this.errorMessage = "A server error occurred.";
@@ -97,6 +105,7 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
         var code = jsHelper.getCode();
         this.result = new Test();
         this.result.CompileOutput = "Compiling...";
+        this.showCompilerMessageHints = false;
         jsHelper.showTab('compiler');
 
         this.hackingService
@@ -104,6 +113,7 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
             .subscribe(data => {
                 this.hasError = false;
                 this.result = data;
+                this.interpreteErrors();
                 if (this.result.CompileFailed) {
                     jsHelper.showTab('compiler');
                 } else {
@@ -133,7 +143,22 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
             });
     }
 
-    public submitErrors(): void {
-        alert("Code & errors will be submitted to improve generic suggestions - not implemented yet.");
+    public interpreteErrors(): void {
+        this.showCompilerMessageHints = false;
+        this.compilerMessageHints = [];
+        if (this.compilerMessages && this.result.CompileOutput) {
+            for (let line of this.result.CompileOutput.match(/[^\r\n]+/g)) {
+                for (let cm of this.compilerMessages) {
+                    if (line.match(cm.Message)) {
+                        let hint = new CompilerMessageHint();
+                        hint.Hint = cm.Hint;
+                        hint.Message = line;
+
+                        this.compilerMessageHints.push(hint);
+                        this.showCompilerMessageHints = true;
+                    }
+                }
+            }
+        }
     }
 }

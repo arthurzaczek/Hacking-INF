@@ -150,6 +150,13 @@ namespace Hacking_INF.Models
         }
     }
 
+    public  class CompilerMessage
+    {
+        [YamlMember(Alias = "message")]
+        public string Message { get; set; }
+        [YamlMember(Alias = "hint")]
+        public string Hint { get; set; }
+    }
 
     [Table("Users")]
     public class User
@@ -207,5 +214,27 @@ namespace Hacking_INF.Models
         public int? CyclomaticComplexity { get; set; }
         public int? MemErrors { get; set; }
 
+    }
+
+    [Table("ReportedCompilerMessages")]
+    public class ReportedCompilerMessages
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        public virtual User User { get; set; }
+
+        [Required]
+        public string Course { get; set; }
+        [Required]
+        public string Example { get; set; }
+
+        [Required]
+        public DateTime Date { get; set; }
+
+        [Required]
+        public string Messages { get; set; }
+        public string Code { get; set; }
     }
 }
