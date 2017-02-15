@@ -146,17 +146,22 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
     public interpreteErrors(): void {
         this.showCompilerMessageHints = false;
         this.compilerMessageHints = [];
-        if (this.compilerMessages && this.result.CompileOutput) {
-            for (let line of this.result.CompileOutput.match(/[^\r\n]+/g)) {
-                for (let cm of this.compilerMessages) {
-                    if (line.match(cm.Message)) {
-                        let hint = new CompilerMessageHint();
-                        hint.Hint = cm.Hint;
-                        hint.Message = line;
 
-                        this.compilerMessageHints.push(hint);
-                        this.showCompilerMessageHints = true;
-                    }
+        if (!this.compilerMessages) return;
+        if (!this.result.CompileOutput) return;
+
+        let matches = this.result.CompileOutput.match(/[^\r\n]+/g);
+        if (!matches) return;
+
+        for (let line of matches) {
+            for (let cm of this.compilerMessages) {
+                if (line.match(cm.Message)) {
+                    let hint = new CompilerMessageHint();
+                    hint.Hint = cm.Hint;
+                    hint.Message = line;
+
+                    this.compilerMessageHints.push(hint);
+                    this.showCompilerMessageHints = true;
                 }
             }
         }
