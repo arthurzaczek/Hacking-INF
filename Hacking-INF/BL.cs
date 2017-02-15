@@ -241,7 +241,16 @@ namespace Hacking_INF
         {
             if (user == null && sessionID == null) return null;
             var userUID = user?.UID;
-            return _dal.ExampleResults.SingleOrDefault(i => (i.User.UID == userUID || i.SessionID == sessionID) && i.Course == course && i.Example == example);
+            var qry = _dal.ExampleResults.Where(i => i.Course == course && i.Example == example);
+
+            if (!string.IsNullOrWhiteSpace(userUID))
+            {
+                return qry.SingleOrDefault(i => i.User.UID == userUID);
+            }
+            else
+            {
+                return qry.SingleOrDefault(i => i.SessionID == sessionID);
+            }
         }
 
         public IQueryable<ExampleResult> GetExampleResults()
