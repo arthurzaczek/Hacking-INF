@@ -193,12 +193,12 @@ namespace Hacking_INF.Controllers
                 p.BeginOutputReadLine();
                 if (p.WaitForExit(10000))
                 {
-                    _log.InfoFormat("Process {0} exited with error code {1}", cmd, p.ExitCode);
+                    _log.InfoFormat("Process \"{0} {1}\" exited with error code {2}", cmd, args, p.ExitCode);
                     return p.ExitCode;
                 }
                 else
                 {
-                    _log.WarnFormat("Process {0} did not exited within 10 sec.");
+                    _log.WarnFormat("Process \"{0} {1}\" did not exited within 10 sec.", cmd, args);
                     try
                     {
                         p.Kill();
@@ -235,7 +235,7 @@ namespace Hacking_INF.Controllers
             p.ErrorDataReceived += (s, e) => { lock (_lock) output.Output.AppendLine(e.Data); };
             p.Exited += (s, e) =>
             {
-                _log.InfoFormat("Process {0} exited with error code {1}", cmd, p.ExitCode);
+                _log.InfoFormat("Process \"{0} {1}\" exited with error code {2}", cmd, args, p.ExitCode);
                 output.Finish();
                 _saveService.Save(output);
                 p.Dispose();
