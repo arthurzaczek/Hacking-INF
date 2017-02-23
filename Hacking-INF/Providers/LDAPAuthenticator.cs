@@ -66,7 +66,7 @@ namespace Hacking_INF.Providers
             {
                 if (_startTLS == null)
                 {
-                    _startTLS = (System.Configuration.ConfigurationManager.AppSettings["ldap_start_tls"] as string ?? "true") == "true";
+                    _startTLS = Properties.Settings.Default.ldap_start_tls;
                     _log.InfoFormat("StartTLS = {0}", _startTLS);
                 }
                 return _startTLS.Value;

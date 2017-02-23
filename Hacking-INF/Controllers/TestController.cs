@@ -117,9 +117,10 @@ namespace Hacking_INF.Controllers
             {
                 sb.Clear();
                 File.Copy(Path.Combine(exampleDir, "properties.txt"), Path.Combine(workingDir, "properties.txt"));
-                var args = string.Format("-Dexec=\"{0}\" -DtestFilesPath=\"{1}\" -DjunitOutFile=./results.xml -jar \"{2}\"",
+                var args = string.Format("-Dexec=\"{0}\" -DtestFilesPath=\"{1}\" -DjunitOutFile=./results.xml -DdrMemoryPath=\"{2}\" -jar \"{3}\"",
                         example.Exe ?? course.Exe,
                         Path.Combine(exampleDir, "tests"),
+                        Properties.Settings.Default.DrMemoryPath,
                         Path.Combine(_bl.ToolsDir, "checkproject.jar"));
 
                 Exec("java", args, workingDir, sessionGuid, vmdl.StartTime, user, course, example);
