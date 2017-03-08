@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1442414961 source:e:\tem\git\pad1-beispielsammlung\template\src\main.c
+	<stdio.h>
+	<stdlib.h>
+	"use_this_main.c"
+
+1442414961 e:\tem\git\pad1-beispielsammlung\template\src\use_this_main.c
+

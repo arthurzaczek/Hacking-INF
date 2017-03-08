@@ -1,0 +1,13 @@
+---
+problemtitle:           Pointer
+problemshorttitle:      Pointer
+category:               Pointer
+difficulty:             easy (1/5)
+requires:
+    - HelloWorld
+    - Variables
+    - Simple_Functions
+    
+author: Thomas Mandl, David Meyer, Arthur Zaczek
+created: 2017
+...
