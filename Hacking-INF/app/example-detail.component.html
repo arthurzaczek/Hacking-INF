@@ -1,4 +1,7 @@
-﻿<h1>{{course.Title}}, {{example.Title}}</h1>
+﻿<div id="btn-back-to-course">
+    <a [routerLink]="['/course', course.Name]" class="btn btn-default">Zurück zum Kurs</a>
+</div>
+<h1>{{course.Title}}, {{example.Title}}</h1>
 <div *ngIf="!user.IsAuthenticated" class="alert alert-warning">
     Warning! You are not authenticated. To get personal statistics and badges you have to login. <a class="btn btn-default" routerLink="/login">Login</a>
 </div>

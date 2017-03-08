@@ -68,3 +68,8 @@ pre {
 .couse-panel.description {
     height: 6em;
 }
+
+#btn-back-to-course {
+    float: right;
+    margin-top: 20px;
+}
