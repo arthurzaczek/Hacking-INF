@@ -73,3 +73,7 @@ pre {
     float: right;
     margin-top: 20px;
 }
+
+.with-scrollbar {
+    overflow: visible;
+}

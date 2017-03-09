@@ -114,3 +114,8 @@ export class ExampleResult {
     CyclomaticComplexity: number;
     MemErrors: number;
 }
+
+export class LogLineModel {
+    Message: string;
+    Color: string;
+}

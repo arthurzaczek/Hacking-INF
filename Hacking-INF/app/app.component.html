@@ -19,7 +19,8 @@
                         <li><a routerLink="/admin-stats">Statistics</a></li>
                         <li><a routerLink="/admin-compiler-messages">Compiler messages</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a routerLink="/admin-logfiles">Logfiles</a></li>
+                        <li><a [routerLink]="['/admin-logfiles', 'log']">Logfiles</a></li>
+                        <li><a [routerLink]="['/admin-logfiles', 'parser']">Parse errors</a></li>
                     </ul>
                 </li>
             </ul>

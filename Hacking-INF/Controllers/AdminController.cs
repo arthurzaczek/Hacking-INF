@@ -138,5 +138,37 @@ namespace Hacking_INF.Controllers
                 })
                 .ToArray();
         }
+
+        [Route("GetLogfile")]
+        [HttpGet]
+        public LogLineModelViewModel[] GetLogfile(string type)
+        {
+            string logfile = System.Web.HttpContext.Current.Server.MapPath("~/App_Data/Logs");
+
+            switch (type)
+            {
+                case "log":
+                    logfile = Path.Combine(logfile, "Web.txt");
+                    break;
+                case "parser":
+                    logfile = Path.Combine(logfile, "ParseErrors.txt");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("type", "unknown logfile " + type);
+            }
+
+            List<LogLineModelViewModel> mdl = new List<LogLineModelViewModel>();
+            if (System.IO.File.Exists(logfile))
+            {
+                using (var sr = new StreamReader(logfile))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        mdl.Add(new LogLineModelViewModel() { Message = sr.ReadLine() });
+                    }
+                }
+            }
+            return mdl.ToArray();
+        }
     }
 }
