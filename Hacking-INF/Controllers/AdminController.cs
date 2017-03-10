@@ -83,7 +83,7 @@ namespace Hacking_INF.Controllers
 
         [Route("GetStats")]
         [HttpGet]
-        public ExampleResultViewModel[] GetStats()
+        public ExampleStatViewModel[] GetStats()
         {
             var results = _bl.GetExampleResults().GroupBy(i => i.Course + "-" + i.Example).Select(i => new
             {
@@ -93,17 +93,17 @@ namespace Hacking_INF.Controllers
                 LastAttempt = i.Max(p => p.LastAttempt),
                 NumOfAttempts = i.Count(),
 
-                Time = i.Average(p => p.Time),
+                AvgTime = i.Average(p => p.Time),
 
-                NumOfTestRuns = i.Average(p => p.NumOfTestRuns),
-                NumOfSucceeded = i.Average(p => p.NumOfSucceeded),
+                AvgNumOfTestRuns = i.Average(p => p.NumOfTestRuns),
+                AvgNumOfSucceeded = i.Average(p => p.NumOfSucceeded),
                 NumOfTests = i.Max(p => p.NumOfTests),
             }).ToList();
 
             return results
                 .OrderBy(i => i.Course)
                 .ThenBy(i => i.Example)
-                .Select(i => new ExampleResultViewModel()
+                .Select(i => new ExampleStatViewModel()
                 {
                     Course = i.Course,
                     CourseTitle = i.Course,
@@ -114,10 +114,10 @@ namespace Hacking_INF.Controllers
                     LastAttempt = i.LastAttempt,
                     NumOfAttempts = i.NumOfAttempts,
 
-                    Time = (int?)i.Time,
+                    AvgTime = i.AvgTime,
 
-                    NumOfTestRuns = (int)i.NumOfTestRuns,
-                    NumOfSucceeded = (int)i.NumOfSucceeded,
+                    AvgNumOfTestRuns = i.AvgNumOfTestRuns,
+                    AvgNumOfSucceeded = i.AvgNumOfSucceeded,
                     NumOfTests = i.NumOfTests,
                 }).ToArray();
         }

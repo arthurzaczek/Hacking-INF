@@ -13,15 +13,15 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let r of results" [ngClass]="{'danger': r.NumOfSucceeded==0, 'success': r.NumOfSucceeded > 0 && r.NumOfSucceeded == r.NumOfTests, 'warning': r.NumOfSucceeded > 0 && r.NumOfSucceeded != r.NumOfTests}">
+        <tr *ngFor="let r of results">
             <td>{{r.CourseTitle}}</td>
             <td>{{r.ExampleTitle}}</td>
             <td>{{r.FirstAttempt | date:'dd.MM.yyyy hh:mm'}}</td>
             <td>{{r.LastAttempt | date:'dd.MM.yyyy hh:mm'}}</td>
             <td>{{r.NumOfAttempts}}</td>
-            <td>{{r.Time}} sec.</td>
-            <td>{{r.NumOfTestRuns}}</td>
-            <td>{{r.NumOfSucceeded}} / {{r.NumOfTests}}</td>
+            <td>{{r.AvgTime}} sec.</td>
+            <td>{{r.AvgNumOfTestRuns}}</td>
+            <td>{{r.AvgNumOfSucceeded}} / {{r.NumOfTests}}</td>
         </tr>
     </tbody>
 </table>

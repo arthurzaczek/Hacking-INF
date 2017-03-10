@@ -1,5 +1,5 @@
 ﻿import { Component, Input, OnInit } from '@angular/core';
-import { User, ExampleResult } from './models';
+import { User, ExampleStat } from './models';
 import { HackingService } from './hacking.service';
 
 import 'rxjs/add/operator/switchMap';
@@ -15,7 +15,7 @@ export class AdminStatsComponent implements OnInit {
     constructor(
         private hackingService: HackingService) { }
 
-    results: ExampleResult[] = [];
+    results: ExampleStat[] = [];
     isLoading: boolean = true;
 
     ngOnInit(): void {

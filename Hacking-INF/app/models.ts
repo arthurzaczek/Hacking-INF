@@ -99,7 +99,6 @@ export class ExampleResult {
     FirstAttempt: Date;
     LastAttempt: Date;
     Time: number;
-    NumOfAttempts: number;
 
     NumOfTests: number;
     NumOfSucceeded: number;
@@ -113,6 +112,23 @@ export class ExampleResult {
     LinesOfCode: number;
     CyclomaticComplexity: number;
     MemErrors: number;
+}
+
+export class ExampleStat {
+
+    Course: string;
+    CourseTitle: string;
+    Example: string;
+    ExampleTitle: string;
+
+    FirstAttempt: Date;
+    LastAttempt: Date;
+    AvgTime: number;
+    NumOfAttempts: number;
+
+    NumOfTests: number;
+    AvgNumOfSucceeded: number;
+    AvgNumOfTestRuns: number;
 }
 
 export class LogLineModel {

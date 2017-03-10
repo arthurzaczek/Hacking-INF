@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient } from './http-client';
 
-import { Course, Example, Test, User, Category, ExampleResult, CompilerMessage, ReportedCompilerMessage, LogLineModel } from './models';
+import { Course, Example, Test, User, Category, ExampleResult, ExampleStat, CompilerMessage, ReportedCompilerMessage, LogLineModel } from './models';
 
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
@@ -99,9 +99,9 @@ export class HackingService {
             .map(response => response.json() as User);
     }
 
-    getAdminStats(): Observable<ExampleResult[]> {
+    getAdminStats(): Observable<ExampleStat[]> {
         return this.http.get(this._baseUrl + 'Admin/GetStats')
-            .map(response => response.json() as ExampleResult[]);
+            .map(response => response.json() as ExampleStat[]);
     }
 
     getAdminLogfile(type: string): Observable<LogLineModel[]> {
