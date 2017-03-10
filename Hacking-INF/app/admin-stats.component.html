@@ -1,4 +1,13 @@
 ﻿<h1>Statistics</h1>
+<form ngNoForm>
+    <div class="form-group">
+        <label for="course">Course</label>
+        <select id="course" class="form-control" [ngModel]="filterCourse" (ngModelChange)="onCourseChanged($event)">
+            <option>-- all courses --</option>
+            <option [ngValue]="i" *ngFor="let i of courses">{{i.Title}}</option>
+        </select>
+    </div>
+</form>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -13,7 +22,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let r of results">
+        <tr *ngFor="let r of results_filtered">
             <td>{{r.CourseTitle}}</td>
             <td>{{r.ExampleTitle}}</td>
             <td>{{r.FirstAttempt | date:'dd.MM.yyyy hh:mm'}}</td>
