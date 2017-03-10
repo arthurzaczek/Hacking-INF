@@ -114,7 +114,7 @@ namespace Hacking_INF.Controllers
                     LastAttempt = i.LastAttempt,
                     NumOfAttempts = i.NumOfAttempts,
 
-                    AvgTime = i.AvgTime,
+                    AvgTime = TimeSpan.FromSeconds(i.AvgTime).ToString(@"hh\:mm\:ss"),
 
                     AvgNumOfTestRuns = i.AvgNumOfTestRuns,
                     AvgNumOfSucceeded = i.AvgNumOfSucceeded,

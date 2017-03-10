@@ -16,19 +16,15 @@ namespace Hacking_INF.Models
         public DateTime FirstAttempt { get; set; }
         public DateTime LastAttempt { get; set; }
         /// <summary>
-        /// Time needed in seconds
+        /// Time needed as string
         /// </summary>
-        public double? AvgTime { get; set; }
+        public string AvgTime { get; set; }
         public int NumOfAttempts { get; set; } = 1;
 
         public int NumOfTests { get; set; }
         public double AvgNumOfSucceeded { get; set; }
 
         public double AvgNumOfTestRuns { get; set; }
-
-        public int? LinesOfCode { get; set; }
-        public int? CyclomaticComplexity { get; set; }
-        public int? MemErrors { get; set; }
 
         public ExampleStatViewModel()
         {
