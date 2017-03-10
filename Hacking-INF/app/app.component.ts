@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Compiler } from '@angular/core';
 import { User } from './models';
 import { HackingService } from './hacking.service';
 
@@ -14,7 +14,8 @@ export class AppComponent implements OnInit {
     User: User = <User>{};
     subscription: Subscription;
 
-    constructor(private hackingService: HackingService) {
+    constructor(private hackingService: HackingService,
+                private compiler: Compiler) {
     }
 
     ngOnInit(): void {
@@ -29,6 +30,10 @@ export class AppComponent implements OnInit {
         timer.subscribe(t => {
             this.hackingService.whoAmI();
         });
+    }
+
+    clearCache(): void {
+        this.compiler.clearCache();
     }
 
     logout(event: any): void {

@@ -93,7 +93,7 @@ namespace Hacking_INF.Controllers
                 LastAttempt = i.Max(p => p.LastAttempt),
                 NumOfAttempts = i.Count(),
 
-                AvgTime = i.Average(p => p.Time),
+                AvgTime = i.Average(p => p.Time) ?? 0,
 
                 AvgNumOfTestRuns = i.Average(p => p.NumOfTestRuns),
                 AvgNumOfSucceeded = i.Average(p => p.NumOfSucceeded),

@@ -8,6 +8,13 @@ namespace Hacking_INF
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Add(new ScriptBundle("~/bundles/es-shim")
+                .Include(
+                    "~/node_modules/es5-shim/es5-shim.min.js",
+                    "~/node_modules/es6-shim/es6-shim.min.js"
+                )
+            );
+
             bundles.Add(new ScriptBundle("~/bundles/angular")
                 .Include(
                     "~/node_modules/core-js/client/shim.js",
