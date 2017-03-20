@@ -1,4 +1,5 @@
-import { Component, OnInit, Compiler } from '@angular/core';
+import { Component, OnInit, Compiler} from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { User } from './models';
 import { HackingService } from './hacking.service';
 
@@ -14,8 +15,20 @@ export class AppComponent implements OnInit {
     User: User = <User>{};
     subscription: Subscription;
 
+    containerClass: string = "container";
+
     constructor(private hackingService: HackingService,
-                private compiler: Compiler) {
+        private compiler: Compiler,
+        private router: Router) {
+        router.events
+            .filter((event: any) => event instanceof NavigationEnd)
+            .subscribe((val: NavigationEnd) => {
+                if (val.url.startsWith("/example/")) {
+                    this.containerClass = "container-fluid";
+                } else {
+                    this.containerClass = "container";
+                }
+            });
     }
 
     ngOnInit(): void {
@@ -41,4 +54,6 @@ export class AppComponent implements OnInit {
 
         this.hackingService.logout();
     }
+
+
 }
