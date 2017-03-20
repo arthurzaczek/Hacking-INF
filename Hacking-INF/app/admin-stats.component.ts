@@ -24,7 +24,22 @@ export class AdminStatsComponent implements OnInit {
     courses: Course[];
 
     ngOnInit(): void {
+        this.refresh();
+    }
+
+    onCourseChanged(obj: Course): void {
+        this.filteredCourse = obj;
+        if (obj == null || typeof obj === "string") {
+            this.results_filtered = this.results;
+        }
+        else {
+            this.results_filtered = this.results.filter(i => i.Course == obj.Name);
+        }
+    }
+
+    refresh(): void {
         var self = this;
+        this.isLoading = true;
         this.hackingService.getCourses().subscribe(data => {
             this.courses = data;
         });
@@ -37,15 +52,5 @@ export class AdminStatsComponent implements OnInit {
                 self.isLoading = false;
             }, error => {
             });
-    }
-
-    onCourseChanged(obj: Course): void {
-        this.filteredCourse = obj;
-        if (obj == null || typeof obj === "string") {
-            this.results_filtered = this.results;
-        }
-        else {
-            this.results_filtered = this.results.filter(i => i.Course == obj.Name);
-        }
     }
 }
