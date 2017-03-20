@@ -3,8 +3,8 @@
     <a class="btn btn-default" [routerLink]="['/admin-logfiles', 'log']">Logfiles</a>
     <a class="btn btn-default" [routerLink]="['/admin-logfiles', 'parser']">Parse errors</a>
 </div>
+<p class="alert alert-info" *ngIf="isLoading">Loading...</p>
 <pre class="with-scrollbar">
 <span *ngFor="let r of rows" style='color: {{r.Color}}'>{{r.Message}}
 </span> 
 </pre>
-<p class="alert alert-info" *ngIf="isLoading">Loading...</p>
