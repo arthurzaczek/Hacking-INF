@@ -1,4 +1,4 @@
-{
+﻿{
   "compilerOptions": {
     "target": "es5",
     "module": "system",
@@ -11,10 +11,6 @@
     "suppressImplicitAnyIndexErrors": true,
     "typeRoots": [
       "./node_modules/@types/"
-    ],
-    "lib": [
-        "es6", 
-        "dom"
     ]
   },
   "compileOnSave": true,
