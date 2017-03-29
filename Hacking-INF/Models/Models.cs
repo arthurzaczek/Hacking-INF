@@ -99,8 +99,10 @@ namespace Hacking_INF.Models
 
     public class TestOutput : IDisposable
     {
+        string _workingDir;
         public TestOutput(Process p, User user, Guid sessionID, Course course, Example example, string workingDir, DateTime startTime)
         {
+            this._workingDir = workingDir;
             this.Process = p;
             this.UID = user?.UID;
             this.SessionID = sessionID;
@@ -126,6 +128,8 @@ namespace Hacking_INF.Models
         public int NumOfSkipped { get; private set; }
         public int NumOfSucceeded { get; private set; }
 
+        public List<MemoryErrors> MemoryErrors { get; private set; } = new List<MemoryErrors>();
+
         public void Dispose()
         {
             Process?.Dispose();
@@ -147,10 +151,31 @@ namespace Hacking_INF.Models
                     NumOfSucceeded = NumOfTests - NumOfErrors - NumOfFailed;
                 }
             }
+
+            foreach (var mem in System.IO.Directory.GetFiles(_workingDir, "memoryreport-*.log"))
+            {
+                var name = System.IO.Path.GetFileNameWithoutExtension(mem).Substring(13); // - memoryreport-
+                name = name.Substring(0, name.Length - 3); // - .in
+                using (var sr = new System.IO.StreamReader(mem))
+                {
+                    MemoryErrors.Add(new MemoryErrors()
+                    {
+                        TestCase = name,
+                        Report = sr.ReadToEnd(),
+                    });
+                }
+
+            }
         }
     }
 
-    public  class CompilerMessage
+    public class MemoryErrors
+    {
+        public string TestCase { get; set; }
+        public string Report { get; set; }
+    }
+
+    public class CompilerMessage
     {
         [YamlMember(Alias = "message")]
         public string Message { get; set; }

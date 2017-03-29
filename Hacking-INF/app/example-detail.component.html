@@ -15,6 +15,7 @@
             <li role="presentation"><a href="#usethismain" aria-controls="usethismain" role="tab" data-toggle="tab">Use this main</a></li>
             <li role="presentation"><a href="#compiler" aria-controls="compiler" role="tab" data-toggle="tab">Compiler</a></li>
             <li role="presentation"><a href="#test" aria-controls="test" role="tab" data-toggle="tab">Tests</a></li>
+            <li role="presentation"><a href="#mem" aria-controls="test" role="tab" data-toggle="tab">Memory errors</a></li>
             <li role="presentation"><a href="#testcases" aria-controls="test" role="tab" data-toggle="tab">Test cases</a></li>
         </ul>
         <div class="tab-content" id="tab-example-instructions">
@@ -43,6 +44,12 @@
                     {{result.NumOfSucceeded}} of {{result.NumOfTests}} succeeded
                 </p>
                 <pre>{{result.TestOutput}}</pre>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="mem">
+              <div *ngFor="let m of result.MemoryErrors">
+                <h3>{{m.TestCase}}</h3>                
+                <pre>{{m.Report}}</pre>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="testcases">
                 <div *ngFor="let t of example.TestFiles">

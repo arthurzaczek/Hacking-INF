@@ -165,6 +165,7 @@ namespace Hacking_INF.Controllers
                         TestOutput = test.Output.ToString(),
                         NumOfTests = test.NumOfTests,
                         NumOfSucceeded = test.NumOfSucceeded,
+                        MemoryErrors = test.MemoryErrors.Select(i => new MemoryErrorsViewModel(i)).ToArray(),
                     };
                 }
                 else

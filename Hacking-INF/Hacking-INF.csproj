@@ -265,6 +265,7 @@
     <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\ExampleStatViewModel.cs" />
     <Compile Include="Models\LogFile.cs" />
+    <Compile Include="Models\MemoryErrorsViewModel.cs" />
     <Compile Include="Models\ReportedCompilerMessageViewModel.cs" />
     <Compile Include="Models\ExampleResultViewModel.cs" />
     <Compile Include="Models\CompilerMessageViewModel.cs" />

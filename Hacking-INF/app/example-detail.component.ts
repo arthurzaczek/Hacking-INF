@@ -1,7 +1,7 @@
 ﻿import { Component, Input, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { Course, Example, Test, User, CompilerMessage, CompilerMessageHint } from './models';
+import { Course, Example, Test, MemoryErrors, User, CompilerMessage, CompilerMessageHint } from './models';
 import { HackingService } from './hacking.service';
 
 import { Observable } from 'rxjs/Rx';
@@ -133,6 +133,9 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
                 this.result.NumOfSucceeded = data.NumOfSucceeded;
                 this.result.NumOfTests = data.NumOfTests;
                 this.result.Succeeded = data.Succeeded;
+                if (data.MemoryErrors) {
+                    this.result.MemoryErrors = data.MemoryErrors;
+                }
 
                 if (data.TestOutput != "") {
                     this.result.TestOutput = data.TestOutput;

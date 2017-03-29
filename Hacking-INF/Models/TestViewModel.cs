@@ -18,6 +18,7 @@ namespace Hacking_INF.Models
         public string CompileOutput { get; set; }
         public bool CompileFailed { get; set; }
         public string TestOutput { get; set; }
+        public MemoryErrorsViewModel[] MemoryErrors { get; set; } = new MemoryErrorsViewModel[] { };
         public bool TestFinished { get; set; }
 
         public int NumOfTests { get; set; }

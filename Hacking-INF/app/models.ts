@@ -69,11 +69,17 @@ export class Test {
     CompileOutput: string;
     CompileFailed: boolean;
     TestOutput: string;
+    MemoryErrors: MemoryErrors[] = [];
     TestFinished: boolean;
 
     NumOfTests: number = 0;
     NumOfSucceeded: number = 0;
     Succeeded: boolean = false;
+}
+
+export class MemoryErrors {
+    TestCase: string;
+    Report: string;
 }
 
 export class User {
