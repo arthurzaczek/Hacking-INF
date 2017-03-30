@@ -26,7 +26,7 @@
                 <pre>{{example.UseThisMain}}</pre>
             </div>
             <div role="tabpanel" class="tab-pane" id="compiler">
-                <pre>{{result.CompileOutput}}</pre>
+                <pre [innerHTML]="result.CompileOutput"></pre>
                 <div *ngIf="showCompilerMessageHints">
                     <h3>What does this mean?</h3>
                     <table class="table table-bordered">

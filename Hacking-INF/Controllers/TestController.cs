@@ -96,10 +96,31 @@ namespace Hacking_INF.Controllers
                     failed = true;
                 }
             }
-            result.CompileOutput = sb.ToString();
+            var sbResult = new StringBuilder();
+            using (var sr = new StringReader(sb.ToString()))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    var test = line.ToLower();
+                    if (test.Contains("error"))
+                    {
+                        sbResult.AppendLine("<span class=\"compiler error\">" + line + "</span>");
+                    }
+                    else if (test.Contains("warning") || test.Contains("warn"))
+                    {
+                        sbResult.AppendLine("<span class=\"compiler warning\">" + line + "</span>");
+                    }
+                    else
+                    {
+                        sbResult.AppendLine(line);
+                    }
+                }
+            }
+            result.CompileOutput = sbResult.ToString();
             result.CompileFailed = failed;
 
-            if(failed)
+            if (failed)
             {
                 var rcm = _bl.CreateReportedCompilerMessages();
                 rcm.Code = vmdl.Code;

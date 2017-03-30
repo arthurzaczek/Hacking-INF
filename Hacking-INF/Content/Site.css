@@ -77,3 +77,11 @@ pre {
 .with-scrollbar {
     overflow: visible;
 }
+
+span.compiler.error {
+    color: red;
+}
+
+span.compiler.warning {
+    color: blue;
+}
