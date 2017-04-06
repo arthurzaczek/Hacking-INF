@@ -85,3 +85,11 @@ span.compiler.error {
 span.compiler.warning {
     color: blue;
 }
+
+span.log.error {
+    color: red;
+}
+
+span.log.warning {
+    color: orange;
+}

@@ -12,11 +12,11 @@ namespace Hacking_INF.Models
         {
             get
             {
-                if (Message.StartsWith("\t")) return "red";
-                if (Message.Contains("[DEBUG]")) return "darkgray";
-                if (Message.Contains("[WARN]")) return "#aa0";
-                if (Message.Contains("[ERROR]")) return "red";
-                return "black";
+                if (Message.StartsWith("\t")) return "error";
+                if (Message.Contains("[DEBUG]")) return "debug";
+                if (Message.Contains("[WARN]")) return "warning";
+                if (Message.Contains("[ERROR]")) return "error";
+                return "info";
             }
         }
     }

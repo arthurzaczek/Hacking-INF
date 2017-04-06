@@ -4,7 +4,5 @@
     <a class="btn btn-default" [routerLink]="['/admin-logfiles', 'parser']">Parse errors</a>
 </div>
 <p class="alert alert-info" *ngIf="isLoading">Loading...</p>
-<pre class="with-scrollbar">
-<span *ngFor="let r of rows" [style.color]="r.Color">{{r.Message}}
-</span> 
+<pre class="with-scrollbar" [innerHtml]="rowsFormatted">
 </pre>

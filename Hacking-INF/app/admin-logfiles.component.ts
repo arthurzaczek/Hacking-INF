@@ -18,6 +18,7 @@ export class AdminLogfilesComponent implements OnInit {
         private route: ActivatedRoute) { }
 
     rows: LogLineModel[] = [];
+    rowsFormatted: string = "";
     title: string = "Logfile";
     isLoading: boolean = true;
 
@@ -28,6 +29,7 @@ export class AdminLogfilesComponent implements OnInit {
             .switchMap((params: Params) => this.hackingService.getAdminLogfile(params['type']))
             .subscribe(data => {
                 self.rows = data;
+                self.rowsFormatted = self.rows.map(line => "<span class=\"log " + line.Color + "\">" + line.Message + "</span>").join("\n");
                 self.isLoading = false;
             });
     }
