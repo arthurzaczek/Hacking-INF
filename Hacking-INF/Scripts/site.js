@@ -29,6 +29,10 @@ jsHelper.initEditor = function (code, compileCallback) {
     }
 }
 
+jsHelper.setCode = function (code) {
+    editor.setValue(code);
+}
+
 jsHelper.getCode = function () {
     return editor.getValue();
 }

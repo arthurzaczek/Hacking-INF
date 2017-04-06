@@ -126,6 +126,13 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
             });
     }
 
+    public restart(): void {
+        if (confirm("Realy start over? This will delete your current work!")) {
+            this.example.SourceCode = this.example.UseThisMain;
+            jsHelper.setCode(this.example.SourceCode);
+        }
+    }
+
     public updateTestResult(): void {
         this.hackingService
             .getTestResult(this.example.SessionID)
