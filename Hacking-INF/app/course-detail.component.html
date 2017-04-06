@@ -22,6 +22,7 @@
                             <div class="col-md-6">
                                 <p>{{e.Difficulty}}</p>
                                 <p>{{e.Description}}</p>
+                                <p *ngIf="e.Result"><strong>Progress: </strong>{{e.Result.NumOfSucceeded}} / {{e.Result.NumOfTests}} tests succeeded</p>
                             </div>
                             <div class="col-md-6">
                                 <p>Kategorie: {{e.Category}}</p>

@@ -27,6 +27,8 @@ export class Example {
 
     SessionID: string;
     StartTime: Date;
+
+    Result: ExampleResult;
 }
 
 export class TestFile {

@@ -48,7 +48,18 @@ namespace Hacking_INF.Controllers
         [Route("GetExamples")]
         public IEnumerable<ExampleViewModel> GetExamples(string course)
         {
-            return _bl.GetExamples(course).Select(i => new ExampleViewModel(i));
+            var user = _bl.GetCurrentUser();
+
+            return _bl.GetExamples(course).Select(i =>
+            {
+                var result = new ExampleViewModel(i);
+                var pastResult = _bl.GetExampleResult(user, null, course, i.Name);
+                if (pastResult != null)
+                {
+                    result.Result = new ExampleResultViewModel(pastResult);
+                }
+                return result;
+            });
         }
 
         [Route("GetExample")]
@@ -96,12 +107,12 @@ namespace Hacking_INF.Controllers
                 }
             }
 
-            if(string.IsNullOrWhiteSpace(vmdl.SourceCode))
+            if (string.IsNullOrWhiteSpace(vmdl.SourceCode))
             {
                 vmdl.SourceCode = vmdl.UseThisMain;
             }
 
-            vmdl.TestFiles = Directory.GetFiles(Path.Combine(dir, "tests"), "*.in").Select(inFile => 
+            vmdl.TestFiles = Directory.GetFiles(Path.Combine(dir, "tests"), "*.in").Select(inFile =>
             {
                 var path = Path.GetDirectoryName(inFile);
                 var result = new TestFileViewModel();
@@ -115,7 +126,7 @@ namespace Hacking_INF.Controllers
             .OrderBy(i => i.Name)
             .ToList();
 
-            if(vmdl.TestFiles.Count == 0)
+            if (vmdl.TestFiles.Count == 0)
             {
                 _bl.LogParseError(Path.Combine(dir, "tests", "*.in"), "No test files found.");
             }

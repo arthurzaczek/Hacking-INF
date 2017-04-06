@@ -22,6 +22,7 @@ namespace Hacking_INF.Models
         public Guid SessionID { get; set; }
         public DateTime StartTime { get; set; }
         public List<TestFileViewModel> TestFiles { get; set; } = new List<TestFileViewModel>();
+        public ExampleResultViewModel Result { get; set; }
 
         public ExampleViewModel()
         {
