@@ -76,10 +76,10 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
     }
 
     public updateEditor(): void {
-        if (this.example.SourceCode != null) {
-            var self = this;
-            jsHelper.initEditor(this.example.SourceCode, () => self.compile());
-        }
+        var self = this;
+        jsHelper.initEditor(() => self.compile());
+
+        jsHelper.setCode(this.example.SourceCode);
     }
 
     public compile(): void {
