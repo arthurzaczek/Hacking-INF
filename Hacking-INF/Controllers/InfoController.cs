@@ -68,6 +68,10 @@ namespace Hacking_INF.Controllers
             {
                 vmdl.Instruction = _bl.ReadTextFile(angabe);
             }
+            else
+            {
+                _bl.LogParseError(Path.Combine(dir, "text", "*Angabe_full.md"), "No text/*Angabe_full.md file found.");
+            }
 
             var use_this_main = Directory.GetFiles(Path.Combine(dir, "src"), "use_this_main.*").FirstOrDefault();
             if (use_this_main != null)
@@ -110,6 +114,11 @@ namespace Hacking_INF.Controllers
             })
             .OrderBy(i => i.Name)
             .ToList();
+
+            if(vmdl.TestFiles.Count == 0)
+            {
+                _bl.LogParseError(Path.Combine(dir, "tests", "*.in"), "No test files found.");
+            }
 
             return vmdl;
         }

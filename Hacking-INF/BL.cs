@@ -566,9 +566,13 @@ namespace Hacking_INF
             }
         }
 
+        public void LogParseError(string filename, string message)
+        {
+            _parseErrorLog.ErrorFormat("{0}: {1}", filename, message);
+        }
         public void LogParseError(string filename, Exception ex)
         {
-            _parseErrorLog.ErrorFormat("{0}: {1}", filename, ex.Message);
+            LogParseError(filename, ex.Message);
         }
 
         public string FirstLetterToUpper(string str)
