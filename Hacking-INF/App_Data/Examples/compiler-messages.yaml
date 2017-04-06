@@ -2,3 +2,5 @@
   hint: "Most often, a ';' is missing."
 - message: ".*\\.java:\\d+: error: cannot find symbol"
   hint: "Most often, a class, method or field is not written properly."
+- message: ".*\\.cpp:\\d+:\\d+: error: expected ‘;’ before ‘.*’"  
+  hint: "Check, if a ';' or a operant (+, -, <<, >>) is missing"

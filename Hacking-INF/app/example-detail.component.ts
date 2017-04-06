@@ -85,7 +85,7 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
     public compile(): void {
         var code = jsHelper.getCode();
         this.result = new Test();
-        this.result.CompileOutput = "Compiling...";
+        this.result.CompileOutputFormatted = "Compiling...";
         this.showCompilerMessageHints = false;
         jsHelper.showTab('compiler');
 
@@ -104,7 +104,7 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
     public test(): void {
         var code = jsHelper.getCode();
         this.result = new Test();
-        this.result.CompileOutput = "Compiling...";
+        this.result.CompileOutputFormatted = "Compiling...";
         this.showCompilerMessageHints = false;
         jsHelper.showTab('compiler');
 

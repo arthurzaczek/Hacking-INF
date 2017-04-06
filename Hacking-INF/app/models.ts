@@ -67,6 +67,7 @@ export class Test {
     CompileAndTest: boolean;
 
     CompileOutput: string;
+    CompileOutputFormatted: string;
     CompileFailed: boolean;
     TestOutput: string;
     MemoryErrors: MemoryErrors[] = [];
