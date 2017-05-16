@@ -121,7 +121,7 @@ namespace Hacking_INF.Controllers
                 // There may be test files for file I/O
                 foreach(var f in Directory.GetFiles(Path.Combine(exampleDir, "tests"), "*.*").Where(f => !f.EndsWith(".in") && !f.EndsWith(".sexp") && !f.EndsWith(".fexp")))
                 {
-                    File.Copy(f, workingDir);
+                    File.Copy(f, Path.Combine(workingDir, Path.GetFileName(f)));
                 }
                     
                 var args = string.Format("-Dexec=\"{0}\" -DtestFilesPath=\"{1}\" -DjunitOutFile=./results.xml -DdrMemoryPath=\"{2}\" -jar \"{3}\"",
