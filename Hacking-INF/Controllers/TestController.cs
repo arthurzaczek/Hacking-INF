@@ -113,10 +113,17 @@ namespace Hacking_INF.Controllers
             }
 
             // Test
-            if (vmdl.CompileAndTest)
+            if (vmdl.CompileAndTest && !failed)
             {
                 sb.Clear();
                 File.Copy(Path.Combine(exampleDir, "properties.txt"), Path.Combine(workingDir, "properties.txt"));
+                // Copy everything except testfiles from the tests folder. 
+                // There may be test files for file I/O
+                foreach(var f in Directory.GetFiles(Path.Combine(exampleDir, "tests"), "*.*").Where(f => !f.EndsWith(".in") && !f.EndsWith(".sexp") && !f.EndsWith(".fexp")))
+                {
+                    File.Copy(f, workingDir);
+                }
+                    
                 var args = string.Format("-Dexec=\"{0}\" -DtestFilesPath=\"{1}\" -DjunitOutFile=./results.xml -DdrMemoryPath=\"{2}\" -jar \"{3}\"",
                         example.Exe ?? course.Exe,
                         Path.Combine(exampleDir, "tests"),
