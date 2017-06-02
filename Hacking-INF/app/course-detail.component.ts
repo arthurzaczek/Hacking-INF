@@ -1,15 +1,14 @@
 ﻿import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { Course, Example, Category } from './models';
+import { Course, Example, Category, User } from './models';
 import { HackingService } from './hacking.service';
 
 import 'rxjs/add/operator/switchMap';
 
 @Component({
     selector: 'course-detail',
-    templateUrl: 'app/course-detail.component.html',
-    providers: [ HackingService ]
+    templateUrl: 'app/course-detail.component.html'
 })
 export class CourseDetailComponent implements OnInit {
     constructor(
@@ -20,8 +19,13 @@ export class CourseDetailComponent implements OnInit {
     examples: Example[];
     categories: Category[];
     course: Course = <Course>{};
+    user: User = <User>{};
+    showAuthError: boolean = false;
 
     ngOnInit(): void {
+        if (this.hackingService.user != null)
+            this.user = this.hackingService.user;
+
         this.route.params
             .switchMap((params: Params) => this.hackingService.getExamples(params['name']))
             .subscribe(data => {
@@ -39,7 +43,10 @@ export class CourseDetailComponent implements OnInit {
             });
         this.route.params
             .switchMap((params: Params) => this.hackingService.getCourse(params['name']))
-            .subscribe(data => this.course = data);
+            .subscribe(data => {
+                this.course = data;
+                this.showAuthError = this.course.Type == "Timed" && !this.user.IsAuthenticated;
+            });
     }
 
     linkData(): void {

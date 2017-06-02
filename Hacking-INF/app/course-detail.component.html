@@ -1,4 +1,7 @@
 ﻿<h1>Kurs {{course.Title}}</h1>
+<div *ngIf="showAuthError" class="alert alert-danger">
+    Error! You are not authenticated. You must login to see all course examples. <a class="btn btn-default" routerLink="/login">Login</a>
+</div>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <div *ngFor="let cat of categories" class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingOne">

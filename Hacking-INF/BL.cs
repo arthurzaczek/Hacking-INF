@@ -82,6 +82,14 @@ namespace Hacking_INF
             }
         }
 
+        public bool IsAuthenticated
+        {
+            get
+            {
+                return System.Threading.Thread.CurrentPrincipal?.Identity?.IsAuthenticated ?? false;
+            }
+        }
+
         public User GetCurrentUser()
         {
             var id = System.Threading.Thread.CurrentPrincipal?.Identity;
@@ -333,6 +341,7 @@ namespace Hacking_INF
             {
                 var result = (IEnumerable<Example>)System.Web.Hosting.HostingEnvironment.Cache.Get("__all_examples__" + course);
                 var isTeacher = IsTeacher;
+                var isAuthenticated = IsAuthenticated;
                 if (result == null || isTeacher)
                 {
                     _log.Info("Reading & caching all examples of course " + course);
@@ -397,7 +406,8 @@ namespace Hacking_INF
                             if (i.Type == Types.Closed) return false;
                             if (i.Type == Types.Timed)
                             {
-                                if (i.OpenFrom.HasValue
+                                if (isAuthenticated
+                                 && i.OpenFrom.HasValue
                                  && i.OpenUntil.HasValue
                                  && i.OpenFrom.Value <= now
                                  && i.OpenUntil.Value >= now)

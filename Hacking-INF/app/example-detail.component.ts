@@ -36,12 +36,13 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
     timeElapsed: string = "00:00:00";
 
     ngOnInit(): void {
+        if (this.hackingService.user != null)
+            this.user = this.hackingService.user;
+
         this.route.params
             .switchMap((params: Params) => this.hackingService.getExample(params['course'], params['name']))
             .subscribe(data => {
                 this.example = data;
-                if (this.hackingService.user != null)
-                    this.user = this.hackingService.user;
                 this.updateEditor();
             });
         this.route.params
