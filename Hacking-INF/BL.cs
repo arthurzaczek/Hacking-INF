@@ -338,7 +338,7 @@ namespace Hacking_INF
                     _log.Info("Reading & caching all examples of course " + course);
                     var path = Path.Combine(ExamplesDir, course);
                     var courseObj = GetCourses().Single(i => i.Name == course);
-                    var orderList = courseObj.Categories.Where(c => c.Examples != null).SelectMany(c => c.Examples).ToList();
+                    var orderList = courseObj.Categories?.Where(c => c.Examples != null).SelectMany(c => c.Examples).ToList();
                     var now = DateTime.Now;
                     result = Directory.GetDirectories(path)
                         .Select(dir =>
@@ -349,7 +349,7 @@ namespace Hacking_INF
                                 example.Course = course;
                                 example.Name = Path.GetFileName(dir);
 
-                                example.Order = orderList.IndexOf(example.Name);
+                                example.Order = orderList != null ? orderList.IndexOf(example.Name) : -1;
                                 if (example.Order < 0) example.Order = int.MaxValue;
 
                                 // Inheritance
