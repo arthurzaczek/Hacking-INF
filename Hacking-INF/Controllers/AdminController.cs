@@ -85,20 +85,28 @@ namespace Hacking_INF.Controllers
         [HttpGet]
         public ExampleStatViewModel[] GetStats()
         {
-            var results = _bl.GetExampleResults().GroupBy(i => i.Course + "-" + i.Example).Select(i => new
-            {
-                Course = i.FirstOrDefault().Course,
-                Example = i.FirstOrDefault().Example,
-                FirstAttempt = i.Min(p => p.FirstAttempt),
-                LastAttempt = i.Max(p => p.LastAttempt),
-                NumOfAttempts = i.Count(),
+            var results = _bl.GetExampleResults()
+                .GroupBy(i => i.Course + "-" + i.Example)
+                .ToList() // exec query
+                .Select(i => new
+                {
+                    Course = i.FirstOrDefault().Course,
+                    Example = i.FirstOrDefault().Example,
+                    FirstAttempt = i.Min(p => p.FirstAttempt),
+                    LastAttempt = i.Max(p => p.LastAttempt),
+                    NumOfAttempts = i.Count(),
 
-                AvgTime = i.Average(p => p.Time) ?? 0,
+                    StdDevTime = i.Select(p => (double)p.Time).StdDev(),
+                    AvgTime = i.Where(p => p.Time.HasValue && p.Time > 0)
+                               .Select(p => p.Time)
+                               .OrderBy(t => t)
+                               .Take((int)(i.Count(p => p.Time.HasValue && p.Time > 0) * 0.9))
+                               .Average() ?? 0,
 
-                AvgNumOfTestRuns = i.Average(p => p.NumOfTestRuns),
-                AvgNumOfSucceeded = i.Average(p => p.NumOfSucceeded),
-                NumOfTests = i.Max(p => p.NumOfTests),
-            }).ToList();
+                    AvgNumOfTestRuns = i.Average(p => p.NumOfTestRuns),
+                    AvgNumOfSucceeded = i.Average(p => p.NumOfSucceeded),
+                    NumOfTests = i.Max(p => p.NumOfTests),
+                }).ToList();
 
             return results
                 .OrderBy(i => i.Course)
@@ -115,6 +123,7 @@ namespace Hacking_INF.Controllers
                     NumOfAttempts = i.NumOfAttempts,
 
                     AvgTime = TimeSpan.FromSeconds(i.AvgTime).ToString(@"hh\:mm\:ss"),
+                    StdDevTime = i.StdDevTime,
 
                     AvgNumOfTestRuns = i.AvgNumOfTestRuns,
                     AvgNumOfSucceeded = i.AvgNumOfSucceeded,

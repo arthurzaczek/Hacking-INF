@@ -133,6 +133,7 @@ export class ExampleStat {
     FirstAttempt: Date;
     LastAttempt: Date;
     AvgTime: number;
+    StdDevTime: number;
     NumOfAttempts: number;
 
     NumOfTests: number;

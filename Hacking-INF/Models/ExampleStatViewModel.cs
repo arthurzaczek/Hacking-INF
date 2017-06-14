@@ -19,6 +19,7 @@ namespace Hacking_INF.Models
         /// Time needed as string
         /// </summary>
         public string AvgTime { get; set; }
+        public double StdDevTime { get; set; }
         public int NumOfAttempts { get; set; } = 1;
 
         public int NumOfTests { get; set; }
