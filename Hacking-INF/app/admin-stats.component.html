@@ -19,7 +19,7 @@
             <th>First Attempt</th>
             <th>Last Attempt</th>
             <th># Attempts</th>
-            <th>Avg. Time</th>
+            <th>Med. Time</th>
             <th>Avg. Testruns</th>
             <th>Avg. Tests</th>
         </tr>
@@ -31,7 +31,7 @@
             <td>{{r.FirstAttempt | date:'dd.MM.yyyy hh:mm'}}</td>
             <td>{{r.LastAttempt | date:'dd.MM.yyyy hh:mm'}}</td>
             <td class="text-right">{{r.NumOfAttempts}}</td>
-            <td class="text-right">{{r.AvgTime}}</td>
+            <td class="text-right">{{r.MedTime}}</td>
             <td class="text-right">{{r.AvgNumOfTestRuns | number : '1.2-2'}}</td>
             <td class="text-right">{{r.AvgNumOfSucceeded | number : '1.2-2'}} / {{r.NumOfTests}}</td>
         </tr>

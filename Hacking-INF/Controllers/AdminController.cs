@@ -102,6 +102,7 @@ namespace Hacking_INF.Controllers
                                .OrderBy(t => t)
                                .Take((int)(i.Count(p => p.Time.HasValue && p.Time > 0) * 0.9))
                                .Average() ?? 0,
+                    MedTime = i.Where(p => p.Time.HasValue && p.Time > 0).Median(p => p.Time) ?? 0,
 
                     AvgNumOfTestRuns = i.Average(p => p.NumOfTestRuns),
                     AvgNumOfSucceeded = i.Average(p => p.NumOfSucceeded),
@@ -123,6 +124,7 @@ namespace Hacking_INF.Controllers
                     NumOfAttempts = i.NumOfAttempts,
 
                     AvgTime = TimeSpan.FromSeconds(i.AvgTime).ToString(@"hh\:mm\:ss"),
+                    MedTime = TimeSpan.FromSeconds(i.MedTime).ToString(@"hh\:mm\:ss"),
                     StdDevTime = i.StdDevTime,
 
                     AvgNumOfTestRuns = i.AvgNumOfTestRuns,
