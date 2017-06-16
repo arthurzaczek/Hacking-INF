@@ -2,7 +2,7 @@
 <form ngNoForm>
     <div class="form-group">
         <label for="course">Course</label>
-        <select id="course" class="form-control" [ngModel]="filterCourse" (ngModelChange)="onCourseChanged($event)">
+        <select id="course" class="form-control" [(ngModel)]="filteredCourse" (ngModelChange)="onCourseChanged()">
             <option>-- all courses --</option>
             <option [ngValue]="i" *ngFor="let i of courses">{{i.Title}}</option>
         </select>
