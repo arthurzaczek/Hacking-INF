@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Web.Http;
 
 namespace Hacking_INF.Controllers
@@ -70,7 +71,10 @@ namespace Hacking_INF.Controllers
             stream.Seek(0, SeekOrigin.Begin);
             result.Content = new StreamContent(stream);
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/zip");
-            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = fileName };
+            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = fileName
+            };
 
             zip.Dispose();
             foreach (var d in toDispose)
@@ -175,6 +179,119 @@ namespace Hacking_INF.Controllers
                     }).ToArray()
                 })
                 .ToArray();
+        }
+
+        [Route("GetStatsStudentsCSV")]
+        [HttpGet]
+        [AllowAnonymous]
+        public HttpResponseMessage GetStatsStudentsCSV(string course, int year, Guid token)
+        {
+            var user = _bl.ValidateAccessToken(token);
+            if (user == null || !user.IsInRole("Teacher")) return new HttpResponseMessage(HttpStatusCode.Unauthorized);
+
+            var qry = _bl.GetExampleResults()
+                .Where(i => i.Course == course)
+                .Where(i => i.User != null)
+                .Where(i => year <= 0 || i.FirstAttempt.Year == year || i.LastAttempt.Year == year)
+                .GroupBy(i => i.User)
+                .OrderBy(i => i.Key.UID)
+                .ToList() // exec query
+                .Select(s => new
+                {
+                    User = s.Key.Name,
+                    UID = s.Key.UID,
+
+                    FirstAttempt = s.Min(i => i.FirstAttempt),
+                    LastAttempt = s.Max(i => i.LastAttempt),
+
+                    Time = TimeSpan.FromSeconds(s.Sum(i => i.Time ?? 0)).ToString(@"hh\:mm\:ss"),
+                    NumOfTestRuns = s.Sum(i => i.NumOfTestRuns),
+                    NumOfSucceeded = s.Sum(i => i.NumOfSucceeded),
+                    NumOfTests = s.Sum(i => i.NumOfTests),
+                });
+
+            var sb = new StringBuilder();
+            sb.AppendLine("User;UID;FirstAttempt;LastAttempt;Time;NumOfTestRuns;NumOfSucceeded;NumOfTests");
+            foreach (var s in qry)
+            {
+                sb.AppendLine(string.Format("{0};{1};{2};{3};{4};{5};{6};{7}", 
+                    s.User, 
+                    s.UID,
+                    s.FirstAttempt,
+                    s.LastAttempt,
+                    s.Time,
+                    s.NumOfTestRuns,
+                    s.NumOfSucceeded,
+                    s.NumOfTests));
+            }
+
+            var result = Request.CreateResponse(HttpStatusCode.OK);
+            result.Content = new StringContent(sb.ToString(), Encoding.UTF8, "application/csv");
+            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = string.Format("{0}-Summary.csv", course)
+            };
+
+            return result;
+        }
+
+        [Route("GetStatsStudentDetailsCSV")]
+        [HttpGet]
+        [AllowAnonymous]
+        public HttpResponseMessage GetStatsStudentDetailsCSV(string course, int year, Guid token)
+        {
+            var user = _bl.ValidateAccessToken(token);
+            if (user == null || !user.IsInRole("Teacher")) return new HttpResponseMessage(HttpStatusCode.Unauthorized);
+
+            var qry = _bl.GetExampleResults()
+                .Where(i => i.Course == course)
+                .Where(i => i.User != null)
+                .Where(i => year <= 0 || i.FirstAttempt.Year == year || i.LastAttempt.Year == year)
+                .OrderBy(i => i.User.UID)
+                .ThenBy(i => i.Example)
+                .ToList() // exec query
+                .Select(i => new
+                {
+                    User = i.User.Name,
+                    UID = i.User.UID,
+
+                    Example = i.Example,
+                    ExampleTitle = i.Example,
+
+                    FirstAttempt = i.FirstAttempt,
+                    LastAttempt = i.LastAttempt,
+
+                    Time = TimeSpan.FromSeconds(i.Time ?? 0).ToString(@"hh\:mm\:ss"),
+
+                    NumOfTestRuns = i.NumOfTestRuns,
+                    NumOfSucceeded = i.NumOfSucceeded,
+                    NumOfTests = i.NumOfTests,
+                });
+
+            var sb = new StringBuilder();
+            sb.AppendLine("User;UID;Example;FirstAttempt;LastAttempt;Time;NumOfTestRuns;NumOfSucceeded;NumOfTests");
+            foreach (var s in qry)
+            {
+                sb.AppendLine(string.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
+                    s.User,
+                    s.UID,
+                    s.Example,
+                    s.FirstAttempt,
+                    s.LastAttempt,
+                    s.Time,
+                    s.NumOfTestRuns,
+                    s.NumOfSucceeded,
+                    s.NumOfTests));
+            }
+
+            var result = Request.CreateResponse(HttpStatusCode.OK);
+            result.Content = new StringContent(sb.ToString(), Encoding.UTF8, "application/csv");
+            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = string.Format("{0}-Details.csv", course)
+            };
+
+            return result;
         }
 
         [Route("GetReportedCompilerMessages")]

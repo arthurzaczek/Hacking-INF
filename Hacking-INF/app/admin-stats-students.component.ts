@@ -55,4 +55,15 @@ export class AdminStatsStudentsComponent implements OnInit {
     filter(): void {
         this.results_filtered = this.results;
     }
+
+    download(): void {
+        this.hackingService.getAccessToken().subscribe(token => {
+            window.open(this.hackingService.getAdminStatsStudentsCSVUrl(this.filteredCourse.Name, this.year) + "&token=" + encodeURIComponent(token));
+        });
+    }
+    downloadDetails(): void {
+        this.hackingService.getAccessToken().subscribe(token => {
+            window.open(this.hackingService.getAdminStatsStudentDetailsCSVUrl(this.filteredCourse.Name, this.year) + "&token=" + encodeURIComponent(token));
+        });
+    }
 }

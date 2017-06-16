@@ -108,6 +108,16 @@ export class HackingService {
         return this.http.get(this._baseUrl + 'Admin/GetStatsStudents?course=' + course + '&year=' + year)
             .map(response => response.json() as StudentStat[]);
     }
+    getAdminStatsStudentsCSVUrl(course: string, year: number): string {
+        return this._baseUrl + 'Admin/GetStatsStudentsCSV?course=' + encodeURIComponent(course) + '&year=' + encodeURIComponent((year || 0).toString());
+    }
+    getAdminStatsStudentDetailsCSVUrl(course: string, year: number): string {
+        return this._baseUrl + 'Admin/GetStatsStudentDetailsCSV?course=' + encodeURIComponent(course) + '&year=' + encodeURIComponent((year || 0).toString());
+    }
+
+    getAdminDownloadUrl(course: string, example: string) {
+        return this._baseUrl + 'Admin/Download?course=' + encodeURIComponent(course) + '&example=' + encodeURIComponent(example);
+    }
 
     getAdminLogfile(type: string): Observable<LogLineModel[]> {
         return this.http.get(this._baseUrl + 'Admin/GetLogfile?type=' + type)

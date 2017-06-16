@@ -12,6 +12,8 @@
         <input type="number" class="form-control" [(ngModel)]="year" />
     </div>
     <button type="button" class="btn btn-primary" (click)="refresh()">Refresh</button>
+    <button type="button" class="btn btn-default" (click)="download()">Download</button>
+    <button type="button" class="btn btn-default" (click)="downloadDetails()">Download details</button>
     <div class="checkbox pull-right">
         <label><input type="checkbox" [(ngModel)]="showDetails">Show Details</label>
     </div>
@@ -21,14 +23,16 @@
 <div class="row">
     <div class="col-lg-3 bordered"><strong>UID</strong></div>
     <div class="col-lg-3 bordered"><strong>Name</strong></div>
-    <div class="col-lg-3 bordered"><strong>Time</strong></div>
-    <div class="col-lg-3 bordered"><strong>Tests</strong></div>
+    <div class="col-lg-2 bordered"><strong>Time</strong></div>
+    <div class="col-lg-2 bordered"><strong>Testruns</strong></div>
+    <div class="col-lg-2 bordered"><strong>Tests</strong></div>
 </div>
 <div class="row" *ngFor="let s of results_filtered">
     <div class="col-lg-3 bordered">{{s.UID}}</div>
     <div class="col-lg-3 bordered">{{s.User}}</div>
-    <div class="col-lg-3 bordered text-right">{{s.Time}}</div>
-    <div class="col-lg-3 bordered text-right">{{s.NumOfSucceeded}} / {{s.NumOfTests}}</div>
+    <div class="col-lg-2 bordered text-right">{{s.Time}}</div>
+    <div class="col-lg-2 bordered text-right">{{s.NumOfTestRuns}}</div>
+    <div class="col-lg-2 bordered text-right">{{s.NumOfSucceeded}} / {{s.NumOfTests}}</div>
     <div class="col-lg-12 bordered" *ngIf="showDetails">
         <table class="table table-bordered">
             <thead>
