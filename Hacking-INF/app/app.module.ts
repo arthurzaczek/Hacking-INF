@@ -14,6 +14,7 @@ import { ExampleDetailComponent } from './example-detail.component';
 import { LoginComponent } from './login.component';
 import { AdminDownloadComponent } from './admin-download.component';
 import { AdminStatsComponent } from './admin-stats.component';
+import { AdminStatsStudentsComponent } from './admin-stats-students.component';
 import { AdminLogfilesComponent } from './admin-logfiles.component';
 import { AdminCompilerMessagesComponent } from './admin-compiler-messages.component';
 
@@ -37,6 +38,7 @@ import { HttpClient } from './http-client';
             { path: 'example/:course/:name', component: ExampleDetailComponent },
             { path: 'admin-download', component: AdminDownloadComponent },
             { path: 'admin-stats', component: AdminStatsComponent },
+            { path: 'admin-stats-students', component: AdminStatsStudentsComponent },
             { path: 'admin-logfiles/:type', component: AdminLogfilesComponent },
             { path: 'admin-compiler-messages', component: AdminCompilerMessagesComponent },
         ])
@@ -52,6 +54,7 @@ import { HttpClient } from './http-client';
         LoginComponent,
         AdminDownloadComponent,
         AdminStatsComponent,
+        AdminStatsStudentsComponent,
         AdminLogfilesComponent,
         AdminCompilerMessagesComponent,
         MarkdownComponent,

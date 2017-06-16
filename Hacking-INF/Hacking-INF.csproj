@@ -263,6 +263,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoryViewModel.cs" />
+    <Compile Include="Models\StudentsStatViewModel.cs" />
     <Compile Include="Models\ExampleStatViewModel.cs" />
     <Compile Include="Models\LogFile.cs" />
     <Compile Include="Models\MemoryErrorsViewModel.cs" />
@@ -293,6 +294,7 @@
     <Content Include="app\admin-download.component.html" />
     <Content Include="app\admin-compiler-messages.component.html" />
     <Content Include="app\admin-logfiles.component.html" />
+    <Content Include="app\admin-stats-students.component.html" />
     <Content Include="app\info.component.html" />
     <Content Include="app\admin-stats.component.html" />
     <Content Include="app\me.component.html" />
@@ -800,6 +802,7 @@
     <TypeScriptCompile Include="app\admin-download.component.ts" />
     <TypeScriptCompile Include="app\admin-compiler-messages.component.ts" />
     <TypeScriptCompile Include="app\admin-logfiles.component.ts" />
+    <TypeScriptCompile Include="app\admin-stats-students.component.ts" />
     <TypeScriptCompile Include="app\info.component.ts" />
     <TypeScriptCompile Include="app\http-client.ts" />
     <TypeScriptCompile Include="app\admin-stats.component.ts" />

@@ -133,6 +133,50 @@ namespace Hacking_INF.Controllers
                 }).ToArray();
         }
 
+        [Route("GetStatsStudents")]
+        [HttpGet]
+        public StudentStatViewModel[] GetStatsStudents(string course, int year)
+        {
+            return _bl.GetExampleResults()
+                .Where(i => i.Course == course)
+                .Where(i => i.User != null)
+                .Where(i => year <= 0 || i.FirstAttempt.Year == year || i.LastAttempt.Year == year)
+                .GroupBy(i => i.User)
+                .OrderBy(i => i.Key.UID)
+                .ToList() // exec query
+                .Select(s => new StudentStatViewModel()
+                {
+                    User = s.Key.Name,
+                    UID = s.Key.UID,
+
+                    FirstAttempt = s.Min(i => i.FirstAttempt),
+                    LastAttempt = s.Max(i => i.LastAttempt),
+
+                    Time = TimeSpan.FromSeconds(s.Sum(i => i.Time ?? 0)).ToString(@"hh\:mm\:ss"),
+                    NumOfTestRuns = s.Sum(i => i.NumOfTestRuns),
+                    NumOfSucceeded = s.Sum(i => i.NumOfSucceeded),
+                    NumOfTests = s.Sum(i => i.NumOfTests),
+
+                    Details = s.OrderBy(i => i.Example).Select(i => new StudentStatDetailViewModel()
+                    {
+                        Course = i.Course,
+                        CourseTitle = i.Course,
+                        Example = i.Example,
+                        ExampleTitle = i.Example,
+
+                        FirstAttempt = i.FirstAttempt,
+                        LastAttempt = i.LastAttempt,
+
+                        Time = TimeSpan.FromSeconds(i.Time ?? 0).ToString(@"hh\:mm\:ss"),
+
+                        NumOfTestRuns = i.NumOfTestRuns,
+                        NumOfSucceeded = i.NumOfSucceeded,
+                        NumOfTests = i.NumOfTests,
+                    }).ToArray()
+                })
+                .ToArray();
+        }
+
         [Route("GetReportedCompilerMessages")]
         [HttpGet]
         public ReportedCompilerMessageViewModel[] GetReportedCompilerMessages()

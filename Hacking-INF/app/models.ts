@@ -142,6 +142,28 @@ export class ExampleStat {
     AvgNumOfTestRuns: number;
 }
 
+export class StudentStat {
+    User: string;
+    UID: string;
+
+    Details: StudentStatDetail[];
+}
+
+export class StudentStatDetail {
+    Course: string;
+    CourseTitle: string;
+    Example: string;
+    ExampleTitle: string;
+
+    FirstAttempt: Date;
+    LastAttempt: Date;
+    Time: string;
+
+    NumOfTests: number;
+    NumOfSucceeded: number;
+    NumOfTestRuns: number;
+}
+
 export class LogLineModel {
     Message: string;
     Color: string;

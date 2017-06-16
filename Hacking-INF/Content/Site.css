@@ -93,3 +93,11 @@ span.log.error {
 span.log.warning {
     color: orange;
 }
+
+.bordered {
+    border: 1px solid #ddd;
+    margin-top: -1px;
+    margin-left: -1px;
+    padding: 8px;
+    line-height: 1.42857143;
+}
