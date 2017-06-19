@@ -3,7 +3,7 @@
     Error! You are not authenticated. You must login to see all course examples. <a class="btn btn-default" routerLink="/login">Login</a>
 </div>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-    <div *ngFor="let cat of categories" class="panel panel-default">
+    <div *ngFor="let cat of categories; let isFirst = first" class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingOne">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{cat.Name}}">
@@ -11,12 +11,12 @@
                 </a>
             </h4>
         </div>
-        <div id="collapse-{{cat.Name}}" class="panel-collapse collapse" role="tabpanel">
+        <div id="collapse-{{cat.Name}}" class="panel-collapse collapse" [ngClass]="{'in': isFirst }" role="tabpanel">
             <div class="panel-body">
                 <p class="well">
-                    {{cat.Description}}
+                    {{cat.Description}} - {{isFirst}}
                 </p>
-                <div *ngFor="let e of cat.Examples" class="panel" [ngClass]="{'panel-success': e.Type=='Open'||e.Type=='NotDefined', 'panel-danger': e.Type=='Closed', 'panel-warning': e.Type=='Timed' }">
+                <div *ngFor="let e of cat.Examples" class="panel" [ngClass]="{'panel-success': e.Type=='Open'|| e.Type=='NotDefined', 'panel-danger': e.Type=='Closed', 'panel-warning': e.Type=='Timed' }">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{e.Title}}</h3>
                     </div>
@@ -40,7 +40,6 @@
                         </p>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
