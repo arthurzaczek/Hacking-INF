@@ -1,7 +1,14 @@
-﻿export class Course {
+﻿export class BasicStat {
+    NumOfSucceeded: number = 0;
+    NumOfTests: number = 0;
+}
+
+export class Course {
     Name: string;
     Title: string;
     Type: string;
+
+    Stat: BasicStat = new BasicStat();
 }
 
 export class Category {
@@ -9,6 +16,8 @@ export class Category {
     Title: string;
     Description: string;
     Examples: Example[];
+
+    Stat: BasicStat = new BasicStat();
 }
 
 export class Example {

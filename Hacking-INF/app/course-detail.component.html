@@ -1,4 +1,5 @@
 ﻿<h1>Kurs {{course.Title}}</h1>
+<p *ngIf="course.Stat && course.Stat.NumOfTests > 0"><strong>Progress: </strong>{{course.Stat.NumOfSucceeded}} / {{course.Stat.NumOfTests}} tests succeeded</p>
 <div *ngIf="showAuthError" class="alert alert-danger">
     Error! You are not authenticated. You must login to see all course examples. <a class="btn btn-default" routerLink="/login">Login</a>
 </div>
@@ -7,7 +8,7 @@
         <div class="panel-heading" role="tab" id="headingOne">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{cat.Name}}">
-                    {{cat.Title}}
+                    {{cat.Title}} <span class="pull-right" *ngIf="cat.Stat && cat.Stat.NumOfTests > 0">{{cat.Stat.NumOfSucceeded}} / {{cat.Stat.NumOfTests}}</span>
                 </a>
             </h4>
         </div>

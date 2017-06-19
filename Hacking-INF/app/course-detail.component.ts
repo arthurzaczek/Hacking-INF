@@ -1,7 +1,7 @@
 ﻿import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { Course, Example, Category, User } from './models';
+import { Course, Example, Category, User, BasicStat } from './models';
 import { HackingService } from './hacking.service';
 
 import 'rxjs/add/operator/switchMap';
@@ -52,10 +52,18 @@ export class CourseDetailComponent implements OnInit {
     linkData(): void {
         if (this.examples != null && this.categories != null) {
             let tmp: { [id: string]: Category; } = {};
-            let examples_no_cat: Example[] = [];
+            let other_cat: Category = new Category();
+            this.course.Stat = new BasicStat();
+
+            other_cat.Name = "_____no_cat_others";
+            other_cat.Title = "Other examples";
+            other_cat.Description = "Other unsorted examples";
+            other_cat.Examples = [];
+            other_cat.Stat = new BasicStat();
 
             for (let cat of this.categories) {
                 tmp[cat.Name] = cat;
+                cat.Stat = new BasicStat();
             }
 
             for (let e of this.examples) {
@@ -63,20 +71,22 @@ export class CourseDetailComponent implements OnInit {
                 if (cat != null) {
                     if (cat.Examples == null)
                         cat.Examples = [];
-                    cat.Examples.push(e);
-                    e.Category = cat.Title;
                 } else {
-                    examples_no_cat.push(e);
+                    cat = other_cat;
                 }
+
+                cat.Examples.push(e);
+                e.Category = cat.Title;
+
+                cat.Stat.NumOfTests += e.Result ? e.Result.NumOfTests : 0;
+                cat.Stat.NumOfSucceeded += e.Result ? e.Result.NumOfSucceeded : 0;
+
+                this.course.Stat.NumOfTests += e.Result ? e.Result.NumOfTests : 0;
+                this.course.Stat.NumOfSucceeded += e.Result ? e.Result.NumOfSucceeded : 0;
             }
 
-            if (examples_no_cat.length > 0) {
-                let cat = new Category();
-                cat.Name = "_____no_cat_others";
-                cat.Title = "Other examples";
-                cat.Description = "Other unsorted examples";
-                cat.Examples = examples_no_cat;
-                this.categories.push(cat);
+            if (other_cat.Examples.length > 0) {
+                this.categories.push(other_cat);
             }
         }
     }
