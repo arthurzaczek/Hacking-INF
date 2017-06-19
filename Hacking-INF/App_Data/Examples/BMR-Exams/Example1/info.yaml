@@ -2,6 +2,7 @@
 problemtitle:      Example 1
 problemshorttitle: Example1
 description:       Example one of the current exam
+type:              timed
 openfrom:          2016-05-01 08:00
 openuntil:         2016-12-31 23:59
 category:          formatted output

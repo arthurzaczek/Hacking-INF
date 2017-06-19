@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hacking_INF.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -56,6 +57,53 @@ namespace Hacking_INF
                 return (Convert.ToDouble(source.ElementAt(midpoint - 1)) + Convert.ToDouble(source.ElementAt(midpoint))) / 2.0;
             else
                 return Convert.ToDouble(source.ElementAt(midpoint));
+        }
+
+        public static IEnumerable<T> WhereStatus<T>(this IEnumerable<T> qry, bool isAuthenticated, bool isTeacher) where T : IStatus
+        {
+            var now = DateTime.Now;
+            return qry.Where(i =>
+            {
+                if (isTeacher)
+                {
+                    if (i.Type == Types.Timed)
+                    {
+                        // Reflect actual state
+                        if (i.OpenFrom.HasValue
+                         && i.OpenUntil.HasValue
+                         && i.OpenFrom.Value <= now
+                         && i.OpenUntil.Value >= now)
+                        {
+                            i.Type = Types.Open;
+                        }
+                        else
+                        {
+                            i.Type = Types.Closed;
+                        }
+                    }
+                    return true;
+                }
+
+                if (i.Type == Types.Open) return true;
+                if (i.Type == Types.Closed) return false;
+                if (i.Type == Types.Timed)
+                {
+                    if (isAuthenticated
+                     && i.OpenFrom.HasValue
+                     && i.OpenUntil.HasValue
+                     && i.OpenFrom.Value <= now
+                     && i.OpenUntil.Value >= now)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                return false; // Fail save. Show less, maybe we're missing a exam example                  
+            });
         }
     }
 }

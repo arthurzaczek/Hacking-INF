@@ -19,7 +19,14 @@ namespace Hacking_INF.Models
         Timed = 3,
     }
 
-    public class Course
+    public interface IStatus
+    {
+        Types Type { get; set; }
+        DateTime? OpenFrom { get; set; }
+        DateTime? OpenUntil { get; set; }
+    }
+
+    public class Course : IStatus
     {
         [YamlMember(Alias = "name")]
         public string Name { get; set; }
@@ -33,6 +40,10 @@ namespace Hacking_INF.Models
         public List<Category> Categories { get; set; }
         [YamlMember(Alias = "type")]
         public Types Type { get; set; }
+        [YamlMember(Alias = "openfrom")]
+        public DateTime? OpenFrom { get; set; }
+        [YamlMember(Alias = "openuntil")]
+        public DateTime? OpenUntil { get; set; }
 
         [YamlMember(Alias = "exe")]
         public string Exe { get; set; }
@@ -64,7 +75,7 @@ namespace Hacking_INF.Models
         public string[] Examples { get; set; }
     }
 
-    public class Example
+    public class Example : IStatus
     {
         [YamlMember(Alias = "problemshorttitle")]
         public string Name { get; set; }
@@ -95,6 +106,23 @@ namespace Hacking_INF.Models
         [YamlMember(Alias = "compiler")]
         public List<Compiler> Compiler { get; set; }
         public int Order { get; set; }
+
+        public void InheritProperties(Course courseObj)
+        {
+            // Inheritance
+            if (this.Type == Types.NotDefined)
+                this.Type = courseObj.Type;
+            if (this.OpenFrom == null)
+                this.OpenFrom = courseObj.OpenFrom;
+            if (this.OpenUntil == null)
+                this.OpenUntil = courseObj.OpenUntil;
+
+            if (string.IsNullOrWhiteSpace(this.FileName))
+                this.FileName = courseObj.FileName;
+
+            if (string.IsNullOrWhiteSpace(this.Exe))
+                this.Exe = courseObj.Exe;
+        }
     }
 
     public class TestOutput : IDisposable

@@ -324,7 +324,7 @@ namespace Hacking_INF
                                 i.Type = Types.Open;
                             return i;
                         })
-                        .Where(i => IsTeacher || i.Type != Types.Closed)
+                        .WhereStatus(IsAuthenticated, isTeacher)
                         .ToList();
                     if (!isTeacher)
                     {
@@ -341,7 +341,6 @@ namespace Hacking_INF
             {
                 var result = (IEnumerable<Example>)System.Web.Hosting.HostingEnvironment.Cache.Get("__all_examples__" + course);
                 var isTeacher = IsTeacher;
-                var isAuthenticated = IsAuthenticated;
                 if (result == null || isTeacher)
                 {
                     _log.Info("Reading & caching all examples of course " + course);
@@ -361,15 +360,7 @@ namespace Hacking_INF
                                 example.Order = orderList != null ? orderList.IndexOf(example.Name) : -1;
                                 if (example.Order < 0) example.Order = int.MaxValue;
 
-                                // Inheritance
-                                if (example.Type == Types.NotDefined)
-                                    example.Type = courseObj.Type;
-
-                                if (string.IsNullOrWhiteSpace(example.FileName))
-                                    example.FileName = courseObj.FileName;
-
-                                if (string.IsNullOrWhiteSpace(example.Exe))
-                                    example.Exe = courseObj.Exe;
+                                example.InheritProperties(courseObj);
 
                                 return example;
                             }
@@ -380,48 +371,7 @@ namespace Hacking_INF
                             }
                         })
                         .Where(i => i != null)
-                        .Where(i =>
-                        {
-                            if (isTeacher)
-                            {
-                                if (i.Type == Types.Timed)
-                                {
-                                    // Reflect actual state
-                                    if (i.OpenFrom.HasValue
-                                     && i.OpenUntil.HasValue
-                                     && i.OpenFrom.Value <= now
-                                     && i.OpenUntil.Value >= now)
-                                    {
-                                        i.Type = Types.Open;
-                                    }
-                                    else
-                                    {
-                                        i.Type = Types.Closed;
-                                    }
-                                }
-                                return true;
-                            }
-
-                            if (i.Type == Types.Open) return true;
-                            if (i.Type == Types.Closed) return false;
-                            if (i.Type == Types.Timed)
-                            {
-                                if (isAuthenticated
-                                 && i.OpenFrom.HasValue
-                                 && i.OpenUntil.HasValue
-                                 && i.OpenFrom.Value <= now
-                                 && i.OpenUntil.Value >= now)
-                                {
-                                    return true;
-                                }
-                                else
-                                {
-                                    return false;
-                                }
-                            }
-
-                            return false; // Fail save. Show less, maybe we're missing a exam example                  
-                        })
+                        .WhereStatus(IsAuthenticated, isTeacher)
                         .OrderBy(i => i.Order)
                         .ThenBy(i => i.Title)
                         .ToList();
