@@ -14,7 +14,7 @@
         <div id="collapse-{{cat.Name}}" class="panel-collapse collapse" [ngClass]="{'in': isFirst }" role="tabpanel">
             <div class="panel-body">
                 <p class="well">
-                    {{cat.Description}} - {{isFirst}}
+                    {{cat.Description}}
                 </p>
                 <div *ngFor="let e of cat.Examples" class="panel" [ngClass]="{'panel-success': e.Type=='Open'|| e.Type=='NotDefined', 'panel-danger': e.Type=='Closed', 'panel-warning': e.Type=='Timed' }">
                     <div class="panel-heading">
