@@ -80,9 +80,13 @@ export class CourseDetailComponent implements OnInit {
 
                 cat.Stat.NumOfTests += e.Result ? e.Result.NumOfTests : 0;
                 cat.Stat.NumOfSucceeded += e.Result ? e.Result.NumOfSucceeded : 0;
+                cat.Stat.NumOfExamples++;
+                cat.Stat.NumOfExamplesStarted += e.Result ? 1 : 0;
 
                 this.course.Stat.NumOfTests += e.Result ? e.Result.NumOfTests : 0;
                 this.course.Stat.NumOfSucceeded += e.Result ? e.Result.NumOfSucceeded : 0;
+                this.course.Stat.NumOfExamples++;
+                this.course.Stat.NumOfExamplesStarted += e.Result ? 1 : 0;
             }
 
             if (other_cat.Examples.length > 0) {

@@ -1,4 +1,7 @@
 ﻿export class BasicStat {
+    NumOfExamples: number = 0;
+    NumOfExamplesStarted: number = 0;
+
     NumOfSucceeded: number = 0;
     NumOfTests: number = 0;
 }
