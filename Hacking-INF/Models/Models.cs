@@ -19,11 +19,13 @@ namespace Hacking_INF.Models
         Timed = 3,
     }
 
-    public interface IStatus
+    public interface IStatus : ICloneable
     {
         Types Type { get; set; }
         DateTime? OpenFrom { get; set; }
         DateTime? OpenUntil { get; set; }
+        DateTime? ClosedFrom { get; set; }
+        DateTime? ClosedUntil { get; set; }
     }
 
     public class Course : IStatus
@@ -44,6 +46,10 @@ namespace Hacking_INF.Models
         public DateTime? OpenFrom { get; set; }
         [YamlMember(Alias = "openuntil")]
         public DateTime? OpenUntil { get; set; }
+        [YamlMember(Alias = "closedfrom")]
+        public DateTime? ClosedFrom { get; set; }
+        [YamlMember(Alias = "closeduntil")]
+        public DateTime? ClosedUntil { get; set; }
 
         [YamlMember(Alias = "exe")]
         public string Exe { get; set; }
@@ -51,6 +57,11 @@ namespace Hacking_INF.Models
         public string FileName { get; set; }
         [YamlMember(Alias = "compiler")]
         public List<Compiler> Compiler { get; set; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 
     public class Compiler
@@ -87,6 +98,11 @@ namespace Hacking_INF.Models
         public DateTime? OpenFrom { get; set; }
         [YamlMember(Alias = "openuntil")]
         public DateTime? OpenUntil { get; set; }
+        [YamlMember(Alias = "closedfrom")]
+        public DateTime? ClosedFrom { get; set; }
+        [YamlMember(Alias = "closeduntil")]
+        public DateTime? ClosedUntil { get; set; }
+
         [YamlMember(Alias = "description")]
         public string Description { get; set; }
         [YamlMember(Alias = "type")]
@@ -107,6 +123,11 @@ namespace Hacking_INF.Models
         public List<Compiler> Compiler { get; set; }
         public int Order { get; set; }
 
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
         public void InheritProperties(Course courseObj)
         {
             // Inheritance
@@ -116,6 +137,10 @@ namespace Hacking_INF.Models
                 this.OpenFrom = courseObj.OpenFrom;
             if (this.OpenUntil == null)
                 this.OpenUntil = courseObj.OpenUntil;
+            if (this.ClosedFrom == null)
+                this.ClosedFrom = courseObj.ClosedFrom;
+            if (this.ClosedUntil == null)
+                this.ClosedUntil = courseObj.ClosedUntil;
 
             if (string.IsNullOrWhiteSpace(this.FileName))
                 this.FileName = courseObj.FileName;

@@ -298,8 +298,7 @@ namespace Hacking_INF
             lock (_lock)
             {
                 var result = (IEnumerable<Course>)System.Web.Hosting.HostingEnvironment.Cache.Get("__all_courses__");
-                var isTeacher = IsTeacher;
-                if (result == null || isTeacher)
+                if (result == null)
                 {
                     _log.Info("Reading & caching all courses");
                     var list = new List<Course>();
@@ -324,14 +323,13 @@ namespace Hacking_INF
                                 i.Type = Types.Open;
                             return i;
                         })
-                        .WhereStatus(IsAuthenticated, isTeacher)
                         .ToList();
-                    if (!isTeacher)
-                    {
-                        System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_courses__", result, new CacheDependency(fileNames.ToArray()));
-                    }
+                    System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_courses__", result, new CacheDependency(fileNames.ToArray()));
                 }
-                return result;
+                return result
+                    .WhereStatus(IsAuthenticated, IsTeacher)
+                    .ReflectStatus(IsTeacher)
+                    .ToList();
             }
         }
 
@@ -340,8 +338,7 @@ namespace Hacking_INF
             lock (_lock)
             {
                 var result = (IEnumerable<Example>)System.Web.Hosting.HostingEnvironment.Cache.Get("__all_examples__" + course);
-                var isTeacher = IsTeacher;
-                if (result == null || isTeacher)
+                if (result == null)
                 {
                     _log.Info("Reading & caching all examples of course " + course);
                     var path = Path.Combine(ExamplesDir, course);
@@ -371,17 +368,16 @@ namespace Hacking_INF
                             }
                         })
                         .Where(i => i != null)
-                        .WhereStatus(IsAuthenticated, isTeacher)
                         .OrderBy(i => i.Order)
                         .ThenBy(i => i.Title)
                         .ToList();
 
-                    if (!isTeacher)
-                    {
-                        System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_examples__" + course, result, new CacheDependency(path));
-                    }
+                    System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_examples__" + course, result, new CacheDependency(path));
                 }
-                return result;
+                return result
+                    .WhereStatus(IsAuthenticated, IsTeacher)
+                    .ReflectStatus(IsTeacher)
+                    .ToList();
             }
         }
 

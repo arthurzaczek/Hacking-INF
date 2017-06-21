@@ -66,30 +66,22 @@ namespace Hacking_INF
             {
                 if (isTeacher)
                 {
-                    if (i.Type == Types.Timed)
-                    {
-                        // Reflect actual state
-                        if (i.OpenFrom.HasValue
-                         && i.OpenUntil.HasValue
-                         && i.OpenFrom.Value <= now
-                         && i.OpenUntil.Value >= now)
-                        {
-                            i.Type = Types.Open;
-                        }
-                        else
-                        {
-                            i.Type = Types.Closed;
-                        }
-                    }
                     return true;
                 }
 
+                if (i.ClosedFrom.HasValue
+                 && i.ClosedUntil.HasValue
+                 && i.ClosedFrom.Value <= now
+                 && i.ClosedUntil.Value >= now)
+                {
+                    return false;
+                }
                 if (i.Type == Types.Open) return true;
                 if (i.Type == Types.Closed) return false;
                 if (i.Type == Types.Timed)
                 {
-                    if (isAuthenticated
-                     && i.OpenFrom.HasValue
+                    if (!isAuthenticated) return false;
+                    if (i.OpenFrom.HasValue
                      && i.OpenUntil.HasValue
                      && i.OpenFrom.Value <= now
                      && i.OpenUntil.Value >= now)
@@ -103,6 +95,42 @@ namespace Hacking_INF
                 }
 
                 return false; // Fail save. Show less, maybe we're missing a exam example                  
+            });
+        }
+
+        public static IEnumerable<T> ReflectStatus<T>(this IEnumerable<T> qry, bool isTeacher) where T : IStatus
+        {
+            var now = DateTime.Now;
+            return qry.Select(x =>
+            {
+                var i = (T)x.Clone();
+                if (isTeacher)
+                {
+                    if (i.Type == Types.Timed)
+                    {
+                        // Reflect actual state
+                        if (i.OpenFrom.HasValue
+                         && i.OpenUntil.HasValue
+                         && i.OpenFrom.Value <= now
+                         && i.OpenUntil.Value >= now)
+                        {
+                            i.Type = Types.Timed;
+                        }
+                        else
+                        {
+                            i.Type = Types.Closed;
+                        }
+                    }
+                    if (i.ClosedFrom.HasValue
+                         && i.ClosedUntil.HasValue
+                         && i.ClosedFrom.Value <= now
+                         && i.ClosedUntil.Value >= now)
+                    {
+                        i.Type = Types.Closed;
+                    }
+                }
+
+                return i;
             });
         }
     }

@@ -3,7 +3,7 @@ title:       BMR Exams
 headline:    Exam area for BMR
 description: Alle Test & Prüfungen in BMR
 type:        timed
-openfrom:    2017-05-01 08:00
+openfrom:    2017-06-21 08:00
 openuntil:   2017-12-31 23:59
 filename:    main.c
 exe:         main.exe

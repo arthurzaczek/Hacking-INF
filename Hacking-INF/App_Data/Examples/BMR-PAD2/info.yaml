@@ -9,6 +9,8 @@ categories:
     description:  Basic programs
 filename:    main.c
 exe:         main.exe
+closedfrom:  2017-06-21 08:00
+closeduntil: 2017-06-22 16:00
 compiler:
   - cmd:     gcc
     args:    -Wall -g -pedantic -Wextra -std=c99 -ggdb -static-libgcc -c main.c
