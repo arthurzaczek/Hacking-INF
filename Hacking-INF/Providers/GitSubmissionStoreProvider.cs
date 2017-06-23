@@ -13,14 +13,14 @@ namespace Hacking_INF.Providers
 
         private string uid;
 
-        public GitSubmissionStoreProvider(string course, string example, string uid)
-            : base(course, example)
+        public GitSubmissionStoreProvider(string course, string exampleRegex, string uid)
+            : base(course, exampleRegex)
         {
             if (string.IsNullOrWhiteSpace(uid)) throw new ArgumentNullException("uid");
             this.uid = uid;
         }
 
-        protected override string GetRepoPath(string course, string example)
+        protected override string GetRepoPath(string course)
         {
             return Path.Combine(
                 HttpContext.Current.Server.MapPath("~/App_Data/Submissions"),

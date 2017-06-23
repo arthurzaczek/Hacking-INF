@@ -96,7 +96,7 @@ namespace Hacking_INF.Controllers
 
             if (pastResult != null && user != null)
             {
-                var store = _submissionStoreFactory(course, name, user.UID);
+                var store = _submissionStoreFactory(course, "^" + name + "$", user.UID);
                 var main = store.GetItems().FirstOrDefault(i => i.Name == example.FileName);
                 if (main != null)
                 {

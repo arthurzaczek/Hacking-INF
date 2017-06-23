@@ -15,7 +15,7 @@ namespace Hacking_INF.Providers
         private readonly log4net.ILog _log = log4net.LogManager.GetLogger("Git");
 
         protected string course;
-        protected string example;
+        protected string exampleRegex;
         protected string assignmentName;
         protected string baseRelPath;
         protected string baseAbsPath;
@@ -23,17 +23,17 @@ namespace Hacking_INF.Providers
         protected string user;
         protected Repository repo;
 
-        public GitStoreProvider(string course, string example)
+        public GitStoreProvider(string course, string exampleRegex)
         {
             if (string.IsNullOrWhiteSpace(course)) throw new ArgumentNullException("course");
-            if (string.IsNullOrWhiteSpace(example)) throw new ArgumentNullException("example");
+            if (string.IsNullOrWhiteSpace(exampleRegex)) throw new ArgumentNullException("exampleRegex");
 
             user = System.Threading.Thread.CurrentPrincipal.Identity.Name;
             this.course = course;
-            this.example = example;
+            this.exampleRegex = exampleRegex;
         }
 
-        protected abstract string GetRepoPath(string course, string example);
+        protected abstract string GetRepoPath(string course);
 
         protected void EnsureInitialization()
         {
@@ -45,8 +45,8 @@ namespace Hacking_INF.Providers
 
         protected virtual void Initialize()
         {
-            assignmentName = example;
-            repoPath = Path.GetFullPath(GetRepoPath(course, example));
+            assignmentName = exampleRegex.TrimStart('^').TrimEnd('$'); // remove regex;
+            repoPath = Path.GetFullPath(GetRepoPath(course));
             if (!Directory.Exists(repoPath))
             {
                 Directory.CreateDirectory(repoPath);
@@ -116,7 +116,7 @@ namespace Hacking_INF.Providers
             {
                 foreach (var toStage in status.Missing)
                 {
-                    repo.Stage(toStage.FilePath);
+                    Commands.Stage(repo, toStage.FilePath);
                 }
 
                 if (string.IsNullOrWhiteSpace(filename))
@@ -141,7 +141,7 @@ namespace Hacking_INF.Providers
             {
                 foreach (var toStage in status)
                 {
-                    repo.Stage(toStage.FilePath);
+                    Commands.Stage(repo, toStage.FilePath);
                 }
                 repo.Commit(message, author, author);
             }
@@ -161,7 +161,7 @@ namespace Hacking_INF.Providers
             var allExamples = repo.Index
                 .Select(i => Path.GetDirectoryName(i.Path))
                 .Distinct()
-                .Where(i => Regex.Match(i, assignmentName).Success)
+                .Where(i => Regex.Match(i, exampleRegex).Success)
                 .ToArray();
 
             foreach (var item in repo.Diff.Compare<TreeChanges>(allExamples, includeUntracked: true, explicitPathsOptions: new ExplicitPathsOptions() { ShouldFailOnUnmatchedPath = false }, compareOptions: new CompareOptions() { IncludeUnmodified = true }))

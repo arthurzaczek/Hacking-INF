@@ -25,7 +25,7 @@ namespace Hacking_INF
                 .As<ITestResultSaveService>()
                 .SingleInstance();
 
-            builder.Register<IEnumerable<ISubmissionStoreProvider>>((c, p) => GitSubmissionStoreProvider.GetSubmissions(p.Named<string>("course"), p.Named<string>("example")))
+            builder.Register<IEnumerable<ISubmissionStoreProvider>>((c, p) => GitSubmissionStoreProvider.GetSubmissions(p.Named<string>("course"), p.Named<string>("exampleRegex")))
                 .As<IEnumerable<ISubmissionStoreProvider>>()
                 .InstancePerDependency();
         }

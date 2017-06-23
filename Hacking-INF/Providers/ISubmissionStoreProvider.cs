@@ -6,8 +6,8 @@ using System.Web;
 
 namespace Hacking_INF.Providers
 {
-    public delegate ISubmissionStoreProvider SubmissionStoreProviderFactory(string course, string example, string uid);
-    public delegate IEnumerable<ISubmissionStoreProvider> SubmissionCollectorFactory(string course, string example);
+    public delegate ISubmissionStoreProvider SubmissionStoreProviderFactory(string course, string exampleRegex, string uid);
+    public delegate IEnumerable<ISubmissionStoreProvider> SubmissionCollectorFactory(string course, string exampleRegex);
 
     public sealed class StorageConstants
     {
