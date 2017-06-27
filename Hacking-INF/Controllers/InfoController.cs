@@ -49,12 +49,24 @@ namespace Hacking_INF.Controllers
         public IEnumerable<ExampleViewModel> GetExamples(string course)
         {
             var userUID = _bl.GetCurrentUserUID();
+            Dictionary<string, ExampleResult> exampleResults;
+            if (!string.IsNullOrWhiteSpace(userUID))
+            {
+                exampleResults = _bl.GetExampleResults()
+                    .Where(i => i.Course == course)
+                    .Where(i => i.User.UID == userUID)
+                    .ToDictionary(k => k.Example);
+            }
+            else
+            {
+                exampleResults = new Dictionary<string, ExampleResult>();
+            }
 
             return _bl.GetExamples(course).Select(i =>
             {
                 var result = new ExampleViewModel(i);
-                var pastResult = _bl.GetExampleResult(userUID, null, course, i.Name);
-                if (pastResult != null)
+                ExampleResult pastResult;
+                if(exampleResults.TryGetValue(i.Name, out pastResult))
                 {
                     result.Result = new ExampleResultViewModel(pastResult);
                 }
