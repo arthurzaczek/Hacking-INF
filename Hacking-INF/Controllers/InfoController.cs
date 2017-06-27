@@ -48,12 +48,12 @@ namespace Hacking_INF.Controllers
         [Route("GetExamples")]
         public IEnumerable<ExampleViewModel> GetExamples(string course)
         {
-            var user = _bl.GetCurrentUser();
+            var userUID = _bl.GetCurrentUserUID();
 
             return _bl.GetExamples(course).Select(i =>
             {
                 var result = new ExampleViewModel(i);
-                var pastResult = _bl.GetExampleResult(user, null, course, i.Name);
+                var pastResult = _bl.GetExampleResult(userUID, null, course, i.Name);
                 if (pastResult != null)
                 {
                     result.Result = new ExampleResultViewModel(pastResult);
@@ -67,8 +67,8 @@ namespace Hacking_INF.Controllers
         {
             var dir = _bl.GetExampleDir(course, name);
             var example = _bl.GetExamples(course).Single(i => i.Name == name);
-            var user = _bl.GetCurrentUser();
-            var pastResult = _bl.GetExampleResult(user, null, course, name);
+            var userUID = _bl.GetCurrentUserUID();
+            var pastResult = _bl.GetExampleResult(userUID, null, course, name);
 
             var vmdl = new ExampleViewModel(example);
             vmdl.SessionID = Guid.NewGuid();
@@ -94,9 +94,9 @@ namespace Hacking_INF.Controllers
                 vmdl.UseThisMain = "";
             }
 
-            if (pastResult != null && user != null)
+            if (pastResult != null && !string.IsNullOrWhiteSpace(userUID))
             {
-                var store = _submissionStoreFactory(course, "^" + name + "$", user.UID);
+                var store = _submissionStoreFactory(course, "^" + name + "$", userUID);
                 var main = store.GetItems().FirstOrDefault(i => i.Name == example.FileName);
                 if (main != null)
                 {

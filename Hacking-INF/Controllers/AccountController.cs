@@ -44,6 +44,12 @@ namespace Hacking_INF.Controllers
                 vmdl.Password = null; // don't send password back to client
                 vmdl.Jwt = _bl.CreateJwt(vmdl);
 
+                if(_bl.GetUser(vmdl.UID, checkAccess: false) == null)
+                {
+                    _bl.CreateUser(vmdl.UID, ldapUser.Fullname);
+                    _bl.SaveChanges();
+                }
+
                 return Ok(vmdl);
             }
             else
@@ -68,6 +74,12 @@ namespace Hacking_INF.Controllers
                 vmdl.Name = user.Name;
                 vmdl.Roles = p.IsInRole("Teacher") ? new[] { "Teacher" } : new string[] { };
                 vmdl.Jwt = _bl.CreateJwt(vmdl); // Refresh token
+
+                if(user.ID == 0)
+                {
+                    // save new user
+                    _bl.SaveChanges();
+                }
             }
             return Ok(vmdl);
         }
@@ -77,8 +89,8 @@ namespace Hacking_INF.Controllers
         [HttpGet]
         public IHttpActionResult GetToken()
         {
-            var user = _bl.GetCurrentUser();
-            if (user != null)
+            var userUID = _bl.GetCurrentUserUID();
+            if (!string.IsNullOrWhiteSpace(userUID))
             {
                 return Ok(_bl.GetAccessToken());
             }

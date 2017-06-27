@@ -153,11 +153,11 @@ namespace Hacking_INF.Models
     public class TestOutput : IDisposable
     {
         string _workingDir;
-        public TestOutput(Process p, User user, Guid sessionID, Course course, Example example, string workingDir, DateTime startTime)
+        public TestOutput(Process p, string userUID, Guid sessionID, Course course, Example example, string workingDir, DateTime startTime)
         {
             this._workingDir = workingDir;
             this.Process = p;
-            this.UID = user?.UID;
+            this.UID = userUID;
             this.SessionID = sessionID;
             this.Course = course.Name;
             this.Example = example.Name;

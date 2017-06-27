@@ -90,24 +90,51 @@ namespace Hacking_INF
             }
         }
 
-        public User GetCurrentUser()
+        public string GetCurrentUserUID()
         {
             var id = System.Threading.Thread.CurrentPrincipal?.Identity;
             if (id != null && id.IsAuthenticated)
             {
-                var user = _dal.Users.SingleOrDefault(i => i.UID == id.Name);
-                if (user == null)
-                {
-                    user = _dal.CreateUser();
-                    user.UID = id.Name;
-                    user.Name = (id as ClaimsIdentity)?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? id.Name;
-                    _dal.SaveChanges();
-                }
+                return id.Name;
+            }
+            return null;
+        }
 
-                return user;
+        public User GetCurrentUser()
+        {
+            var id = System.Threading.Thread.CurrentPrincipal?.Identity;
+            if (id == null || !id.IsAuthenticated)
+            {
+                return null;
             }
 
-            return null;
+            var user = _dal.Users.SingleOrDefault(i => i.UID == id.Name);
+            if (user == null)
+            {
+                user = CreateUser(id.Name, (id as ClaimsIdentity)?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? id.Name);
+            }
+
+            return user;
+        }
+
+        public User CreateUser(string uid, string fullname)
+        {
+            var user = _dal.CreateUser();
+            user.UID = uid;
+            user.Name = fullname;
+
+            return user;
+        }
+
+        public User GetUser(string uid, bool checkAccess = true)
+        {
+            if (!IsTeacher && checkAccess)
+            {
+                var id = System.Threading.Thread.CurrentPrincipal?.Identity;
+                if (id?.Name != uid)
+                    throw new SecurityException("You have no right to access others results");
+            }
+            return _dal.Users.SingleOrDefault(i => i.UID == uid);
         }
 
         public IPrincipal ValidateJwt(string authToken)
@@ -234,21 +261,9 @@ namespace Hacking_INF
             }
         }
 
-        public User GetUser(string uid, bool checkAccess = true)
+        public ExampleResult GetExampleResult(string userUID, Guid? sessionID, string course, string example)
         {
-            if (!IsTeacher && checkAccess)
-            {
-                var id = System.Threading.Thread.CurrentPrincipal?.Identity;
-                if (id?.Name != uid)
-                    throw new SecurityException("You have no right to access others results");
-            }
-            return _dal.Users.SingleOrDefault(i => i.UID == uid);
-        }
-
-        public ExampleResult GetExampleResult(User user, Guid? sessionID, string course, string example)
-        {
-            if (user == null && sessionID == null) return null;
-            var userUID = user?.UID;
+            if (string.IsNullOrWhiteSpace(userUID) && sessionID == null) return null;
             var qry = _dal.ExampleResults.Where(i => i.Course == course && i.Example == example);
 
             if (!string.IsNullOrWhiteSpace(userUID))

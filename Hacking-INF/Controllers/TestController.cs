@@ -69,18 +69,18 @@ namespace Hacking_INF.Controllers
 
             _bl.WriteTextFile(Path.Combine(workingDir, codeFileName), vmdl.Code + ourMainCode);
 
-            var user = _bl.GetCurrentUser();
-            if (user != null)
+            var userUID = _bl.GetCurrentUserUID();
+            if (!string.IsNullOrWhiteSpace(userUID))
             {
                 // Optimization hint: use a lock object for each repository
                 // this will prevent global locks.
                 lock (_lock)
                 {
-                    var store = _submissionStoreFactory(course.Name, example.Name, user.UID);
+                    var store = _submissionStoreFactory(course.Name, example.Name, userUID);
                     store.Save(codeFileName, new System.IO.MemoryStream(Encoding.UTF8.GetBytes(vmdl.Code)));
                     store.Commit(string.Format("{0} submitted", codeFileName));
-                    _log.InfoFormat("{0}.{1} commited by {2}", course.Name, example.Name, user.UID);
-                    _logSubmission.InfoFormat("{0}.{1};{2};{3}", course.Name, example.Name, user.UID, _bl.GetClientIp(Request));
+                    _log.InfoFormat("{0}.{1} commited by {2}", course.Name, example.Name, userUID);
+                    _logSubmission.InfoFormat("{0}.{1};{2};{3}", course.Name, example.Name, userUID, _bl.GetClientIp(Request));
                 }
             }
 
@@ -130,14 +130,14 @@ namespace Hacking_INF.Controllers
                         Properties.Settings.Default.DrMemoryPath,
                         Path.Combine(_bl.ToolsDir, "checkproject.jar"));
 
-                Exec("java", args, workingDir, sessionGuid, vmdl.StartTime, user, course, example);
+                Exec("java", args, workingDir, sessionGuid, vmdl.StartTime, userUID, course, example);
                 result.TestFinished = false;
                 result.TestOutput = "Starte Tests...";
             }
             else
             {
                 // Just save the compile attempts
-                _saveService.Save(user?.UID, sessionGuid, course, example, vmdl.StartTime);
+                _saveService.Save(userUID, sessionGuid, course, example, vmdl.StartTime);
             }
 
             return result;
@@ -223,10 +223,10 @@ namespace Hacking_INF.Controllers
         }
 
 
-        private void Exec(string cmd, string args, string workingDir, Guid sessionGuid, DateTime startTime, User user, Course course, Example example)
+        private void Exec(string cmd, string args, string workingDir, Guid sessionGuid, DateTime startTime, string userUID, Course course, Example example)
         {
             var p = new Process();
-            var output = new TestOutput(p, user, sessionGuid, course, example, workingDir, startTime);
+            var output = new TestOutput(p, userUID, sessionGuid, course, example, workingDir, startTime);
             lock (_lock)
             {
                 _testOutput[sessionGuid] = output;

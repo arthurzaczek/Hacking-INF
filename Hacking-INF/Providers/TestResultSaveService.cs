@@ -37,7 +37,7 @@ namespace Hacking_INF.Providers
                     var user = !string.IsNullOrWhiteSpace(output.UID) ? bl.GetUser(output.UID, checkAccess: false) : null;
                     var sessionID = output.SessionID;
 
-                    var result = bl.GetExampleResult(user, sessionID, output.Course, output.Example);
+                    var result = bl.GetExampleResult(user?.UID, sessionID, output.Course, output.Example);
                     if (result == null)
                     {
                         result = bl.CreateExampleResult();
@@ -81,7 +81,7 @@ namespace Hacking_INF.Providers
                 {
                     var bl = scope.Resolve<BL>();
                     var user = !string.IsNullOrWhiteSpace(uid) ? bl.GetUser(uid, checkAccess: false) : null;
-                    var result = bl.GetExampleResult(user, sessionID, course.Name, example.Name);
+                    var result = bl.GetExampleResult(user?.UID, sessionID, course.Name, example.Name);
                     if (result == null)
                     {
                         result = bl.CreateExampleResult();
