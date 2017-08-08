@@ -324,5 +324,7 @@ namespace Hacking_INF.Models
         public string User { get; set; }
         [YamlMember(Alias = "pwd")]
         public string Pwd { get; set; }
+        [YamlMember(Alias = "updatetoken")]
+        public string UpdateToken { get; set; }
     }
 }

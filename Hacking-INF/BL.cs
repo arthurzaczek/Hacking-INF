@@ -424,17 +424,18 @@ namespace Hacking_INF
 
         public void UpdateExamples()
         {
-            if (!Directory.Exists(ExamplesDir))
-            {
-                Directory.CreateDirectory(ExamplesDir);
-            }
-            else
+            _log.Info("Updating examples");
+
+            if (Directory.Exists(ExamplesDir))
             {
                 Directory.Delete(ExamplesDir, true);
             }
 
-            var settings = ReadYAML<ExamplesRepo>(Path.Combine(SettingsDir, "ExamplesRepo.yaml"));
+            var settings = ReadYAML<ExamplesRepo>(Path.Combine(SettingsDir, "ExamplesRepo.yaml"), () => new ExamplesRepo() { Url = "https://git-inf.technikum-wien.at/INF/Hacking-INF-Demo-Examples.git", UpdateToken = Guid.NewGuid().ToString() });
             var options = new CloneOptions();
+
+            _log.DebugFormat("  host: {0}", settings.Url);
+            _log.DebugFormat("  user: {0}", settings.User);
 
             options.CertificateCheck = (certificate, valid, host) =>
             {
@@ -504,24 +505,49 @@ namespace Hacking_INF
             }
         }
 
-        public T ReadYAML<T>(string fileName)
+        public T ReadYAML<T>(string fileName, Func<T> defaultValue = null) where T : class
         {
             try
             {
-
-                using (var input = new StreamReader(fileName))
+                if (File.Exists(fileName))
                 {
-                    var deserializer = new DeserializerBuilder()
-                        .WithNamingConvention(new CamelCaseNamingConvention())
-                        .IgnoreUnmatchedProperties()
-                        .Build();
-                    return deserializer.Deserialize<T>(input);
+                    using (var input = new StreamReader(fileName))
+                    {
+                        var deserializer = new DeserializerBuilder()
+                            .WithNamingConvention(new CamelCaseNamingConvention())
+                            .IgnoreUnmatchedProperties()
+                            .Build();
+                        return deserializer.Deserialize<T>(input);
+                    }
+                }
+                else if (defaultValue != null)
+                {
+                    var v = defaultValue();
+                    WriteYAML(fileName, v);
+                    return v;
+                }
+                else
+                {
+                    throw new FileNotFoundException("YAML could not be found", fileName);
                 }
             }
             catch (Exception ex)
             {
                 LogParseError(fileName, ex);
                 throw;
+            }
+        }
+
+        public void WriteYAML(string fileName, object obj)
+        {
+            using (var sw = new StreamWriter(fileName))
+            {
+                sw.BaseStream.SetLength(0);
+                var serializer = new SerializerBuilder()
+                    .WithNamingConvention(new CamelCaseNamingConvention())
+                    .EmitDefaults()
+                    .Build();
+                serializer.Serialize(sw, obj);
             }
         }
 

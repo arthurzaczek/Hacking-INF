@@ -350,5 +350,28 @@ namespace Hacking_INF.Controllers
             _bl.UpdateExamples();
             return "Updating examples was sucessful!";
         }
+
+        [Route("TriggerUpdateExamples")]
+        [HttpGet]
+        [AllowAnonymous]
+        public HttpResponseMessage TriggerUpdateExamples(string token)
+        {
+            _log.Info("Trigger update examples");
+
+            var settings = _bl.ReadYAML<ExamplesRepo>(Path.Combine(_bl.SettingsDir, "ExamplesRepo.yaml"));
+            if (settings.UpdateToken != token)
+            {
+                _log.Error("Invalid token");
+                var error = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                error.Content = new StringContent("Invalid token", Encoding.UTF8, "text/plain");
+                return error;
+            }
+
+            _bl.UpdateExamples();
+
+            var ok = Request.CreateResponse(HttpStatusCode.OK);
+            ok.Content = new StringContent("Success!", Encoding.UTF8, "text/plain");
+            return ok;
+        }
     }
 }
