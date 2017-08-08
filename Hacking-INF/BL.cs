@@ -238,18 +238,36 @@ namespace Hacking_INF
             {
                 if (_secretKey == null)
                 {
-                    var file = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data"), "SecretKey.txt");
+                    var settings = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Settings");
+                    if(Directory.Exists(settings))
+                    {
+                        Directory.CreateDirectory(settings);
+                    }
+
+                    var file = Path.Combine(settings, "SecretKey.txt");
                     var fi = new FileInfo(file);
                     if (!fi.Exists || fi.Length == 0)
                     {
                         _secretKey = Guid.NewGuid().ToString();
-                        using (var sw = new StreamWriter(file))
+                        try
                         {
-                            sw.BaseStream.SetLength(0);
-                            sw.Write(_secretKey);
+                            using (var sw = new StreamWriter(file))
+                            {
+                                sw.BaseStream.SetLength(0);
+                                sw.Write(_secretKey);
+                            }
+                            return _secretKey;
+                        }
+                        catch
+                        {
+                            // unable to write....
+                            _secretKey = null;
+                            // Maybe another instance has already written a file...
+                            fi.Refresh();
                         }
                     }
-                    else
+                    // no else, there is a corner case 3 lines above
+                    if (fi.Exists && fi.Length > 0)
                     {
                         using (var sr = new StreamReader(file))
                         {
