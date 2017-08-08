@@ -44,7 +44,7 @@
   </system.webServer>
   <log4net>
     <appender name="WebRollingFileAppender" type="log4net.Appender.RollingFileAppender">
-      <file value="App_Data\Logs\Web.txt" />
+      <file value="App_Data/Logs/Web.txt" />
       <encoding value="utf-8" />
       <appendToFile value="true" />
       <rollingStyle value="Size" />
@@ -57,7 +57,7 @@
       </layout>
     </appender>
     <appender name="ParseErrorsRollingFileAppender" type="log4net.Appender.RollingFileAppender">
-      <file value="App_Data\Logs\ParseErrors.txt" />
+      <file value="App_Data/Logs/ParseErrors.txt" />
       <encoding value="utf-8" />
       <appendToFile value="true" />
       <rollingStyle value="Size" />
@@ -70,7 +70,7 @@
       </layout>
     </appender>
     <appender name="SubmissionRollingFileAppender" type="log4net.Appender.RollingFileAppender">
-      <file value="App_Data\Logs\Submissions.csv" />
+      <file value="App_Data/Logs/Submissions.csv" />
       <appendToFile value="true" />
       <rollingStyle value="Date" />
       <datePattern value="yyyyMMdd" />
