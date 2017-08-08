@@ -291,6 +291,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\admin-examples.component.html" />
     <Content Include="app\admin-download.component.html" />
     <Content Include="app\admin-compiler-messages.component.html" />
     <Content Include="app\admin-logfiles.component.html" />
@@ -799,6 +800,7 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="app\admin-examples.component.ts" />
     <TypeScriptCompile Include="app\admin-download.component.ts" />
     <TypeScriptCompile Include="app\admin-compiler-messages.component.ts" />
     <TypeScriptCompile Include="app\admin-logfiles.component.ts" />

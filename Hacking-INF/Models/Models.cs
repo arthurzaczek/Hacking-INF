@@ -315,4 +315,14 @@ namespace Hacking_INF.Models
         public string Messages { get; set; }
         public string Code { get; set; }
     }
+
+    public class ExamplesRepo
+    {
+        [YamlMember(Alias = "url")]
+        public string Url { get; set; }
+        [YamlMember(Alias = "user")]
+        public string User { get; set; }
+        [YamlMember(Alias = "pwd")]
+        public string Pwd { get; set; }
+    }
 }

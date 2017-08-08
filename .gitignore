@@ -10,13 +10,10 @@ obj/
 /Hacking-INF/App_Data/Logs/
 /Hacking-INF/App_Data/WorkingDir/
 /Hacking-INF/App_Data/Submissions/
+/Hacking-INF/App_Data/Examples/
 
-/Hacking-INF/App_Data/Examples/**/*.zip
-/Hacking-INF/App_Data/Examples/**/logs/
-/Hacking-INF/App_Data/Examples/**/text/ccm.md
-/Hacking-INF/App_Data/Examples/**/text/*_table.md
-# exclude real courses
-/Hacking-INF/App_Data/Examples/BIF-GPR2
+/Hacking-INF/App_Data/Settings/*
+!/Hacking-INF/App_Data/Settings/ExamplesRepo.yaml.deploy
 
 
 # Only commit repositories.config. The rest of /packages is only a local cache
@@ -24,5 +21,4 @@ obj/
 /packages/*
 
 /Hacking-INF/Properties/PublishProfiles/default.pubxml.user
-/Hacking-INF/App_Data/SecretKey.txt
 

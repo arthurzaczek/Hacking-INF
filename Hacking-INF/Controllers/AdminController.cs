@@ -342,5 +342,13 @@ namespace Hacking_INF.Controllers
             }
             return mdl.ToArray();
         }
+
+        [Route("UpdateExamples")]
+        [HttpPost]
+        public string UpdateExamples()
+        {
+            _bl.UpdateExamples();
+            return "Updating examples was sucessful!";
+        }
     }
 }

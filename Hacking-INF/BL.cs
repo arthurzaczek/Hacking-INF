@@ -1,4 +1,5 @@
 ﻿using Hacking_INF.Models;
+using LibGit2Sharp;
 using log4net;
 using Microsoft.AspNet.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -58,6 +59,13 @@ namespace Hacking_INF
             get
             {
                 return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Submissions");
+            }
+        }
+        public string SettingsDir
+        {
+            get
+            {
+                return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Settings");
             }
         }
 
@@ -238,13 +246,12 @@ namespace Hacking_INF
             {
                 if (_secretKey == null)
                 {
-                    var settings = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Settings");
-                    if(!Directory.Exists(settings))
+                    if (!Directory.Exists(SettingsDir))
                     {
-                        Directory.CreateDirectory(settings);
+                        Directory.CreateDirectory(SettingsDir);
                     }
 
-                    var file = Path.Combine(settings, "SecretKey.txt");
+                    var file = Path.Combine(SettingsDir, "SecretKey.txt");
                     var fi = new FileInfo(file);
                     if (!fi.Exists || fi.Length == 0)
                     {
@@ -415,6 +422,30 @@ namespace Hacking_INF
             }
         }
 
+        public void UpdateExamples()
+        {
+            if (!Directory.Exists(ExamplesDir))
+            {
+                Directory.CreateDirectory(ExamplesDir);
+            }
+            else
+            {
+                Directory.Delete(ExamplesDir, true);
+            }
+
+            var settings = ReadYAML<ExamplesRepo>(Path.Combine(SettingsDir, "ExamplesRepo.yaml"));
+            var options = new CloneOptions();
+            if (!string.IsNullOrWhiteSpace(settings.User))
+            {
+                options.CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials { Username = settings.User, Password = settings.Pwd };
+            }
+            var repo = Repository.Clone(settings.Url, ExamplesDir, options);
+
+            // clear cache
+            System.Web.Hosting.HostingEnvironment.Cache.Remove("__all_courses__");
+            System.Web.Hosting.HostingEnvironment.Cache.Remove("__all_examples__");
+        }
+
         public IEnumerable<CompilerMessage> GetCompilerMessages()
         {
             lock (_lock)
@@ -443,7 +474,6 @@ namespace Hacking_INF
                 return result;
             }
         }
-
 
         public string ReadTextFile(string fileName)
         {

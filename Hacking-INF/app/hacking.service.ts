@@ -129,6 +129,11 @@ export class HackingService {
             .map(response => response.json() as ReportedCompilerMessage[]);
     }
 
+    updateExamples(): Observable<string> {
+        return this.http.post(this._baseUrl + 'Admin/UpdateExamples', null)
+            .map(response => response.json() as string);
+    }
+
     getCourses(): Observable<Course[]> {
         return this.http.get(this._baseUrl + 'Info/GetCourses')
             .map(response => response.json() as Course[]);
