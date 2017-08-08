@@ -353,6 +353,7 @@ namespace Hacking_INF.Controllers
 
         [Route("TriggerUpdateExamples")]
         [HttpGet]
+        [HttpPost]
         [AllowAnonymous]
         public HttpResponseMessage TriggerUpdateExamples(string token)
         {
