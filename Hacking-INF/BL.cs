@@ -239,7 +239,8 @@ namespace Hacking_INF
                 if (_secretKey == null)
                 {
                     var file = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data"), "SecretKey.txt");
-                    if (!File.Exists(file))
+                    var fi = new FileInfo(file);
+                    if (!fi.Exists || fi.Length == 0)
                     {
                         _secretKey = Guid.NewGuid().ToString();
                         using (var sw = new StreamWriter(file))
