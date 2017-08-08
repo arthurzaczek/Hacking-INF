@@ -239,7 +239,7 @@ namespace Hacking_INF
                 if (_secretKey == null)
                 {
                     var settings = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Settings");
-                    if(Directory.Exists(settings))
+                    if(!Directory.Exists(settings))
                     {
                         Directory.CreateDirectory(settings);
                     }
