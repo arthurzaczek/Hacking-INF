@@ -435,6 +435,15 @@ namespace Hacking_INF
 
             var settings = ReadYAML<ExamplesRepo>(Path.Combine(SettingsDir, "ExamplesRepo.yaml"));
             var options = new CloneOptions();
+
+            options.CertificateCheck = (certificate, valid, host) =>
+            {
+                if (!valid)
+                {
+                    _log.WarnFormat("Ignoring invalid SSL Certificate for host {0}", host);
+                }
+                return true;
+            };
             if (!string.IsNullOrWhiteSpace(settings.User))
             {
                 options.CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials { Username = settings.User, Password = settings.Pwd };
