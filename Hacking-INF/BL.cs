@@ -446,7 +446,11 @@ namespace Hacking_INF
             };
             if (!string.IsNullOrWhiteSpace(settings.User))
             {
-                options.CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials { Username = settings.User, Password = settings.Pwd };
+                options.CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials
+                {
+                    Username = settings.User,
+                    Password = settings.Pwd
+                };
             }
             var repo = Repository.Clone(settings.Url, ExamplesDir, options);
 
