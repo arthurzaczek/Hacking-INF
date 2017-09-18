@@ -1,5 +1,6 @@
 ﻿using Hacking_INF.Models;
 using Hacking_INF.Providers;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +17,7 @@ namespace Hacking_INF.Controllers
     public class InfoController : ApiController
     {
         private BL _bl;
+        private readonly ILog _log = LogManager.GetLogger(typeof(InfoController));
         private readonly SubmissionStoreProviderFactory _submissionStoreFactory;
 
         public InfoController(BL bl, SubmissionStoreProviderFactory submissionStoreFactory)
@@ -108,14 +110,21 @@ namespace Hacking_INF.Controllers
 
             if (pastResult != null && !string.IsNullOrWhiteSpace(userUID))
             {
-                var store = _submissionStoreFactory(course, "^" + name + "$", userUID);
-                var main = store.GetItems().FirstOrDefault(i => i.Name == example.FileName);
-                if (main != null)
+                try
                 {
-                    using (var sr = new StreamReader(main.GetStream()))
+                    var store = _submissionStoreFactory(course, "^" + Path.GetFileName(name) + "$", userUID);
+                    var main = store.GetItems().FirstOrDefault(i => i.Name == example.FileName);
+                    if (main != null)
                     {
-                        vmdl.SourceCode = sr.ReadToEnd();
+                        using (var sr = new StreamReader(main.GetStream()))
+                        {
+                            vmdl.SourceCode = sr.ReadToEnd();
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    _log.Warn("Error getting source code from git repo", ex);
                 }
             }
 

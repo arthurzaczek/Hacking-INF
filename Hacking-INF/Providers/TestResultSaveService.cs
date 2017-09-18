@@ -44,7 +44,7 @@ namespace Hacking_INF.Providers
                         result.User = user;
                         result.SessionID = user == null ? sessionID : (Guid?)null;
                         result.Course = output.Course;
-                        result.Example = output.Example;
+                        result.Example = System.IO.Path.GetFileName(output.Example);
                         result.FirstAttempt = output.CreatedOn;
                         result.NumOfCompilations = 0;
                         result.NumOfTestRuns = 0;
@@ -88,7 +88,7 @@ namespace Hacking_INF.Providers
                         result.User = user;
                         result.SessionID = user == null ? sessionID : null;
                         result.Course = course.Name;
-                        result.Example = example.Name;
+                        result.Example = System.IO.Path.GetFileName(example.Name);
                         result.FirstAttempt = DateTime.Now;
                         result.NumOfCompilations = 0;
                         result.NumOfTestRuns = 0;

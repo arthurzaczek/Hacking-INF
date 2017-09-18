@@ -289,7 +289,10 @@ namespace Hacking_INF
 
         public ExampleResult GetExampleResult(string userUID, Guid? sessionID, string course, string example)
         {
+            if (example == null) throw new ArgumentNullException("example");
             if (string.IsNullOrWhiteSpace(userUID) && sessionID == null) return null;
+
+            example = Path.GetFileName(example);
             var qry = _dal.ExampleResults.Where(i => i.Course == course && i.Example == example);
 
             if (!string.IsNullOrWhiteSpace(userUID))
@@ -331,7 +334,7 @@ namespace Hacking_INF
 
         public string GetExampleDir(string course, string name)
         {
-            return Path.Combine(ExamplesDir, course, name);
+            return Path.GetFullPath(Path.Combine(ExamplesDir, course, name));
         }
 
         public IEnumerable<Course> GetCourses()
@@ -384,19 +387,22 @@ namespace Hacking_INF
                     _log.Info("Reading & caching all examples of course " + course);
                     var path = Path.Combine(ExamplesDir, course);
                     var courseObj = GetCourses().Single(i => i.Name == course);
-                    var orderList = courseObj.Categories?.Where(c => c.Examples != null).SelectMany(c => c.Examples).ToList();
-                    var now = DateTime.Now;
-                    result = Directory.GetDirectories(path)
-                        .Select(dir =>
+                    if (courseObj.Categories == null)
+                    {
+                        LogParseError(path, "Course has no mandatory categories");
+                        return null;                    }
+
+                    result = courseObj.Categories
+                        .Where(c => c.Examples != null)
+                        .SelectMany(c => c.Examples.Select(e =>
                         {
                             try
                             {
+                                var dir = Path.GetFullPath(Path.Combine(path, e));
                                 var example = ReadYAML<Example>(GetFileName(dir, "info.yaml"));
-                                example.Course = course;
-                                example.Name = Path.GetFileName(dir);
-
-                                example.Order = orderList != null ? orderList.IndexOf(example.Name) : -1;
-                                if (example.Order < 0) example.Order = int.MaxValue;
+                                example.Course = courseObj.Name;
+                                example.Category = c.Name;
+                                example.Name = e;
 
                                 example.InheritProperties(courseObj);
 
@@ -407,10 +413,8 @@ namespace Hacking_INF
                                 // Logging is done by ReadYaml
                                 return null;
                             }
-                        })
+                        }))
                         .Where(i => i != null)
-                        .OrderBy(i => i.Order)
-                        .ThenBy(i => i.Title)
                         .ToList();
 
                     System.Web.Hosting.HostingEnvironment.Cache.Insert("__all_examples__" + course, result, new CacheDependency(path));

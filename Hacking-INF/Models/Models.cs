@@ -121,8 +121,6 @@ namespace Hacking_INF.Models
         public string FileName { get; set; }
         [YamlMember(Alias = "compiler")]
         public List<Compiler> Compiler { get; set; }
-        public int Order { get; set; }
-
         public object Clone()
         {
             return this.MemberwiseClone();

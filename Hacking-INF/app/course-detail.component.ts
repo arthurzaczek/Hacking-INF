@@ -52,14 +52,7 @@ export class CourseDetailComponent implements OnInit {
     linkData(): void {
         if (this.examples != null && this.categories != null) {
             let tmp: { [id: string]: Category; } = {};
-            let other_cat: Category = new Category();
             this.course.Stat = new BasicStat();
-
-            other_cat.Name = "_____no_cat_others";
-            other_cat.Title = "Other examples";
-            other_cat.Description = "Other unsorted examples";
-            other_cat.Examples = [];
-            other_cat.Stat = new BasicStat();
 
             for (let cat of this.categories) {
                 tmp[cat.Name] = cat;
@@ -71,26 +64,19 @@ export class CourseDetailComponent implements OnInit {
                 if (cat != null) {
                     if (cat.Examples == null)
                         cat.Examples = [];
-                } else {
-                    cat = other_cat;
-                }
+                    cat.Examples.push(e);
+                    e.Category = cat.Title;
 
-                cat.Examples.push(e);
-                e.Category = cat.Title;
-
-                cat.Stat.NumOfTests += e.Result ? e.Result.NumOfTests : 0;
-                cat.Stat.NumOfSucceeded += e.Result ? e.Result.NumOfSucceeded : 0;
-                cat.Stat.NumOfExamples++;
-                cat.Stat.NumOfExamplesStarted += e.Result ? 1 : 0;
+                    cat.Stat.NumOfTests += e.Result ? e.Result.NumOfTests : 0;
+                    cat.Stat.NumOfSucceeded += e.Result ? e.Result.NumOfSucceeded : 0;
+                    cat.Stat.NumOfExamples++;
+                    cat.Stat.NumOfExamplesStarted += e.Result ? 1 : 0;
+                } // else ignore example
 
                 this.course.Stat.NumOfTests += e.Result ? e.Result.NumOfTests : 0;
                 this.course.Stat.NumOfSucceeded += e.Result ? e.Result.NumOfSucceeded : 0;
                 this.course.Stat.NumOfExamples++;
                 this.course.Stat.NumOfExamplesStarted += e.Result ? 1 : 0;
-            }
-
-            if (other_cat.Examples.length > 0) {
-                this.categories.push(other_cat);
             }
         }
     }
