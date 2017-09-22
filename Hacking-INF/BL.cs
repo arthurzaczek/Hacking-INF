@@ -676,5 +676,35 @@ namespace Hacking_INF
                 return null;
             }
         }
+
+        public string FixMarkdown(string txt)
+        {
+            // some fixes:
+            txt = txt.Replace("\\textbackslash", "\\");
+
+            // line by line
+            var sb = new StringBuilder();
+            string line;
+            using (var sr = new StringReader(txt))
+            {
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (line.StartsWith("#"))
+                    {
+                        var level = line.ToCharArray().TakeWhile(c => c == '#').Count();
+                        for (int i = 0; i < level; i++, sb.Append("#")) ;
+                        line = line.TrimStart('#', ' ');
+                        sb.Append(" ");
+                        sb.Append(line);
+                    }
+                    else
+                    {
+                        sb.AppendLine(line);
+                    }
+                }
+            }
+
+            return sb.ToString();
+        }
     }
 }

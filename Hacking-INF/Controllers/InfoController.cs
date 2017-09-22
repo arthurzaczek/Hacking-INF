@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Http;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -68,7 +69,7 @@ namespace Hacking_INF.Controllers
             {
                 var result = new ExampleViewModel(i);
                 ExampleResult pastResult;
-                if(exampleResults.TryGetValue(i.Name, out pastResult))
+                if (exampleResults.TryGetValue(i.Name, out pastResult))
                 {
                     result.Result = new ExampleResultViewModel(pastResult);
                 }
@@ -91,7 +92,7 @@ namespace Hacking_INF.Controllers
             var angabe = Directory.GetFiles(Path.Combine(dir, "text"), "*Angabe_full.md").FirstOrDefault();
             if (angabe != null)
             {
-                vmdl.Instruction = _bl.ReadTextFile(angabe);
+                vmdl.Instruction = _bl.FixMarkdown(_bl.ReadTextFile(angabe));
             }
             else
             {
