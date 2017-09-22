@@ -76,7 +76,7 @@ namespace Hacking_INF.Controllers
                 // this will prevent global locks.
                 lock (_lock)
                 {
-                    var store = _submissionStoreFactory(course.Name, example.Name, userUID);
+                    var store = _submissionStoreFactory(course.Name, Path.GetFileName(example.Name), userUID);
                     store.Save(codeFileName, new System.IO.MemoryStream(Encoding.UTF8.GetBytes(vmdl.Code)));
                     store.Commit(string.Format("{0} submitted", codeFileName));
                     _log.InfoFormat("{0}.{1} commited by {2}", course.Name, example.Name, userUID);

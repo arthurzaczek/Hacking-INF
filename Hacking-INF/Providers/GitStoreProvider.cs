@@ -163,6 +163,7 @@ namespace Hacking_INF.Providers
                 .Distinct()
                 .Where(i => Regex.Match(i, exampleRegex).Success)
                 .ToArray();
+            if (allExamples.Length == 0) yield break;
 
             foreach (var item in repo.Diff.Compare<TreeChanges>(allExamples, includeUntracked: true, explicitPathsOptions: new ExplicitPathsOptions() { ShouldFailOnUnmatchedPath = false }, compareOptions: new CompareOptions() { IncludeUnmodified = true }))
             {
