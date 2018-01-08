@@ -17,6 +17,18 @@ To see [Hacking-INF](https://hacking-inf.technikum-wien.at/home) in action, got 
 
 For more information about how to setup examples, please see the [Hacking-INF-Demo-Examples](https://git-inf.technikum-wien.at/INF/Hacking-INF-Demo-Examples) repository for details.
 
+Development
+-----------
+
+To setup a linux Environment please execute the following additional steps:
+
+1. install Rider
+2. install the latest tsc compiler
+3. exec `npm install`
+4. exec `tsc --noStrictGenericChecks`
+5. compile with Rider
+6. exec `sudo cp ./Hacking-INF/bin/lib/linux/x86_64/libgit2-*.so /lib`
+
 Copyright and License
 ---------------------
 
