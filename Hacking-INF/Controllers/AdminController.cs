@@ -1,4 +1,4 @@
-﻿using Hacking_INF.Models;
+using Hacking_INF.Models;
 using Hacking_INF.Providers;
 using Ionic.Zip;
 using log4net;
@@ -349,6 +349,14 @@ namespace Hacking_INF.Controllers
         {
             _bl.UpdateExamples();
             return "Updating examples was sucessful!";
+        }
+
+        [Route("ClearCache")]
+        [HttpPost]
+        public string ClearCache()
+        {
+            _bl.ClearCache();
+            return "Clear cache was sucessful!";
         }
 
         [Route("TriggerUpdateExamples")]

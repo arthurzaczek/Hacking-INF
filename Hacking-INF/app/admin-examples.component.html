@@ -1,9 +1,9 @@
-﻿<h1>Manage examples</h1>
-<div *ngIf="updateResult" class="alert alert-success">
-    {{updateResult}}
+<h1>Manage examples</h1>
+<div *ngIf="result" class="alert alert-success">
+    {{result}}
 </div>
 <div *ngIf="isError" class="alert alert-danger">
-    A error occured during update. Please see the <a [routerLink]="['/admin-logfiles', 'log']">Logfiles</a>.
+    A error occured. Please see the <a [routerLink]="['/admin-logfiles', 'log']">Logfiles</a>.
 </div>
 
 <div class="form-group">
@@ -12,3 +12,4 @@
 </div>
 
 <button type="button" class="btn btn-primary" (click)="update()">Update</button>
+<button type="button" class="btn btn-default" (click)="clearCache()">Clear Cache</button>

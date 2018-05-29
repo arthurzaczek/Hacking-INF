@@ -1,4 +1,4 @@
-﻿using Hacking_INF.Models;
+using Hacking_INF.Models;
 using LibGit2Sharp;
 using log4net;
 using Microsoft.AspNet.Identity;
@@ -423,6 +423,14 @@ namespace Hacking_INF
                     .WhereStatus(IsAuthenticated, IsTeacher)
                     .ReflectStatus(IsTeacher)
                     .ToList();
+            }
+        }
+
+        public void ClearCache()
+        {
+            foreach(System.Collections.DictionaryEntry kv in System.Web.Hosting.HostingEnvironment.Cache)
+            {
+                System.Web.Hosting.HostingEnvironment.Cache.Remove((string)kv.Key);
             }
         }
 

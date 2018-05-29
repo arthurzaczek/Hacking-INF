@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from './http-client';
 
 import { Course, Example, Test, User, Category, ExampleResult, ExampleStat, StudentStat, CompilerMessage, ReportedCompilerMessage, LogLineModel } from './models';
@@ -131,6 +131,11 @@ export class HackingService {
 
     updateExamples(): Observable<string> {
         return this.http.post(this._baseUrl + 'Admin/UpdateExamples', null)
+            .map(response => response.json() as string);
+    }
+
+    clearCache(): Observable<string> {
+        return this.http.post(this._baseUrl + 'Admin/ClearCache', null)
             .map(response => response.json() as string);
     }
 

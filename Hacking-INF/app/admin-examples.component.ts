@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Course } from './models';
 import { HackingService } from './hacking.service';
 
@@ -15,16 +15,30 @@ export class AdminExamplesComponent {
         private hackingService: HackingService) { }
 
     repository: string = "defined in App_Data/Settings/ExamplesRepo.yaml";
-    updateResult: string = "";
+    result: string = "";
     isError: boolean = false;
 
     update(): void {
         var self = this;
-        this.updateResult = "";
+        this.result = "";
         this.isError = false;
         jsHelper.showWaitDialog();
         this.hackingService.updateExamples().subscribe(result => {
-            self.updateResult = result;
+            self.result = result;
+            jsHelper.hideWaitDialog();
+        }, error => {
+            jsHelper.hideWaitDialog();
+            self.isError = true;
+        });
+    }
+
+    clearCache(): void {
+        var self = this;
+        this.result = "";
+        this.isError = false;
+        jsHelper.showWaitDialog();
+        this.hackingService.clearCache().subscribe(result => {
+            self.result = result;
             jsHelper.hideWaitDialog();
         }, error => {
             jsHelper.hideWaitDialog();

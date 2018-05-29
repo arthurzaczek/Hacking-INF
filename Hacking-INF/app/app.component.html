@@ -1,4 +1,4 @@
-﻿<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -23,7 +23,7 @@
                         <li><a [routerLink]="['/admin-logfiles', 'log']">Logfiles</a></li>
                         <li><a [routerLink]="['/admin-logfiles', 'parser']">Parse errors</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a [routerLink]="['/admin-examples']">Update examples</a></li>
+                        <li><a [routerLink]="['/admin-examples']">Manage examples</a></li>
                     </ul>
                 </li>
             </ul>
@@ -56,9 +56,6 @@
 </div>
 <footer class="footer navbar navbar-fixed-bottom" role="navigation">
     <div class="container">
-        <p class="pull-right">
-            <a (click)="clearCache()" class="btn btn-default">Clear Cache</a>
-        </p>
         <p>&copy; {{Year}} - <a href="https://www.technikum-wien.at/">Technikum Wien UAS</a>, <a href="https://www.technikum-wien.at/ueber-uns/institute/institut-fuer-informatik/">Department of Computer Science</a></p>
     </div>
 </footer>

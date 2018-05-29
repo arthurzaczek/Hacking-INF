@@ -45,10 +45,6 @@ export class AppComponent implements OnInit {
         });
     }
 
-    clearCache(): void {
-        this.compiler.clearCache();
-    }
-
     logout(event: any): void {
         if (event != null) event.preventDefault();
 
