@@ -1,76 +1,76 @@
-﻿<div id="btn-back-to-course">
-    <a [routerLink]="['/course', course.Name]" class="btn btn-default">Zurück zum Kurs</a>
-</div>
-<h1>{{course.Title}}, {{example.Title}}</h1>
-<div *ngIf="!user.IsAuthenticated" class="alert alert-warning">
-    Warning! You are not authenticated. To get personal statistics and badges you have to login. <a class="btn btn-default" routerLink="/login">Login</a>
-</div>
-<div *ngIf="hasError" class="alert alert-danger">
-    ERROR! {{errorMessage}}
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#instruction" aria-controls="instruction" role="tab" data-toggle="tab">Instructions</a></li>
-            <li role="presentation"><a href="#usethismain" aria-controls="usethismain" role="tab" data-toggle="tab">Use this main</a></li>
-            <li role="presentation"><a href="#compiler" aria-controls="compiler" role="tab" data-toggle="tab">Compiler</a></li>
-            <li role="presentation"><a href="#test" aria-controls="test" role="tab" data-toggle="tab">Tests</a></li>
-            <li role="presentation"><a href="#mem" aria-controls="test" role="tab" data-toggle="tab">Memory errors</a></li>
-            <li role="presentation"><a href="#testcases" aria-controls="test" role="tab" data-toggle="tab">Test cases</a></li>
-        </ul>
-        <div class="tab-content" id="tab-example-instructions">
-            <div role="tabpanel" class="tab-pane active" id="instruction">
-                <markdown [data]="example.Instruction"></markdown>
-            </div>            
-            <div role="tabpanel" class="tab-pane" id="usethismain">
-                <pre>{{example.UseThisMain}}</pre>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="compiler">
-                <pre [innerHTML]="result.CompileOutputFormatted"></pre>
-                <div *ngIf="showCompilerMessageHints">
-                    <h3>What does this mean?</h3>
-                    <table class="table table-bordered">
-                        <tr *ngFor="let hint of compilerMessageHints">
-                            <td>
-                                <strong>{{hint.Message}}</strong><br />
-                                {{hint.Hint}}
-                            </td>
-                        </tr>
-                    </table>
+<div>
+    <a [routerLink]="['/course', course.Name]" class="btn btn-default pull-right">Zurück zum Kurs</a>
+    <h1>{{course.Title}}, {{example.Title}}</h1>
+    <div *ngIf="!user.IsAuthenticated" class="alert alert-warning">
+        Warning! You are not authenticated. To get personal statistics and badges you have to login. <a class="btn btn-default" routerLink="/login">Login</a>
+    </div>
+    <div *ngIf="hasError" class="alert alert-danger">
+        ERROR! {{errorMessage}}
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#instruction" aria-controls="instruction" role="tab" data-toggle="tab">Instructions</a></li>
+                <li role="presentation"><a href="#usethismain" aria-controls="usethismain" role="tab" data-toggle="tab">Use this main</a></li>
+                <li role="presentation"><a href="#compiler" aria-controls="compiler" role="tab" data-toggle="tab">Compiler</a></li>
+                <li role="presentation"><a href="#test" aria-controls="test" role="tab" data-toggle="tab">Tests</a></li>
+                <li role="presentation"><a href="#mem" aria-controls="test" role="tab" data-toggle="tab">Memory errors</a></li>
+                <li role="presentation"><a href="#testcases" aria-controls="test" role="tab" data-toggle="tab">Test cases</a></li>
+            </ul>
+            <div class="tab-content" id="tab-example-instructions">
+                <div role="tabpanel" class="tab-pane active" id="instruction">
+                    <markdown [data]="example.Instruction"></markdown>
                 </div>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="test">
-                <p *ngIf="result.NumOfTests > 0" class="alert" [ngClass]="{'alert-danger': result.NumOfSucceeded==0, 'alert-success': result.NumOfSucceeded > 0 && result.NumOfSucceeded == result.NumOfTests, 'alert-warning': result.NumOfSucceeded > 0 && result.NumOfSucceeded != result.NumOfTests}">
-                    {{result.NumOfSucceeded}} of {{result.NumOfTests}} succeeded
-                </p>
-                <pre>{{result.TestOutput}}</pre>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="mem">
-              <div *ngFor="let m of result.MemoryErrors">
-                <h3>{{m.TestCase}}</h3>                
-                <pre>{{m.Report}}</pre>
-              </div>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="testcases">
-                <div *ngFor="let t of example.TestFiles">
-                    <h3>{{t.Name}}</h3>
-                    <strong>Input:</strong>
-                    <pre>{{t.In}}</pre>
-                    <strong>Expected output:</strong>
-                    <pre>{{t.SExp}}</pre>
+                <div role="tabpanel" class="tab-pane" id="usethismain">
+                    <pre>{{example.UseThisMain}}</pre>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="compiler">
+                    <pre [innerHTML]="result.CompileOutputFormatted"></pre>
+                    <div *ngIf="showCompilerMessageHints">
+                        <h3>What does this mean?</h3>
+                        <table class="table table-bordered">
+                            <tr *ngFor="let hint of compilerMessageHints">
+                                <td>
+                                    <strong>{{hint.Message}}</strong><br />
+                                    {{hint.Hint}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="test">
+                    <p *ngIf="result.NumOfTests > 0" class="alert" [ngClass]="{'alert-danger': result.NumOfSucceeded==0, 'alert-success': result.NumOfSucceeded > 0 && result.NumOfSucceeded == result.NumOfTests, 'alert-warning': result.NumOfSucceeded > 0 && result.NumOfSucceeded != result.NumOfTests}">
+                        {{result.NumOfSucceeded}} of {{result.NumOfTests}} succeeded
+                    </p>
+                    <pre>{{result.TestOutput}}</pre>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="mem">
+                    <div *ngFor="let m of result.MemoryErrors">
+                        <h3>{{m.TestCase}}</h3>
+                        <pre>{{m.Report}}</pre>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="testcases">
+                    <div *ngFor="let t of example.TestFiles">
+                        <h3>{{t.Name}}</h3>
+                        <strong>Input:</strong>
+                        <pre>{{t.In}}</pre>
+                        <strong>Expected output:</strong>
+                        <pre>{{t.SExp}}</pre>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-6">
-        <div id="src-editor"></div>
-        <p>&nbsp;</p>
-        <p>
-            <button (click)="compile()" class="btn btn-default">Kompilieren</button>
-            <button (click)="test()" class="btn btn-primary">Kompilieren &amp; Testen</button>
-            &nbsp;
-            <button (click)="restart()" class="btn btn-warning">Restart</button>
-            <span class="pull-right timeElapsed">{{timeElapsed}}</span>
-        </p>
+        <div class="col-md-6">
+            <div id="src-editor"></div>
+            <p>&nbsp;</p>
+            <p>
+                <button (click)="compile()" class="btn btn-default">Kompilieren</button>
+                <button (click)="test()" class="btn btn-primary">Kompilieren &amp; Testen</button>
+                &nbsp;
+                <button (click)="restart()" class="btn btn-warning">Restart</button>
+                <span class="pull-right timeElapsed">{{timeElapsed}}</span>
+            </p>
+        </div>
     </div>
 </div>

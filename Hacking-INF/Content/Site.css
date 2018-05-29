@@ -1,4 +1,4 @@
-﻿body {
+body {
     padding-top: 50px;
     padding-bottom: 70px;
 }
@@ -67,11 +67,6 @@ pre {
 
 .couse-panel.description {
     height: 6em;
-}
-
-#btn-back-to-course {
-    float: right;
-    margin-top: 20px;
 }
 
 .with-scrollbar {

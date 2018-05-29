@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Course } from './models';
 import { HackingService } from './hacking.service';
 
@@ -13,6 +13,10 @@ export class CoursesComponent implements OnInit {
     courses: Course[];
 
     ngOnInit(): void {
+        this.refresh();
+    }
+
+    refresh(): void {
         this.hackingService.getCourses().subscribe(data => {
             this.courses = data;
         });
