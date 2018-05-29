@@ -13,8 +13,7 @@ export class HackingService {
     private _user: User = <User>{};
 
     // Observable navItem source
-    private _userLoginSource = new BehaviorSubject<User>(this._user);
-    userLoginEvent = this._userLoginSource.asObservable();
+    public userLoginEvent = new BehaviorSubject<User>(this._user);
 
     get user(): User {
         return this._user;
@@ -45,7 +44,7 @@ export class HackingService {
                     this.http.setJwt(self._user.Jwt);
                     localStorage.setItem("__jwt__", self._user.Jwt);
                 }
-                self._userLoginSource.next(self._user);
+                self.userLoginEvent.next(self._user);
                 return self._user;
             });
     }
@@ -55,7 +54,7 @@ export class HackingService {
         localStorage.removeItem("__jwt__");
         this._user = new User();
         this._user.IsAuthenticated = false;
-        this._userLoginSource.next(this._user);
+        this.userLoginEvent.next(this._user);
     }
 
     whoAmI(): void {
@@ -78,7 +77,7 @@ export class HackingService {
                     this.http.setJwt(self._user.Jwt);
                     localStorage.setItem("__jwt__", self._user.Jwt);
                 }
-                self._userLoginSource.next(self._user);
+                self.userLoginEvent.next(self._user);
                 return self._user;
             })
             .subscribe();

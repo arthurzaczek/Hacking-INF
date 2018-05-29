@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Course } from './models';
 import { HackingService } from './hacking.service';
 
@@ -6,8 +6,7 @@ import { HackingService } from './hacking.service';
 
 @Component({
     selector: 'admin-download',
-    templateUrl: 'app/admin-download.component.html',
-    providers: [ HackingService ]
+    templateUrl: 'app/admin-download.component.html'
 })
 export class AdminDownloadComponent implements OnInit {
     constructor(

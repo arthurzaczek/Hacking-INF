@@ -36,6 +36,7 @@ export class AppComponent implements OnInit {
         this.subscription = this.hackingService
             .userLoginEvent
             .subscribe(item => {
+                console.log("User changed, update UI");
                 self.User = item;
             });
         this.hackingService.whoAmI();
@@ -50,6 +51,4 @@ export class AppComponent implements OnInit {
 
         this.hackingService.logout();
     }
-
-
 }
