@@ -14,6 +14,13 @@ export class CoursesComponent implements OnInit {
 
     ngOnInit(): void {
         this.refresh();
+        let self = this;
+        this.hackingService
+            .userLoginEvent
+            .subscribe(item => {
+                console.log("User changed, refreshing courses");
+                self.refresh();
+            });
     }
 
     refresh(): void {
