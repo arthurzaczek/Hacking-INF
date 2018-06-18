@@ -28,6 +28,7 @@ namespace Hacking_INF
 
         public void Run(int concurrent, int numberOfTests)
         {
+            _log.Info($"Starting load tests with {concurrent} users and {numberOfTests} # of tests");
             _concurrent = concurrent;
             _numberOfTests = numberOfTests;
 
