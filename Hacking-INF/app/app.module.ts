@@ -1,4 +1,4 @@
-﻿import { Component, NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -22,6 +22,7 @@ import { AdminCompilerMessagesComponent } from './admin-compiler-messages.compon
 import { MarkdownComponent } from './markdown.component';
 import { HackingService } from './hacking.service';
 import { HttpClient } from './http-client';
+import { AdminLoadTestComponent } from "./admin-loadtest.component";
 
 @NgModule({
     imports: [
@@ -39,6 +40,7 @@ import { HttpClient } from './http-client';
             { path: 'example/:course/:name', component: ExampleDetailComponent },
             { path: 'admin-download', component: AdminDownloadComponent },
             { path: 'admin-examples', component: AdminExamplesComponent },
+            { path: 'admin-loadtest', component: AdminLoadTestComponent },
             { path: 'admin-stats', component: AdminStatsComponent },
             { path: 'admin-stats-students', component: AdminStatsStudentsComponent },
             { path: 'admin-logfiles/:type', component: AdminLogfilesComponent },
@@ -60,6 +62,7 @@ import { HttpClient } from './http-client';
         AdminStatsStudentsComponent,
         AdminLogfilesComponent,
         AdminCompilerMessagesComponent,
+        AdminLoadTestComponent,
         MarkdownComponent,
     ],
     providers: [

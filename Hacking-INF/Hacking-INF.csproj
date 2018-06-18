@@ -26,6 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>2.2</TypeScriptToolsVersion>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -246,6 +247,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HackingModule.cs" />
+    <Compile Include="LoadTest.cs" />
     <Compile Include="LogExceptionFilterAttribute.cs" />
     <Compile Include="Migrations\201612070930550_InitialCreate.cs" />
     <Compile Include="Migrations\201612070930550_InitialCreate.Designer.cs">
@@ -289,6 +291,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\admin-loadtest.component.html" />
     <Content Include="app\admin-examples.component.html" />
     <Content Include="app\admin-download.component.html" />
     <Content Include="app\admin-compiler-messages.component.html" />
@@ -798,6 +801,7 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="app\admin-loadtest.component.ts" />
     <TypeScriptCompile Include="app\admin-examples.component.ts" />
     <TypeScriptCompile Include="app\admin-download.component.ts" />
     <TypeScriptCompile Include="app\admin-compiler-messages.component.ts" />

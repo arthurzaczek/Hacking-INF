@@ -137,6 +137,10 @@ export class HackingService {
         return this.http.post(this._baseUrl + 'Admin/ClearCache', null)
             .map(response => response.json() as string);
     }
+    loadTest(concurrent: number, numberOfTests: number): Observable<string> {
+        return this.http.post(this._baseUrl + 'Admin/LoadTest?concurrent=' + concurrent + '&numberOfTests=' + numberOfTests, null)
+            .map(response => response.json() as string);
+    }
 
     getCourses(): Observable<Course[]> {
         return this.http.get(this._baseUrl + 'Info/GetCourses')

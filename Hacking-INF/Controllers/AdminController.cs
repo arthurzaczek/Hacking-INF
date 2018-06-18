@@ -20,12 +20,14 @@ namespace Hacking_INF.Controllers
     {
         private readonly BL _bl;
         private readonly SubmissionCollectorFactory _submissionCollectorFactory;
+        private readonly Func<ILoadTest> _loadTest;
         private readonly ILog _log = LogManager.GetLogger(typeof(AdminController));
 
-        public AdminController(BL bl, SubmissionCollectorFactory submissionCollectorFactory)
+        public AdminController(BL bl, SubmissionCollectorFactory submissionCollectorFactory, Func<ILoadTest> loadTest)
         {
             _bl = bl;
             _submissionCollectorFactory = submissionCollectorFactory;
+            _loadTest = loadTest;
         }
 
         [Route("Download")]
@@ -357,6 +359,14 @@ namespace Hacking_INF.Controllers
         {
             _bl.ClearCache();
             return "Clear cache was sucessful!";
+        }
+
+        [Route("LoadTest")]
+        [HttpPost]
+        public string LoadTest(int concurrent, int numberOfTests)
+        {
+            _loadTest().Run(concurrent, numberOfTests);
+            return "Starting load test";
         }
 
         [Route("TriggerUpdateExamples")]

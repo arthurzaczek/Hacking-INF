@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using Hacking_INF.Providers;
 using System;
 using System.Collections.Generic;
@@ -27,6 +27,11 @@ namespace Hacking_INF
 
             builder.Register<IEnumerable<ISubmissionStoreProvider>>((c, p) => GitSubmissionStoreProvider.GetSubmissions(p.Named<string>("course"), p.Named<string>("exampleRegex")))
                 .As<IEnumerable<ISubmissionStoreProvider>>()
+                .InstancePerDependency();
+
+
+            builder.RegisterType<LoadTest>()
+                .As<ILoadTest>()
                 .InstancePerDependency();
         }
     }

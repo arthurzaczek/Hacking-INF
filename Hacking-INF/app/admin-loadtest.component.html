@@ -1,0 +1,21 @@
+<h1>Load Test</h1>
+<div *ngIf="result" class="alert alert-success">
+    {{result}}
+</div>
+<div *ngIf="isError" class="alert alert-danger">
+    A error occured. Please see the <a [routerLink]="['/admin-logfiles', 'log']">Logfiles</a>.
+</div>
+
+<form ngNoForm>
+    <div class="form-group">
+        <label for="course">Concurrent users</label>
+        <input type="number" class="form-control" id="concurrent" placeholder="# of concurrent users" required [(ngModel)]="concurrent">
+    </div>
+    <div class="form-group">
+        <label for="example">Number of Tests</label>
+        <input type="number" class="form-control" id="numberOfTests" placeholder="# of Tests" required [(ngModel)]="numberOfTests">
+    </div>
+</form>
+
+
+<button type="button" class="btn btn-danger" (click)="loadTest()">Start load test</button>
