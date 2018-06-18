@@ -1,5 +1,7 @@
+using Autofac;
 using Hacking_INF.Controllers;
 using Hacking_INF.Models;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +17,13 @@ namespace Hacking_INF
 
     public class LoadTest : ILoadTest
     {
-        int _concurrent;
-        int _numberOfTests;
+        private int _concurrent;
+        private int _numberOfTests;
         private TestController _testController;
+        private readonly ILog _log = LogManager.GetLogger(typeof(LoadTest));
 
-        public LoadTest(TestController testController)
+        public LoadTest()
         {
-            _testController = testController;
         }
 
         public void Run(int concurrent, int numberOfTests)
@@ -29,20 +31,41 @@ namespace Hacking_INF
             _concurrent = concurrent;
             _numberOfTests = numberOfTests;
 
-            for(int i=0;i<concurrent;i++)
+            new Thread(_ =>
             {
-                new Thread(_ => DoRequests()).Start();
-            }
+                var lst = new List<Thread>();
+
+                var watch = new System.Diagnostics.Stopwatch();
+                watch.Start();
+                using (var scope = Autofac.Integration.Mvc.AutofacDependencyResolver.Current.ApplicationContainer.BeginLifetimeScope())
+                {
+                    _testController = scope.Resolve<TestController>();
+
+                    for (int i = 0; i < concurrent; i++)
+                    {
+                        var t = new Thread(__ => DoRequests());
+                        t.Start();
+                        lst.Add(t);
+                    }
+
+                    lst.ForEach(t => t.Join());
+
+                    watch.Stop();
+                    _log.InfoFormat($"Load Test with {concurrent} users and {numberOfTests} # of tests ended after {(watch.ElapsedMilliseconds / 1000.0m).ToString("n3")} seconds.");
+                }
+            }).Start();
         }
 
         void DoRequests()
         {
-            for(int i=0;i<_numberOfTests;i++)
+            try
             {
-                var vmdl = new TestViewModel();
-                vmdl.Course = "_C";
-                vmdl.Example = "HelloWorld";
-                vmdl.Code = @"#include <stdio.h>
+                for (int i = 0; i < _numberOfTests; i++)
+                {
+                    var vmdl = new TestViewModel();
+                    vmdl.Course = "_C";
+                    vmdl.Example = "HelloWorld";
+                    vmdl.Code = @"#include <stdio.h>
 #include <stdlib.h>
 
 int main()
@@ -50,10 +73,15 @@ int main()
 	printf(""Hello World"");
     return 0;
 }";
-                vmdl.SessionID = Guid.NewGuid().ToString();
-                vmdl.CompileAndTest = true;
+                    vmdl.SessionID = Guid.NewGuid().ToString();
+                    vmdl.CompileAndTest = true;
 
-                _testController.Test(vmdl);
+                    _testController.Test(vmdl);
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.ErrorFormat("Error on one load test thread", ex);
             }
         }
     }

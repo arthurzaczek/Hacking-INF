@@ -38,11 +38,12 @@ obj/
 /Hacking-INF/App_Data/Submissions/
 /Hacking-INF/App_Data/Examples/
 /Hacking-INF/App_Data/Settings/
-
+/Hacking-INF/App_Data/SecretKey.txt
 
 # Only commit repositories.config. The rest of /packages is only a local cache
 !/packages/repositories.config
 /packages/*
 
 /Hacking-INF/Properties/PublishProfiles/default.pubxml.user
+
 
