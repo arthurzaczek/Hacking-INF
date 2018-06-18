@@ -31,49 +31,55 @@ namespace Hacking_INF
             _dal = dal;
         }
 
+        private string _ExamplesDir;
         public string ExamplesDir
         {
             get
             {
-                return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Examples");
+                return _ExamplesDir ?? (_ExamplesDir = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Examples"));
             }
         }
 
+        private string _WorkingDir;
         public string WorkingDir
         {
             get
             {
-                return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/WorkingDir");
+                return _WorkingDir ?? (_WorkingDir = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/WorkingDir"));
             }
         }
+        private string _ToolsDir;
         public string ToolsDir
         {
             get
             {
-                return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Tools");
+                return _ToolsDir ?? (_ToolsDir = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Tools"));
             }
         }
 
+        private string _SubmissionsDir;
         public string SubmissionsDir
         {
             get
             {
-                return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Submissions");
+                return _SubmissionsDir ?? (_SubmissionsDir = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Submissions"));
             }
         }
+        private string _SettingsDir;
         public string SettingsDir
         {
             get
             {
-                return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Settings");
+                return _SettingsDir ?? (_SettingsDir = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Settings"));
             }
         }
 
+        private string _DataDir;
         public string DataDir
         {
             get
             {
-                return System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data");
+                return _DataDir ?? (_DataDir = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data"));
             }
         }
 
@@ -390,7 +396,8 @@ namespace Hacking_INF
                     if (courseObj.Categories == null)
                     {
                         LogParseError(path, "Course has no mandatory categories");
-                        return null;                    }
+                        return null;
+                    }
 
                     result = courseObj.Categories
                         .Where(c => c.Examples != null)

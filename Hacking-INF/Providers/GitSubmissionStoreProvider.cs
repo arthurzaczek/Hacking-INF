@@ -12,7 +12,7 @@ namespace Hacking_INF.Providers
     {
         private readonly log4net.ILog _log = log4net.LogManager.GetLogger("Git");
 
-        private string uid;
+        private readonly string uid;
 
         public GitSubmissionStoreProvider(string course, string exampleRegex, string uid)
             : base(course, exampleRegex)
@@ -21,10 +21,19 @@ namespace Hacking_INF.Providers
             this.uid = uid;
         }
 
+        private static string _SubmissionsDir;
+        public static string SubmissionsDir
+        {
+            get
+            {
+                return _SubmissionsDir ?? (_SubmissionsDir = HostingEnvironment.MapPath("~/App_Data/Submissions"));
+            }
+        }
+
         protected override string GetRepoPath(string course)
         {
             return Path.Combine(
-                HostingEnvironment.MapPath("~/App_Data/Submissions"),
+                SubmissionsDir,
                 "~" + uid,
                 GetLegalPathName(course) + ".git"
             );
@@ -34,7 +43,7 @@ namespace Hacking_INF.Providers
         public static IEnumerable<ISubmissionStoreProvider> GetSubmissions(string course, string example)
         {
             var couseName = GetLegalPathName(course) + ".git";
-            foreach (var path in Directory.GetDirectories(HttpContext.Current.Server.MapPath("~/App_Data/Submissions")))
+            foreach (var path in Directory.GetDirectories(SubmissionsDir))
             {
                 var uid = Path.GetFileName(path); // Not GetDirectoryName!
                 if (!uid.StartsWith("~")) continue;
