@@ -81,7 +81,7 @@ int main()
             }
             catch (Exception ex)
             {
-                _log.ErrorFormat("Error on one load test thread", ex);
+                _log.Error("Error on one load test thread", ex);
             }
         }
     }
