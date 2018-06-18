@@ -1,9 +1,10 @@
-﻿using LibGit2Sharp;
+using LibGit2Sharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 
 namespace Hacking_INF.Providers
 {
@@ -23,7 +24,7 @@ namespace Hacking_INF.Providers
         protected override string GetRepoPath(string course)
         {
             return Path.Combine(
-                HttpContext.Current.Server.MapPath("~/App_Data/Submissions"),
+                HostingEnvironment.MapPath("~/App_Data/Submissions"),
                 "~" + uid,
                 GetLegalPathName(course) + ".git"
             );

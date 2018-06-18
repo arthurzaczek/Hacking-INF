@@ -671,7 +671,7 @@ namespace Hacking_INF
 
         public string GetClientIp(System.Net.Http.HttpRequestMessage request)
         {
-            if (request.Properties.ContainsKey("MS_HttpContext"))
+            if (request != null && request.Properties.ContainsKey("MS_HttpContext"))
             {
                 return ((HttpContextWrapper)request.Properties["MS_HttpContext"]).Request.UserHostAddress;
             }
