@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../..">
+      <sourceFolder url="file://$MODULE_DIR$/../../Hacking-INF" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/LibGit2Sharp.NativeBinaries.1.0.185/libgit2" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/LibGit2Sharp.NativeBinaries.1.0.185/runtimes/linux-x64/native/libgit2-15e1193.so" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/LibGit2Sharp.NativeBinaries.1.0.185/runtimes/osx/native/libgit2-15e1193.dylib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/LibGit2Sharp.NativeBinaries.1.0.185/runtimes/win7-x64/native/git2-15e1193.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/LibGit2Sharp.NativeBinaries.1.0.185/runtimes/win7-x64/native/git2-15e1193.pdb" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/LibGit2Sharp.NativeBinaries.1.0.185/runtimes/win7-x86/native/git2-15e1193.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/LibGit2Sharp.NativeBinaries.1.0.185/runtimes/win7-x86/native/git2-15e1193.pdb" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Hacking-INF/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Hacking-INF/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../packages" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
