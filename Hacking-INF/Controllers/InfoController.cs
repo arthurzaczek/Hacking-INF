@@ -1,4 +1,4 @@
-﻿using Hacking_INF.Models;
+using Hacking_INF.Models;
 using Hacking_INF.Providers;
 using log4net;
 using System;
@@ -69,7 +69,7 @@ namespace Hacking_INF.Controllers
             {
                 var result = new ExampleViewModel(i);
                 ExampleResult pastResult;
-                if (exampleResults.TryGetValue(i.Name, out pastResult))
+                if (exampleResults.TryGetValue(Path.GetFileName(i.Name), out pastResult))
                 {
                     result.Result = new ExampleResultViewModel(pastResult);
                 }
@@ -80,8 +80,8 @@ namespace Hacking_INF.Controllers
         [Route("GetExample")]
         public ExampleViewModel GetExample(string course, string name)
         {
-            var dir = _bl.GetExampleDir(course, name);
-            var example = _bl.GetExamples(course).Single(i => i.Name == name);
+            var example = _bl.GetExamples(course).Single(i => Path.GetFileName(i.Name) == name);
+            var dir = _bl.GetExampleDir(course, example.Name);
             var userUID = _bl.GetCurrentUserUID();
             var pastResult = _bl.GetExampleResult(userUID, null, course, name);
 

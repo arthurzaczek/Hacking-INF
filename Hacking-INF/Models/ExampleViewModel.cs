@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using YamlDotNet.Serialization;
@@ -39,7 +40,7 @@ namespace Hacking_INF.Models
             var target = this;
             var source = obj;
 
-            target.Name = source.Name;
+            target.Name = Path.GetFileName(source.Name);
             target.Course = source.Course;
             target.Title = source.Title;
             target.Description = source.Description;

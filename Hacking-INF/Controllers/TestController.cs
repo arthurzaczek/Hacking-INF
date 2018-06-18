@@ -1,4 +1,4 @@
-﻿using Hacking_INF.Models;
+using Hacking_INF.Models;
 using Hacking_INF.Providers;
 using log4net;
 using System;
@@ -47,7 +47,7 @@ namespace Hacking_INF.Controllers
             }
 
             // Collect data
-            var example = _bl.GetExamples(vmdl.Course).Single(i => i.Name == vmdl.Example);
+            var example = _bl.GetExamples(vmdl.Course).Single(i => Path.GetFileName(i.Name) == vmdl.Example);
             var course = _bl.GetCourses().Single(i => i.Name == vmdl.Course);
             var workingDir = _bl.GetWorkingDir(sessionGuid);
             var exampleDir = _bl.GetExampleDir(course.Name, example.Name);
