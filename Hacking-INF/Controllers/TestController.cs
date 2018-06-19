@@ -119,11 +119,11 @@ namespace Hacking_INF.Controllers
                 File.Copy(Path.Combine(exampleDir, "properties.txt"), Path.Combine(workingDir, "properties.txt"));
                 // Copy everything except testfiles from the tests folder. 
                 // There may be test files for file I/O
-                foreach(var f in Directory.GetFiles(Path.Combine(exampleDir, "tests"), "*.*").Where(f => !f.EndsWith(".in") && !f.EndsWith(".sexp") && !f.EndsWith(".fexp")))
+                foreach (var f in Directory.GetFiles(Path.Combine(exampleDir, "tests"), "*.*").Where(f => !f.EndsWith(".in") && !f.EndsWith(".sexp") && !f.EndsWith(".fexp")))
                 {
                     File.Copy(f, Path.Combine(workingDir, Path.GetFileName(f)));
                 }
-                    
+
                 var args = string.Format("-Dexec=\"{0}\" -DtestFilesPath=\"{1}\" -DjunitOutFile=./results.xml -DdrMemoryPath=\"{2}\" -jar \"{3}\"",
                         example.Exe ?? course.Exe,
                         Path.Combine(exampleDir, "tests"),
@@ -244,10 +244,20 @@ namespace Hacking_INF.Controllers
             p.ErrorDataReceived += (s, e) => { lock (_lock) output.Output.AppendLine(e.Data); };
             p.Exited += (s, e) =>
             {
-                _log.InfoFormat("Process \"{0} {1}\" exited with error code {2}", cmd, args, p.ExitCode);
-                output.Finish();
-                _saveService.Save(output);
-                p.Dispose();
+                try
+                {
+                    _log.InfoFormat("Process \"{0} {1}\" exited with error code {2}", cmd, args, p.ExitCode);
+                    output.Finish();
+                    _saveService.Save(output);
+                }
+                catch (Exception ex)
+                {
+                    _log.Error("Error saving test results", ex);
+                }
+                finally
+                {
+                    p.Dispose();
+                }
             };
 
             p.Start();
