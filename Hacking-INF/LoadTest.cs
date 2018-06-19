@@ -44,7 +44,7 @@ namespace Hacking_INF
 
                     for (int i = 0; i < concurrent; i++)
                     {
-                        var t = new Thread(__ => DoRequests());
+                        var t = new Thread(__ => DoRequests(i + 1));
                         t.Start();
                         lst.Add(t);
                     }
@@ -57,12 +57,14 @@ namespace Hacking_INF
             }).Start();
         }
 
-        void DoRequests()
+        void DoRequests(int num)
         {
-            try
+            for (int i = 0; i < _numberOfTests; i++)
             {
-                for (int i = 0; i < _numberOfTests; i++)
+                try
                 {
+                    _log.Info($"Working on load test thread {num}/{i + 1}: ");
+
                     var vmdl = new TestViewModel();
                     vmdl.Course = "_C";
                     vmdl.Example = "HelloWorld";
@@ -79,10 +81,10 @@ int main()
 
                     _testController.Test(vmdl);
                 }
-            }
-            catch (Exception ex)
-            {
-                _log.Error("Error on one load test thread", ex);
+                catch (Exception ex)
+                {
+                    _log.Error($"Error on load test thread {num}/{i+1}", ex);
+                }
             }
         }
     }
