@@ -50,7 +50,6 @@ namespace Hacking_INF
     public class HackingInfContext : DbContext, IDAL
     {
         private readonly ILog _log = LogManager.GetLogger(typeof(HackingInfContext));
-        private static readonly Semaphore _pool = new Semaphore(25, 25);
 
         public HackingInfContext()
             : base("HackingInfEntities")
@@ -96,7 +95,6 @@ namespace Hacking_INF
         {
             try
             {
-                _pool.WaitOne();
                 base.SaveChanges();
             }
             catch (DbEntityValidationException ex)
@@ -115,10 +113,6 @@ namespace Hacking_INF
             {
                 Npgsql.NpgsqlConnection.ClearAllPools();
                 throw;
-            }
-            finally
-            {
-                _pool.Release();
             }
         }
 
