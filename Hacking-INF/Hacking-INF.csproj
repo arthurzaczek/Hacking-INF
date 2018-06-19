@@ -246,6 +246,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HackingEnvironment.cs" />
     <Compile Include="HackingModule.cs" />
     <Compile Include="LoadTest.cs" />
     <Compile Include="LogExceptionFilterAttribute.cs" />

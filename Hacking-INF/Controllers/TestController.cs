@@ -128,7 +128,7 @@ namespace Hacking_INF.Controllers
                         example.Exe ?? course.Exe,
                         Path.Combine(exampleDir, "tests"),
                         Properties.Settings.Default.DrMemoryPath,
-                        Path.Combine(_bl.ToolsDir, "checkproject.jar"));
+                        Path.Combine(HackingEnvironment.Current.ToolsDir, "checkproject.jar"));
 
                 Exec("java", args, workingDir, sessionGuid, vmdl.StartTime, userUID, course, example);
                 result.TestFinished = false;

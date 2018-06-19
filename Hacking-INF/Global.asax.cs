@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
 using log4net;
@@ -25,6 +25,7 @@ namespace Hacking_INF
 
             _log.Info("** Starting Application **");
 
+            HackingEnvironment.Current.InitFromHostingEnvironment();
             BuildMasterContainer();
 
             AreaRegistration.RegisterAllAreas();

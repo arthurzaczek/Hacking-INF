@@ -377,7 +377,7 @@ namespace Hacking_INF.Controllers
         {
             _log.Info("Trigger update examples");
 
-            var settings = _bl.ReadYAML<ExamplesRepo>(Path.Combine(_bl.SettingsDir, "ExamplesRepo.yaml"));
+            var settings = _bl.ReadYAML<ExamplesRepo>(Path.Combine(HackingEnvironment.Current.SettingsDir, "ExamplesRepo.yaml"));
             if (settings.UpdateToken != token)
             {
                 _log.Error("Invalid token");

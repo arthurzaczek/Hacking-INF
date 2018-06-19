@@ -31,58 +31,6 @@ namespace Hacking_INF
             _dal = dal;
         }
 
-        private string _ExamplesDir;
-        public string ExamplesDir
-        {
-            get
-            {
-                return _ExamplesDir ?? (_ExamplesDir = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Examples"));
-            }
-        }
-
-        private string _WorkingDir;
-        public string WorkingDir
-        {
-            get
-            {
-                return _WorkingDir ?? (_WorkingDir = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/WorkingDir"));
-            }
-        }
-        private string _ToolsDir;
-        public string ToolsDir
-        {
-            get
-            {
-                return _ToolsDir ?? (_ToolsDir = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Tools"));
-            }
-        }
-
-        private string _SubmissionsDir;
-        public string SubmissionsDir
-        {
-            get
-            {
-                return _SubmissionsDir ?? (_SubmissionsDir = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Submissions"));
-            }
-        }
-        private string _SettingsDir;
-        public string SettingsDir
-        {
-            get
-            {
-                return _SettingsDir ?? (_SettingsDir = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/Settings"));
-            }
-        }
-
-        private string _DataDir;
-        public string DataDir
-        {
-            get
-            {
-                return _DataDir ?? (_DataDir = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data"));
-            }
-        }
-
         public void SaveChanges()
         {
             _dal.SaveChanges();
@@ -252,12 +200,12 @@ namespace Hacking_INF
             {
                 if (_secretKey == null)
                 {
-                    if (!Directory.Exists(SettingsDir))
+                    if (!Directory.Exists(HackingEnvironment.Current.SettingsDir))
                     {
-                        Directory.CreateDirectory(SettingsDir);
+                        Directory.CreateDirectory(HackingEnvironment.Current.SettingsDir);
                     }
 
-                    var file = Path.Combine(SettingsDir, "SecretKey.txt");
+                    var file = Path.Combine(HackingEnvironment.Current.SettingsDir, "SecretKey.txt");
                     var fi = new FileInfo(file);
                     if (!fi.Exists || fi.Length == 0)
                     {
@@ -335,12 +283,12 @@ namespace Hacking_INF
 
         public string GetWorkingDir(Guid sessionID)
         {
-            return Path.Combine(WorkingDir, sessionID.ToString());
+            return Path.Combine(HackingEnvironment.Current.WorkingDir, sessionID.ToString());
         }
 
         public string GetExampleDir(string course, string name)
         {
-            return Path.GetFullPath(Path.Combine(ExamplesDir, course, name));
+            return Path.GetFullPath(Path.Combine(HackingEnvironment.Current.ExamplesDir, course, name));
         }
 
         public IEnumerable<Course> GetCourses()
@@ -353,7 +301,7 @@ namespace Hacking_INF
                     _log.Info("Reading & caching all courses");
                     var list = new List<Course>();
                     var fileNames = new List<string>();
-                    foreach (var dir in Directory.GetDirectories(ExamplesDir))
+                    foreach (var dir in Directory.GetDirectories(HackingEnvironment.Current.ExamplesDir))
                     {
                         try
                         {
@@ -391,7 +339,7 @@ namespace Hacking_INF
                 if (result == null)
                 {
                     _log.Info("Reading & caching all examples of course " + course);
-                    var path = Path.Combine(ExamplesDir, course);
+                    var path = Path.Combine(HackingEnvironment.Current.ExamplesDir, course);
                     var courseObj = GetCourses().Single(i => i.Name == course);
                     if (courseObj.Categories == null)
                     {
@@ -445,12 +393,12 @@ namespace Hacking_INF
         {
             _log.Info("Updating examples");
 
-            if (Directory.Exists(ExamplesDir))
+            if (Directory.Exists(HackingEnvironment.Current.ExamplesDir))
             {
-                Directory.Delete(ExamplesDir, true);
+                Directory.Delete(HackingEnvironment.Current.ExamplesDir, true);
             }
 
-            var settings = ReadYAML<ExamplesRepo>(Path.Combine(SettingsDir, "ExamplesRepo.yaml"), () => new ExamplesRepo() { Url = "https://git-inf.technikum-wien.at/INF/Hacking-INF-Demo-Examples.git", UpdateToken = Guid.NewGuid().ToString() });
+            var settings = ReadYAML<ExamplesRepo>(Path.Combine(HackingEnvironment.Current.SettingsDir, "ExamplesRepo.yaml"), () => new ExamplesRepo() { Url = "https://git-inf.technikum-wien.at/INF/Hacking-INF-Demo-Examples.git", UpdateToken = Guid.NewGuid().ToString() });
             var options = new CloneOptions();
 
             _log.DebugFormat("  host: {0}", settings.Url);
@@ -472,7 +420,7 @@ namespace Hacking_INF
                     Password = settings.Pwd
                 };
             }
-            var repo = Repository.Clone(settings.Url, ExamplesDir, options);
+            var repo = Repository.Clone(settings.Url, HackingEnvironment.Current.ExamplesDir, options);
 
             // clear cache
             System.Web.Hosting.HostingEnvironment.Cache.Remove("__all_courses__");
@@ -488,7 +436,7 @@ namespace Hacking_INF
                 if (result == null || isTeacher)
                 {
                     _log.Info("Reading & caching all compiler messages");
-                    var path = Path.Combine(ExamplesDir, "compiler-messages.yaml");
+                    var path = Path.Combine(HackingEnvironment.Current.ExamplesDir, "compiler-messages.yaml");
 
                     if (File.Exists(path))
                     {

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
-using System.Web.Hosting;
 
 namespace Hacking_INF.Providers
 {
@@ -21,19 +20,10 @@ namespace Hacking_INF.Providers
             this.uid = uid;
         }
 
-        private static string _SubmissionsDir;
-        public static string SubmissionsDir
-        {
-            get
-            {
-                return _SubmissionsDir ?? (_SubmissionsDir = HostingEnvironment.MapPath("~/App_Data/Submissions"));
-            }
-        }
-
         protected override string GetRepoPath(string course)
         {
             return Path.Combine(
-                SubmissionsDir,
+                HackingEnvironment.Current.SubmissionsDir,
                 "~" + uid,
                 GetLegalPathName(course) + ".git"
             );
@@ -43,7 +33,7 @@ namespace Hacking_INF.Providers
         public static IEnumerable<ISubmissionStoreProvider> GetSubmissions(string course, string example)
         {
             var couseName = GetLegalPathName(course) + ".git";
-            foreach (var path in Directory.GetDirectories(SubmissionsDir))
+            foreach (var path in Directory.GetDirectories(HackingEnvironment.Current.SubmissionsDir))
             {
                 var uid = Path.GetFileName(path); // Not GetDirectoryName!
                 if (!uid.StartsWith("~")) continue;
