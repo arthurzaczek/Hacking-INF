@@ -13,7 +13,7 @@
     </sectionGroup>
   </configSections>
   <connectionStrings>
-    <add name="HackingInfEntities" connectionString="Server=localhost;Database=hackinginf;User Id=hackinginf;Password=hackinginf;Timeout=30;Command Timeout=30" providerName="Npgsql" />
+    <add name="HackingInfEntities" connectionString="Server=localhost;Database=hackinginf;User Id=hackinginf;Password=hackinginf;Timeout=30" providerName="Npgsql" />
   </connectionStrings>
   <applicationSettings>
     <Hacking_INF.Properties.Settings>
