@@ -50,7 +50,7 @@ namespace Hacking_INF
     public class HackingInfContext : DbContext, IDAL
     {
         private readonly ILog _log = LogManager.GetLogger(typeof(HackingInfContext));
-        private static Semaphore _pool = new Semaphore(0, 25);
+        private static readonly Semaphore _pool = new Semaphore(25, 25);
 
         public HackingInfContext()
             : base("HackingInfEntities")
