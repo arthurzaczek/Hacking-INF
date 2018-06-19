@@ -82,8 +82,17 @@ int main()
                     vmdl.CompileAndTest = true;
 
                     _testController.Test(vmdl);
+
+                    var counter = 0;
+                    while (counter++ < 120 * 10)
+                    {
+                        var result = _testController.GetTestResult(vmdl.SessionID);
+                        if (result.TestFinished) break;
+                        Thread.Sleep(100);
+                    }
+
                     watch.Stop();
-                    _log.Info($"    {num}/{i + 1}: forked tests in {(watch.ElapsedMilliseconds / 1000.0m).ToString("n3")} seconds.");
+                    _log.Info($"    {num}/{i + 1}: took {(watch.ElapsedMilliseconds / 1000.0m).ToString("n3")} seconds.");
                 }
                 catch (Exception ex)
                 {
