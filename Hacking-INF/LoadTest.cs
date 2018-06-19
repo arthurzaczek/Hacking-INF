@@ -63,6 +63,8 @@ namespace Hacking_INF
             {
                 try
                 {
+                    var watch = new System.Diagnostics.Stopwatch();
+                    watch.Start();
                     _log.Info($"Working on load test thread {num}/{i + 1}: ");
 
                     var vmdl = new TestViewModel();
@@ -80,6 +82,8 @@ int main()
                     vmdl.CompileAndTest = true;
 
                     _testController.Test(vmdl);
+                    watch.Stop();
+                    _log.Info($"    {num}/{i + 1}: forked tests in {(watch.ElapsedMilliseconds / 1000.0m).ToString("n3")} seconds.");
                 }
                 catch (Exception ex)
                 {
