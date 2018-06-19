@@ -21,6 +21,7 @@ namespace Hacking_INF
         private int _numberOfTests;
         private TestController _testController;
         private readonly ILog _log = LogManager.GetLogger(typeof(LoadTest));
+        private int progress;
 
         public LoadTest()
         {
@@ -31,6 +32,7 @@ namespace Hacking_INF
             _log.Info($"Starting load tests with {concurrent} users and {numberOfTests} # of tests");
             _concurrent = concurrent;
             _numberOfTests = numberOfTests;
+            progress = _numberOfTests * _concurrent;
 
             new Thread(_ =>
             {
@@ -98,6 +100,9 @@ int main()
                 {
                     _log.Error($"Error on load test thread {num}/{i+1}", ex);
                 }
+
+                var tmp = Interlocked.Decrement(ref progress);
+                _log.Info($"Progress: {tmp} until finished.");
             }
         }
     }
