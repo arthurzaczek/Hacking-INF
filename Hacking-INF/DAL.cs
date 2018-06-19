@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using Hacking_INF.Models;
 using log4net;
 using System;
@@ -106,6 +106,11 @@ namespace Hacking_INF
                         _log.ErrorFormat("        {0}: {1}", msg.PropertyName, msg.ErrorMessage);
                     }
                 }
+                throw;
+            }
+            catch
+            {
+                Npgsql.NpgsqlConnection.ClearAllPools();
                 throw;
             }
         }
