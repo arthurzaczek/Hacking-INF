@@ -298,6 +298,7 @@
     <Content Include="app\admin-compiler-messages.component.html" />
     <Content Include="app\admin-logfiles.component.html" />
     <Content Include="app\admin-stats-students.component.html" />
+    <Content Include="app\index.html" />
     <Content Include="app\info.component.html" />
     <Content Include="app\admin-stats.component.html" />
     <Content Include="app\me.component.html" />
@@ -306,6 +307,7 @@
     <Content Include="app\home.component.html" />
     <Content Include="app\app.component.html" />
     <Content Include="app\courses.component.html" />
+    <Content Include="app\styles.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -750,6 +752,10 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="angular.json" />
+    <Content Include="app\tsconfig.app.json" />
+    <Content Include="app\tsconfig.spec.json" />
+    <Content Include="app\tslint.json" />
     <None Include="Properties\PublishProfiles\deploy.pubxml" />
     <None Include="Properties\PublishProfiles\dev.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
@@ -788,6 +794,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
+    <Content Include="tslint.json" />
     <None Include="Web.config.deploy" />
   </ItemGroup>
   <ItemGroup>
@@ -828,6 +835,7 @@
     <TypeScriptCompile Include="app\editor.component.ts" />
     <TypeScriptCompile Include="app\markdown.component.ts" />
     <TypeScriptCompile Include="app\models.ts" />
+    <TypeScriptCompile Include="app\polyfills.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
