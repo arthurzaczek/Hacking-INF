@@ -157,11 +157,6 @@ namespace Hacking_INF
             return tokenHandler.WriteToken(plainToken);
         }
 
-        public void CleanupOldReportedCompilerMessages()
-        {
-            _dal.CleanupOldReportedCompilerMessages();
-        }
-
         private static Dictionary<Guid, IPrincipal> _tokenList = new Dictionary<Guid, IPrincipal>();
         public Guid GetAccessToken()
         {

@@ -40,7 +40,6 @@ namespace Hacking_INF
 
         User CreateUser();
         ExampleResult CreateExampleResult();
-        void CleanupOldReportedCompilerMessages();
         ReportedCompilerMessages CreateReportedCompilerMessages();
 
         void SaveChanges();
@@ -81,16 +80,7 @@ namespace Hacking_INF
             this.ReportedCompilerMessages.Add(obj);
             return obj;
         }
-
-        public void CleanupOldReportedCompilerMessages()
-        {
-            var toDelete = DateTime.Now.AddMonths(-3);
-            foreach(var obj in this.ReportedCompilerMessages.Where(i => i.Date < toDelete).ToList())
-            {
-                this.ReportedCompilerMessages.Remove(obj);
-            }
-        }
-
+        
         public new void SaveChanges()
         {
             try

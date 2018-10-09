@@ -107,8 +107,6 @@ namespace Hacking_INF.Controllers
                 rcm.Example = example.Name;
                 rcm.Messages = result.CompileOutput;
 
-                _bl.CleanupOldReportedCompilerMessages();
-
                 _bl.SaveChanges();
             }
 

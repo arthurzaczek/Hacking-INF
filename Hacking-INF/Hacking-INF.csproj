@@ -393,6 +393,7 @@
     <Content Include="favicon.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Maintenance\CleanupOldReportedCompilerMessages.sql" />
     <Content Include="Scripts\ace\ace.js" />
     <Content Include="Scripts\ace\ext-beautify.js" />
     <Content Include="Scripts\ace\ext-chromevox.js" />
