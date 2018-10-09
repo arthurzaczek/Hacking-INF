@@ -70,7 +70,7 @@ export class HackingService {
                 }
                 self.userLoginEvent.next(self._user);
                 return self._user;
-            }));
+            })).subscribe(response => { });
     }
 
     getAccessToken(): Observable<string> {
