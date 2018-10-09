@@ -1,8 +1,7 @@
 
 import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class HackingHttpClient {
@@ -31,13 +30,15 @@ export class HackingHttpClient {
 
     private createAuthorizationHeader(headers: HttpHeaders) {
         if (this._jwt != null) {
-            headers.append('Authorization', 'Bearer ' + this._jwt);
+            headers = headers.set('Authorization', 'Bearer ' + this._jwt);
         };
+
+        return headers;
     }
 
     get<T>(url: string): Observable<T> {
         let headers = new HttpHeaders();
-        this.createAuthorizationHeader(headers);
+        headers = this.createAuthorizationHeader(headers);
 
         let result = new Observable<T>(observer => {
             this.http.get<T>(url, {
@@ -51,7 +52,7 @@ export class HackingHttpClient {
 
     post<T>(url: string, data: any): Observable<T> {
         let headers = new HttpHeaders();
-        this.createAuthorizationHeader(headers);
+        headers = this.createAuthorizationHeader(headers);
 
         let result = new Observable<T>(observer => {
             this.http.post<T>(url, data, {
