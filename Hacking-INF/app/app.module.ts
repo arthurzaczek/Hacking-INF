@@ -2,7 +2,7 @@ import { Component, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home.component';
@@ -21,14 +21,14 @@ import { AdminCompilerMessagesComponent } from './admin-compiler-messages.compon
 
 import { MarkdownComponent } from './markdown.component';
 import { HackingService } from './hacking.service';
-import { HttpClient } from './http-client';
+import { HackingHttpClient } from './hacking-http-client';
 import { AdminLoadTestComponent } from "./admin-loadtest.component";
 
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule,
-        HttpModule,
+        HttpClientModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
@@ -67,7 +67,7 @@ import { AdminLoadTestComponent } from "./admin-loadtest.component";
     ],
     providers: [
         HackingService,
-        HttpClient,
+        HackingHttpClient,
     ],
     bootstrap: [AppComponent]
 })

@@ -1,16 +1,16 @@
-﻿import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { User } from './models';
 import { HackingService } from './hacking.service';
 
-import 'rxjs/add/operator/switchMap';
+
 
 declare var jsHelper: any;
 
 @Component({
     selector: 'course-detail',
-    templateUrl: 'app/login.component.html'
+    templateUrl: 'login.component.html'
 })
 export class LoginComponent implements OnInit {
     constructor(

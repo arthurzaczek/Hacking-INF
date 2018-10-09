@@ -1,16 +1,16 @@
-﻿import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { LogLineModel } from './models';
 import { HackingService } from './hacking.service';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/groupBy';
+
+
 
 declare var jsHelper: any;
 
 @Component({
     selector: 'admin-logfiles',
-    templateUrl: 'app/admin-logfiles.component.html'
+    templateUrl: 'admin-logfiles.component.html'
 })
 export class AdminLogfilesComponent implements OnInit {
     constructor(
@@ -26,11 +26,11 @@ export class AdminLogfilesComponent implements OnInit {
         var self = this;
         this.isLoading = true;
         this.route.params
-            .switchMap((params: Params) => this.hackingService.getAdminLogfile(params['type']))
-            .subscribe(data => {
-                self.rows = data;
-                self.rowsFormatted = self.rows.map(line => "<span class=\"log " + line.Color + "\">" + line.Message + "</span>").join("\n");
-                self.isLoading = false;
-            });
+            .subscribe((params: Params) => this.hackingService.getAdminLogfile(params['type'])
+                .subscribe(data => {
+                    self.rows = data;
+                    self.rowsFormatted = self.rows.map(line => "<span class=\"log " + line.Color + "\">" + line.Message + "</span>").join("\n");
+                    self.isLoading = false;
+                }));
     }
 }

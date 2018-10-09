@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Course } from './models';
 import { HackingService } from './hacking.service';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 
 @Component({
     selector: 'list-courses',
-    templateUrl: 'app/courses.component.html'
+    templateUrl: 'courses.component.html'
 })
 export class CoursesComponent implements OnInit {
     constructor(private hackingService: HackingService) { }

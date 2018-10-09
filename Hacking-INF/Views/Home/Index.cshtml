@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <base href="/">
@@ -14,13 +14,8 @@
     </script>
     @Styles.Render("~/bundles/css")
 
-    @Scripts.Render("~/bundles/es-shim")
-    @Scripts.Render("~/bundles/angular")
     @Scripts.Render("~/bundles/scripts")
-    @Scripts.Render("~/bundles/extra-scripts")
-    <script type="text/javascript">
-        System.import('app').catch(function (err) { console.error(err); });
-    </script>
+    @Scripts.Render("~/bundles/scripts-extra")
 </head>
 <body>
     <my-app>
@@ -31,5 +26,6 @@
             </div>
         </div>
     </my-app>
+    @Scripts.Render("~/bundles/angular")
 </body>
 </html>

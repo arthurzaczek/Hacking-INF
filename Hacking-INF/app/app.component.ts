@@ -3,12 +3,12 @@ import { Router, NavigationEnd } from '@angular/router';
 import { User } from './models';
 import { HackingService } from './hacking.service';
 
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Rx';
+import { Subscription, Observable, timer } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
     selector: 'my-app',
-    templateUrl: 'app/app.component.html'
+    templateUrl: 'app.component.html'
 })
 export class AppComponent implements OnInit {
     Year = new Date().getFullYear();
@@ -20,9 +20,9 @@ export class AppComponent implements OnInit {
     constructor(private hackingService: HackingService,
         private compiler: Compiler,
         private router: Router) {
-        router.events
-            .filter((event: any) => event instanceof NavigationEnd)
-            .subscribe((val: NavigationEnd) => {
+        router.events.pipe(
+                filter((event: any) => event instanceof NavigationEnd)
+            ).subscribe((val: NavigationEnd) => {
                 if (val.url.startsWith("/example/")) {
                     this.containerClass = "container-fluid";
                 } else {
@@ -40,8 +40,8 @@ export class AppComponent implements OnInit {
                 self.User = item;
             });
         this.hackingService.whoAmI();
-        let timer = Observable.timer(3600 * 1000, 3600 * 1000);
-        timer.subscribe(t => {
+        let t = timer(3600 * 1000, 3600 * 1000);
+        t.subscribe(() => {
             this.hackingService.whoAmI();
         });
     }

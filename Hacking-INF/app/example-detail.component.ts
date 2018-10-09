@@ -1,19 +1,16 @@
-﻿import { Component, Input, OnInit, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 import { Course, Example, Test, MemoryErrors, User, CompilerMessage, CompilerMessageHint } from './models';
 import { HackingService } from './hacking.service';
 
-import { Observable } from 'rxjs/Rx';
-
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/map';
+import { Observable, timer } from 'rxjs';
 
 declare var jsHelper: any;
 
 @Component({
     selector: 'example-detail',
-    templateUrl: 'app/example-detail.component.html'
+    templateUrl: 'example-detail.component.html'
 })
 export class ExampleDetailComponent implements OnInit, AfterViewInit {
     constructor(
@@ -40,21 +37,18 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
             this.user = this.hackingService.user;
 
         this.route.params
-            .switchMap((params: Params) => this.hackingService.getExample(params['course'], params['name']))
-            .subscribe(data => {
+            .subscribe((params: Params) => this.hackingService.getExample(params['course'], params['name']).subscribe(data => {
                 this.example = data;
                 this.updateEditor();
-            });
+            }));
         this.route.params
-            .switchMap((params: Params) => this.hackingService.getCourse(params['course']))
-            .subscribe(data => this.course = data);
+            .subscribe((params: Params) => this.hackingService.getCourse(params['course']).subscribe(data => this.course = data));
         this.route.params
-            .switchMap((params: Params) => this.hackingService.getCompilerMessages())
-            .subscribe(data => this.compilerMessages = data);
+            .subscribe((params: Params) => this.hackingService.getCompilerMessages().subscribe(data => this.compilerMessages = data));
 
         var self = this;
-        let timer = Observable.timer(1000, 1000);
-        timer.subscribe(t => {
+        let t = timer(1000, 1000);
+        t.subscribe(() => {
             if (!self.result.Succeeded) {
                 var diff = new Date().getTime() - new Date(self.example.StartTime).getTime();
 

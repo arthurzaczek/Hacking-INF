@@ -1,15 +1,15 @@
-﻿import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { User, ReportedCompilerMessage } from './models';
 import { HackingService } from './hacking.service';
 
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/groupBy';
+
+
 
 declare var jsHelper: any;
 
 @Component({
     selector: 'admin-compiler-messages',
-    templateUrl: 'app/admin-compiler-messages.component.html'
+    templateUrl: 'admin-compiler-messages.component.html'
 })
 export class AdminCompilerMessagesComponent implements OnInit {
     constructor(

@@ -47,3 +47,5 @@ obj/
 /Hacking-INF/Properties/PublishProfiles/default.pubxml.user
 
 
+/Hacking-INF/Scripts/out-tsc
+/Hacking-INF/Scripts/libs

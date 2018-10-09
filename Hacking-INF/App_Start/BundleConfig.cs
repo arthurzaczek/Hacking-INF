@@ -1,4 +1,4 @@
-﻿using System.Web;
+using System.Web;
 using System.Web.Optimization;
 
 namespace Hacking_INF
@@ -8,22 +8,12 @@ namespace Hacking_INF
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/es-shim")
-                .Include(
-                    "~/node_modules/es5-shim/es5-shim.min.js",
-                    "~/node_modules/es6-shim/es6-shim.min.js"
-                )
-            );
 
-            bundles.Add(new ScriptBundle("~/bundles/angular")
-                .Include(
-                    "~/node_modules/core-js/client/shim.js",
-                    "~/node_modules/zone.js/dist/zone.js",
-                    "~/node_modules/reflect-metadata/Reflect.js",
-                    "~/node_modules/systemjs/dist/system.src.js",
-                    "~/systemjs.config.js"
-                )
-            );
+            bundles.Add(new ScriptBundle("~/bundles/angular").Include(
+                      "~/Scripts/libs/runtime*",
+                      "~/Scripts/libs/polyfills*",
+                      "~/Scripts/libs/vendor*",
+                      "~/Scripts/libs/main*"));
 
             bundles.Add(new ScriptBundle("~/bundles/scripts")
                 .Include(
@@ -36,7 +26,7 @@ namespace Hacking_INF
                 )
             );
 
-            bundles.Add(new ScriptBundle("~/bundles/extra-scripts")
+            bundles.Add(new ScriptBundle("~/bundles/scripts-extra")
                 .Include(
                     "~/Scripts/ace/ext-language_tools.js"
                 )

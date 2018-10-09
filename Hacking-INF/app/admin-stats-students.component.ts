@@ -1,15 +1,15 @@
-﻿import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { User, StudentStat, StudentStatDetail, Course } from './models';
 import { HackingService } from './hacking.service';
 
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/groupBy';
+
+
 
 declare var jsHelper: any;
 
 @Component({
     selector: 'admin-stats-students',
-    templateUrl: 'app/admin-stats-students.component.html'
+    templateUrl: 'admin-stats-students.component.html'
 })
 export class AdminStatsStudentsComponent implements OnInit {
     constructor(

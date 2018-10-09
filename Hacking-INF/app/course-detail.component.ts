@@ -1,14 +1,14 @@
-﻿import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 import { Course, Example, Category, User, BasicStat } from './models';
 import { HackingService } from './hacking.service';
 
-import 'rxjs/add/operator/switchMap';
+
 
 @Component({
     selector: 'course-detail',
-    templateUrl: 'app/course-detail.component.html'
+    templateUrl: 'course-detail.component.html'
 })
 export class CourseDetailComponent implements OnInit {
     constructor(
@@ -27,26 +27,23 @@ export class CourseDetailComponent implements OnInit {
             this.user = this.hackingService.user;
 
         this.route.params
-            .switchMap((params: Params) => this.hackingService.getExamples(params['name']))
-            .subscribe(data => {
+            .subscribe((params: Params) => this.hackingService.getExamples(params['name']).subscribe(data => {
                 this.examples = data;
                 this.linkData();
-            });
+            }));
         this.route.params
-            .switchMap((params: Params) => this.hackingService.getCategories(params['name']))
-            .subscribe(data => {
+            .subscribe((params: Params) => this.hackingService.getCategories(params['name']).subscribe(data => {
                 if (data == null) {
                     data = [];
                 }
                 this.categories = data;
                 this.linkData();
-            });
+            }));
         this.route.params
-            .switchMap((params: Params) => this.hackingService.getCourse(params['name']))
-            .subscribe(data => {
+            .subscribe((params: Params) => this.hackingService.getCourse(params['name']).subscribe(data => {
                 this.course = data;
                 this.showAuthError = this.course.Type == "Timed" && !this.user.IsAuthenticated;
-            });
+            }));
     }
 
     linkData(): void {

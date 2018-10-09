@@ -25,7 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TypeScriptToolsVersion>2.2</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -809,8 +809,10 @@
     <TypeScriptCompile Include="app\admin-compiler-messages.component.ts" />
     <TypeScriptCompile Include="app\admin-logfiles.component.ts" />
     <TypeScriptCompile Include="app\admin-stats-students.component.ts" />
+    <TypeScriptCompile Include="app\environments\environment.prod.ts" />
+    <TypeScriptCompile Include="app\environments\environment.ts" />
     <TypeScriptCompile Include="app\info.component.ts" />
-    <TypeScriptCompile Include="app\http-client.ts" />
+    <TypeScriptCompile Include="app\hacking-http-client.ts" />
     <TypeScriptCompile Include="app\admin-stats.component.ts" />
     <TypeScriptCompile Include="app\me.component.ts" />
     <TypeScriptCompile Include="app\login.component.ts" />
@@ -876,6 +878,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\LibGit2Sharp.NativeBinaries.1.0.185\build\LibGit2Sharp.NativeBinaries.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibGit2Sharp.NativeBinaries.1.0.185\build\LibGit2Sharp.NativeBinaries.props'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>ng build</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

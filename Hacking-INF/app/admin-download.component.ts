@@ -6,7 +6,7 @@ import { HackingService } from './hacking.service';
 
 @Component({
     selector: 'admin-download',
-    templateUrl: 'app/admin-download.component.html'
+    templateUrl: 'admin-download.component.html'
 })
 export class AdminDownloadComponent implements OnInit {
     constructor(

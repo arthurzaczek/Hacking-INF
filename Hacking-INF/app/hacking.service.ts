@@ -1,25 +1,24 @@
+
+import {throwError as observableThrowError,  Subject, Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient } from './http-client';
+import { HackingHttpClient } from './hacking-http-client';
 
 import { Course, Example, Test, User, Category, ExampleResult, ExampleStat, StudentStat, CompilerMessage, ReportedCompilerMessage, LogLineModel } from './models';
-
-import 'rxjs/add/operator/toPromise';
-import { Observable } from 'rxjs/Rx';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class HackingService {
     private _baseUrl = 'api/';
-    private _user: User = <User>{};
+    private _user: User = new User();
 
     // Observable navItem source
-    public userLoginEvent = new BehaviorSubject<User>(this._user);
+    public userLoginEvent = new Subject<User>();
 
     get user(): User {
         return this._user;
     }
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HackingHttpClient) {
         this._user.Name = "Anonymous";
         let token = localStorage.getItem("__jwt__");
         this.http.setJwt(token);
@@ -28,13 +27,9 @@ export class HackingService {
     login(user: User): Observable<User> {
         var self = this;
         self._user.IsAuthenticated = false;
-        return this.http.post(this._baseUrl + 'Account/Login', user)
-            .catch(error => {
-                console.log(error);
-                return Observable.throw(error);
-            })
-            .map(response => {
-                self._user = response.json() as User;
+        return this.http.post<User>(this._baseUrl + 'Account/Login', user).pipe(
+            map(response => {
+                self._user = response;
                 if (self._user == null) {
                     self._user = new User();
                     this.http.setJwt(null);
@@ -46,7 +41,7 @@ export class HackingService {
                 }
                 self.userLoginEvent.next(self._user);
                 return self._user;
-            });
+            }));
     }
 
     logout(): void {
@@ -61,13 +56,9 @@ export class HackingService {
         if (!this.http.hasJwt()) return;
 
         var self = this;
-        this.http.get(this._baseUrl + 'Account/WhoAmI')
-            .catch(error => {
-                console.log(error);
-                return Observable.throw(error);
-            })
-            .map(response => {
-                self._user = response.json() as User;
+        this.http.get(this._baseUrl + 'Account/WhoAmI').pipe(
+            map(response => {
+                self._user = response as User;
                 if (self._user == null) {
                     self._user = new User();
                     this.http.setJwt(null);
@@ -79,33 +70,40 @@ export class HackingService {
                 }
                 self.userLoginEvent.next(self._user);
                 return self._user;
-            })
-            .subscribe();
+            }));
     }
 
     getAccessToken(): Observable<string> {
-        if (!this.http.hasJwt()) return Observable.throw("Not logged in");
+        if (!this.http.hasJwt()) return observableThrowError("Not logged in");
 
-        return this.http.get(this._baseUrl + 'Account/GetToken')
-            .map(response => response.json() as string);
+        return this.http.get<string>(this._baseUrl + 'Account/GetToken').pipe(
+            map(response => {
+                return response;
+            }));
     }
 
     getUserDetails(user: User): Observable<User> {
         if (user == null) {
             user = this.user;
         }
-        return this.http.get(this._baseUrl + 'User?uid=' + user.UID)
-            .map(response => response.json() as User);
+        return this.http.get<User>(this._baseUrl + 'User?uid=' + user.UID).pipe(
+            map(response => {
+                return response;
+            }));
     }
 
     getAdminStats(): Observable<ExampleStat[]> {
-        return this.http.get(this._baseUrl + 'Admin/GetStats')
-            .map(response => response.json() as ExampleStat[]);
+        return this.http.get<ExampleStat[]>(this._baseUrl + 'Admin/GetStats').pipe(
+            map(response => {
+                return response;
+            }));
     }
 
     getAdminStatsStudents(course: string, year: number): Observable<StudentStat[]> {
-        return this.http.get(this._baseUrl + 'Admin/GetStatsStudents?course=' + course + '&year=' + year)
-            .map(response => response.json() as StudentStat[]);
+        return this.http.get<StudentStat[]>(this._baseUrl + 'Admin/GetStatsStudents?course=' + course + '&year=' + year).pipe(
+            map(response => {
+                return response;
+            }));
     }
     getAdminStatsStudentsCSVUrl(course: string, year: number): string {
         return this._baseUrl + 'Admin/GetStatsStudentsCSV?course=' + encodeURIComponent(course) + '&year=' + encodeURIComponent((year || 0).toString());
@@ -119,63 +117,80 @@ export class HackingService {
     }
 
     getAdminLogfile(type: string): Observable<LogLineModel[]> {
-        return this.http.get(this._baseUrl + 'Admin/GetLogfile?type=' + type)
-            .map(response => response.json() as LogLineModel[]);
+        return this.http.get<LogLineModel[]>(this._baseUrl + 'Admin/GetLogfile?type=' + type).pipe(
+            map(response => {
+                return response;
+            }));
     }
 
     getAdminReportedCompilerMessages(): Observable<ReportedCompilerMessage[]> {
-        return this.http.get(this._baseUrl + 'Admin/GetReportedCompilerMessages')
-            .map(response => response.json() as ReportedCompilerMessage[]);
+        return this.http.get<ReportedCompilerMessage[]>(this._baseUrl + 'Admin/GetReportedCompilerMessages').pipe(
+            map(response => {
+                return response;
+            }));
     }
 
     updateExamples(): Observable<string> {
-        return this.http.post(this._baseUrl + 'Admin/UpdateExamples', null)
-            .map(response => response.json() as string);
+        return this.http.post<string>(this._baseUrl + 'Admin/UpdateExamples', null).pipe(
+            map(response => {
+                return response;
+            }));
     }
 
     clearCache(): Observable<string> {
-        return this.http.post(this._baseUrl + 'Admin/ClearCache', null)
-            .map(response => response.json() as string);
+        return this.http.post<string>(this._baseUrl + 'Admin/ClearCache', null).pipe(
+            map(response => {
+                return response;
+            }));
     }
     loadTest(concurrent: number, numberOfTests: number): Observable<string> {
-        return this.http.post(this._baseUrl + 'Admin/LoadTest?concurrent=' + concurrent + '&numberOfTests=' + numberOfTests, null)
-            .map(response => response.json() as string);
+        return this.http.post<string>(this._baseUrl + 'Admin/LoadTest?concurrent=' + concurrent + '&numberOfTests=' + numberOfTests, null).pipe(
+            map(response => {
+                return response;
+            }));
     }
 
     getCourses(): Observable<Course[]> {
-        return this.http.get(this._baseUrl + 'Info/GetCourses')
-            .map(response => response.json() as Course[]);
+        return this.http.get<Course[]>(this._baseUrl + 'Info/GetCourses').pipe(
+            map(response => {
+                return response;
+            }));
     }
 
-    getCourse(name: string): Promise<Course> {
-        return this.http.get(this._baseUrl + 'Info/GetCourse?name=' + name)
-            .toPromise()
-            .then(response => response.json() as Course);
+    getCourse(name: string): Observable<Course> {
+        return this.http.get<Course>(this._baseUrl + 'Info/GetCourse?name=' + name).pipe(
+            map(response => {
+                return response;
+            }));
     }
 
-    getCategories(course: string): Promise<Category[]> {
-        return this.http.get(this._baseUrl + 'Info/GetCategories?course=' + course)
-            .toPromise()
-            .then(response => response.json() as Category[]);
+    getCategories(course: string): Observable<Category[]> {
+        return this.http.get<Category[]>(this._baseUrl + 'Info/GetCategories?course=' + course).pipe(
+            map(response => {
+                return response;
+            }));
     }
 
-    getCompilerMessages(): Promise<CompilerMessage[]> {
+    getCompilerMessages(): Observable<CompilerMessage[]> {
         // TODO: Cache them
-        return this.http.get(this._baseUrl + 'Info/GetCompilerMessages')
-            .toPromise()
-            .then(response => response.json() as CompilerMessage[]);
+        return this.http.get<CompilerMessage[]>(this._baseUrl + 'Info/GetCompilerMessages').pipe(
+            map(response => {
+                return response;
+            }));
     }
 
-    getExamples(course: string): Promise<Example[]> {
-        return this.http.get(this._baseUrl + 'Info/GetExamples?course=' + course)
-            .toPromise()
-            .then(response => response.json() as Example[]);
+    getExamples(course: string): Observable<Example[]> {
+        return this.http.get<Example[]>(this._baseUrl + 'Info/GetExamples?course=' + course).pipe(
+            map(response => {
+                return response;
+            }));
     }
 
-    getExample(course: string, name: string): Promise<Example> {
-        return this.http.get(this._baseUrl + 'Info/GetExample?course=' + course + '&name=' + name)
-            .toPromise()
-            .then(response => response.json() as Example);
+    getExample(course: string, name: string): Observable<Example> {
+        return this.http.get<Example>(this._baseUrl + 'Info/GetExample?course=' + course + '&name=' + name).pipe(
+            map(response => {
+                return response;
+            }));
     }
 
     callCompileOrTest(course: string, example: string, sessionID: string, startTime: Date, code: string, compileAndTest: boolean): Observable<Test> {
@@ -186,8 +201,10 @@ export class HackingService {
         data.StartTime = startTime;
         data.Code = code;
         data.CompileAndTest = compileAndTest;
-        return this.http.post(this._baseUrl + 'Test', data)
-            .map(response => response.json() as Test);
+        return this.http.post<Test>(this._baseUrl + 'Test', data).pipe(
+            map(response => {
+                return response;
+            }));
     }
 
     compile(course: string, example: string, sessionID: string, startTime: Date, code: string): Observable<Test> {
@@ -199,7 +216,9 @@ export class HackingService {
     }
 
     getTestResult(sessionID: string): Observable<Test> {
-        return this.http.get(this._baseUrl + 'Test/GetTestResult?sessionID=' + sessionID)
-            .map(response => response.json() as Test);
+        return this.http.get<Test>(this._baseUrl + 'Test/GetTestResult?sessionID=' + sessionID).pipe(
+            map(response => {
+                return response;
+            }));
     }
 }

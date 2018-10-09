@@ -7,7 +7,7 @@ declare var jsHelper: any;
 
 @Component({
     selector: 'admin-examples',
-    templateUrl: 'app/admin-examples.component.html'
+    templateUrl: 'admin-examples.component.html'
 })
 export class AdminExamplesComponent {
     constructor(
