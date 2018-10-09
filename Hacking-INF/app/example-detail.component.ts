@@ -46,6 +46,13 @@ export class ExampleDetailComponent implements OnInit, AfterViewInit {
         this.route.params
             .subscribe((params: Params) => this.hackingService.getCompilerMessages().subscribe(data => this.compilerMessages = data));
 
+        this.hackingService
+            .userLoginEvent
+            .subscribe(item => {
+                console.log("User changed, update UI");
+                this.user = this.hackingService.user;
+            });
+
         var self = this;
         let t = timer(1000, 1000);
         t.subscribe(() => {
