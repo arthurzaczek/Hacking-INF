@@ -40,3 +40,14 @@ External libraries
 ------------------
 
 *Hacking-INF* depends on external libraries. Please see their license aggreement for more details. Every library license is, as far as I can see, compatible with the [GPL V3](http://www.gnu.org/licenses/gpl-3.0.txt).
+
+Building 2025
+------------------
+
+~~~~~~~~~~~~~~~~
+nvm install 8.9.0
+nvm use 8.9.0
+npm install -g @angular/cli@6
+~~~~~~~~~~~~~~~~
+
+Yes, very old versions
